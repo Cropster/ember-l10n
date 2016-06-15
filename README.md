@@ -126,7 +126,7 @@ arguments. All placeholders can be provided through named arguments (hash).
 
 If you have complex message ids, which should contain "dynamic" placeholders,
 which can also be replaced with components (such as a `link-to`), you can use
-the `get-text` component. It also supports multiple 
+the `get-text` component.
 
 ```
 {{#get-text 
