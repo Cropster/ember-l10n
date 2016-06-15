@@ -7,7 +7,7 @@ A generic localization solution for ember projects using gettext.
 
 * `npm install ember-l10n --save-dev`
 
-## l10n Service
+## Service
 
 The  service translates through gettext.js. There are two available methods to be used for translations message ids from JS source:
 
@@ -57,7 +57,7 @@ export default {
 ```
 
 
-## l10n Helpers
+## Helpers
 
 For handling your translations within your handlebar templates you can use `t` and `n` helper:
 
