@@ -1,5 +1,11 @@
 /*jshint node:true*/
 module.exports = {
+  description: 'Adds addons, packages and bower packages for ember-l10n',
+  normalizeEntityName: function() {
+    // allows us to run ember -g ember-l10n and not blow up
+    // because ember cli normally expects the format
+    // ember generate <entitiyName> <blueprint>
+  },
   afterInstall: function() {
     return this.addAddonsToProject({
       packages: [
