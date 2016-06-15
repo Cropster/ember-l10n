@@ -27,6 +27,6 @@ export function initialize(/*application*/) {
 }
 
 export default {
-  name: <%= name %>,
+  name: '<%= name %>',
   initialize: initialize
 };

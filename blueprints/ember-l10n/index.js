@@ -7,19 +7,17 @@ module.exports = {
     // ember generate <entitiyName> <blueprint>
   },
   afterInstall: function() {
-    return this.addPackagesToProject({
-        packages: [
-          {
-            name: 'xgettext-template',
-            target: '^2.6.0'
-          },
-          {
-            name: 'gettext.js',
-            target: '^0.5.2'
-          }
-        ]
-    }).then(() => {
-      this.addBowerPackagesToProject([
+    return this.addPackagesToProject([
+        {
+          name: 'xgettext-template',
+          target: '^2.6.0'
+        },
+        {
+          name: 'gettext.js',
+          target: '^0.5.2'
+        }
+    ]).then(() => {
+      return this.addBowerPackagesToProject([
         {
           name: 'gettext.js',
           target: '^0.5.2'
