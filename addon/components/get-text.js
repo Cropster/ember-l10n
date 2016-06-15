@@ -30,8 +30,8 @@ export default Ember.Component.extend({
 	// Attributes
 
 	/**
-	 * The i18n message id string, which should use one of the gettext
-	 * translations method as subexpression when being passed in before!
+	 * The message id string, which should use one of the gettext
+	 * translations method as subexpression when being passed in!
 	 *
 	 * @attribute message
 	 * @type {String}
