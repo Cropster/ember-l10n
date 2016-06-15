@@ -65,23 +65,29 @@ To configure the path of the JSON files (depending on the path configured via
 extractor's `-j` option) use the `jsonPath` property (default:
 "/assets/locales").
 
-Example of how to configure service within an initializer:
+You can create an initializer to configure all options with the following blueprint:
+
+```
+ember g ember-l10n-initializer my-l10n-initializer
+```
+
+This will produce an initializer such as:
 
 ```
 import L10N from 'ember-l10n/services/l10n';
 
 export function initialize(application) {
   L10N.reopen({
-        availableLocales: Ember.computed(function(){ // specify all your available languages
-          return {
-              'en': this.t('en'),
-              'de': this.t('de'),
-            };
-        }),
-        jsonPath: '/custom/path/to/json/files', // provide different location of JSON files
-        autoInitialize: false, // no detection, triggered only when calling setLocale() manually
-        forceLocale: 'de', // skips language detection, only useful if `autoInitialize:true` (= default)
-    });
+      availableLocales: Ember.computed(function(){ // specify all your available languages
+        return {
+            'en': this.t('en'),
+            'de': this.t('de'),
+          };
+      }),
+      jsonPath: '/custom/path/to/json/files', // provide different location of JSON files
+      autoInitialize: false, // no detection, triggered only when calling setLocale() manually
+      forceLocale: 'de', // skips language detection, only useful if `autoInitialize:true` (= default)
+  });
 
   application.inject('model', 'l10n', 'service:l10n');
   application.inject('route', 'l10n', 'service:l10n');
