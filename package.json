@@ -52,7 +52,8 @@
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.5",
-    "gettext.js": "0.5.2"
+    "gettext.js": "^0.5.2",
+    "xgettext-template": "^2.6.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

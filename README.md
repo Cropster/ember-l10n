@@ -1,30 +1,69 @@
-
 # Ember-l10n
 
-A generic localization solution for ember projects using gettext.
+> A GNU gettext based localization workflow for ember.
 
 ## Installation
 
-* `npm install ember-l10n --save-dev`
+* `ember install ember-l10n`
 
-## Service
+Using the string extractor requires:
 
-The  service translates through gettext.js. There are two available methods to be used for translations message ids from JS source:
+* GNU gettext, xgettext
+*  OS X: `brew install gettext; brew link --force gettext`
+* [xgettext-template](https://www.npmjs.com/package/xgettext-template) - extracts strings from handlebars templates
+* [gettext.js](https://www.npmjs.com/package/gettext.js) - lightweight port of gettext for JS
+
+## Usage
+
+There are two primary parts to ember-l10n
+
+1. the Ember side: Service, Helpers, and Components
+2. `gettext.sh` - the string extractor - a script that extracts your message id
+   strings from js and handlebar files
+
+
+ember-l10n follows the gettext convention that the message ids in your source files
+are the default language (usually English).
+
+In the ember-l10n workflow, you use the `t`, and `n` helpers and `l10n.t()`
+function to define your strings in your project. Then you run the extractor script
+to generate pot and po files, which you send off to your translators.
+
+After receiving the translated po files for additional locales, you use the same script
+to convert them into json files. These json files are then loaded by ember-l10n in your application
+and replaced at runtime.
+
+ember-l10n provides powerful string substitution and even component
+substitution for dynamic strings. See the Components section below.
+
+
+## The Ember Side
+
+### Service
+
+The  service translates through gettext.js. There are two available methods to
+be used for translations message ids from JS source:
 
 * `t(msgid, hash)`
 * `n(msgid, msgid_plural, count, hash)`
 
-Furthermore, there's an auto initialization feature (default: true), which detects user's locale according to system preferences. If the user's locale is supported in `availableLocales`, the corresponding translations are loaded. If the user's locale is not supported, the default locale will be used instead (default: "en"). Please use the following method to change locales:
+Furthermore, there's an auto initialization feature (default: true), which
+detects user's locale according to system preferences. If the user's locale is
+supported in `availableLocales`, the corresponding translations are loaded. If
+the user's locale is not supported, the default locale will be used instead
+(default: "en"). Please use the following method to change locales:
 
 * `setLocale(locale)` 
 
-The following utility methods are also availalbe:
+The following utility methods are also available:
 
 * `getLocale()`
 * `hasLocale(locale)`
 * `detectLocale()`
 
-To configure the path of the JSON files (depending on the path configured via extractor's `-j` option) use the `jsonPath` property (default: "/assets/locales").
+To configure the path of the JSON files (depending on the path configured via
+extractor's `-j` option) use the `jsonPath` property (default:
+"/assets/locales").
 
 Example of how to configure service within an initializer:
 
@@ -57,14 +96,16 @@ export default {
 ```
 
 
-## Helpers
+### Helpers
 
-For handling your translations within your handlebar templates you can use `t` and `n` helper:
+For handling your translations within your handlebar templates you can use `t`
+and `n` helper:
 
 ###### Singular translations:
 
-The `t` helper provides gettext singularization for message ids. It takes singular message id as positional arguments. All
-placeholders can be provided through named arguments.
+The `t` helper provides gettext singularization for message ids. It takes
+singular message id as positional arguments. All placeholders can be provided
+through named arguments.
 
 ```
 {{t "Your current role: {{role}}" role=someBoundProperty}}
@@ -72,16 +113,20 @@ placeholders can be provided through named arguments.
 
 ###### Plural translations:
 
-The `n` helper provides gettext pluralization for message ids. It takes singular and plural message ids as well as actual amount as positional arguments. All placeholders can be provided through named arguments (hash).
+The `n` helper provides gettext pluralization for message ids. It takes
+singular and plural message ids as well as actual amount as positional
+arguments. All placeholders can be provided through named arguments (hash).
 
 ```
 {{n "{{count}} apple" "{{count}} apples" someBoundProperty count=someBoundProperty}}
 ```
 
 
-## Components
+### Components
 
-If you have complex message ids, which should contain "dynamic" placeholders, which can also be replaced with components (such as a `link-to`), you can use the `get-text` component. It also supports multiple 
+If you have complex message ids, which should contain "dynamic" placeholders,
+which can also be replaced with components (such as a `link-to`), you can use
+the `get-text` component. It also supports multiple 
 
 ```
 {{#get-text 
@@ -98,13 +143,17 @@ If you have complex message ids, which should contain "dynamic" placeholders, wh
 {{/get-text}}
 ```
 
-Please note: If your message id contains HTML, you have to set `escapeText=true` on the component.
+Please note: If your message id contains HTML, you have to set
+`escapeText=true` on the component.
 
-## Extractor
+## 2. Extracting Strings
 
-The extractor script searches your ember project for both JS and HBS sources to get all message ids, generates the corresponding PO files and converts them to JSON files to be used for client side translation within your ember app.
+The extractor (`gettext.sh`) extracts message ids from the JS and HBS files in
+your Ember project. It generates the corresponding PO files for translation.
+Later, it will convert the translated POs into JSON files to be used for client side
+translation within your Ember app.
 
-Run the following command from your ember project root to extract message ids:
+Run the following command from your Ember project root to extract message ids:
 
 * `node_modules/ember-l10n/gettext.sh`
 
@@ -112,20 +161,62 @@ To see all available command line options for the extractor script please run:
 
 * `node_modules/ember-l10n/gettext.sh -h`
 
+```bash
+Usage: ./gettext.sh [OPTIONS]
+
+Options:
+	-d Domain pot file (default: ./translations/domain.pot)
+	-e Input encoding (default: UTF-8)
+	-i Input directory (default: ./app)
+	-j JSON output directory (default: ./public/assets/locales)
+	-k Keys to be used for lookup (default: t)
+	-l Target language of PO-File (default: en)
+	-n Plural Forms (default: nplurals=2; plural=(n!=1);)
+	-o Output directory (default: ./translations)
+	-p Package Name (default: Cropster App)
+	-v Package Version (default: 1.0)
+	-I Install dependencies automatically (default: 0)
+	-h Show help
+
+Example:
+	./gettext.sh -l de -k singlekey,pluralkey:1,2 -i ./myemberapp -o ./mypodirectory -j ./myjsondirectory -p "My Package" -v 1.0
+```
+
 Using a POT file for "static" translations such as server-side constants etc.:
 
-In case you have message ids, which are not covered in your JS or HBS source, you can provide a POT file containing all these messages used as a base for generating resulting PO files. To do so, either use `-d` option:
+In case you have message ids, which are not covered in your JS or HBS sources,
+you can provide a POT file containing all these messages used as a base for
+generating resulting PO files. To do so, either use `-d` option:
 
 * `node_modules/ember-l10n/gettext.sh -d path/to/pot/file.pot`
 
-Or simply put a file called `domain.pot` within your translations directory, which could be configured with `-i` option:
+Or simply put a file called `domain.pot` within your translations directory,
+which could be configured with `-i` option:
 
 * `node_modules/ember-l10n/gettext.sh -i path/to/po/files`
 
-Please note: The shell script will install all necessary dependencies on first run:
+Please note: The script can install all necessary dependencies, just pass the `-I` flag.
 
 * GNU gettext utilities (https://www.gnu.org/software/gettext/manual/gettext.html)
 * HBS template parser (https://github.com/gmarty/xgettext)
 * PO2JSON converter (https://github.com/guillaumepotier/gettext.js)
 
-Compiling GNU gettext utilities may take a while, so get a coffee in the meanwhile :)
+Compiling GNU gettext utilities may take a while, so go get a coffee :)
+
+Or install gettext from your package manager and call it a day.
+
+## Looking for help? ##
+
+If it is a bug [please open an issue on github](https://github.com/cropster/ember-l10n/issues).
+
+## Versioning ##
+
+This library follows [Semantic Versioning](http://semver.org)
+
+## Legal
+
+[Crospter](https://cropster.com), GmbH &copy; 2016
+
+[@cropster](http://twitter.com/cropster)
+
+[Licensed under the MIT license](http://www.opensource.org/licenses/mit-license.php)
