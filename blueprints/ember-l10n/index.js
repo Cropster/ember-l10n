@@ -28,14 +28,12 @@ module.exports = {
         ]
       });
     }).then(() => {
-      this.addBowerPackagesToProject({
-        packages: [
-          {
-            name: 'gettext.js',
-            target: '^0.5.2'
-          }
-        ]
-      });
+      this.addBowerPackagesToProject([
+        {
+          name: 'gettext.js',
+          target: '^0.5.2'
+        }
+      ]);
     });
   }
 };
