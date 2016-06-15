@@ -5,13 +5,16 @@ import layout from '../templates/get-text';
  * A simple helper component to include dynamic parts - mostly link-to helper - within gettext message ids.
  *
  * ```html
- * {{#get-text message=(t "My translation with a {{myLink 'optional link text'}}") as |text placeholder|}}
+ * {{#get-text message=(t "My translation with {{dynamicLink 'optional link text'}} and {{staticLink}}") as |text placeholder|}}
  * 	{{!-- You can omit the if helper if you have only one dynamic part --}}
  * 	{{~#if (eq placeholder 'myLink')}}
  * 		{{~#link-to 'my-route'}}
- * 			{{~text}}
+ * 			{{~text}} {{!-- will render 'optional link text' so that it's contained in PO file! --}}
  * 	  {{~/link-to~}}
  * 	{{~/if~}}
+ *  {{~#if (eq placeholder 'staticLink')}}
+ *    <a href="http://www.google.com">Google</a>
+ *  {{~/if~}}
  * {{/get-text}}
  * ```
  *

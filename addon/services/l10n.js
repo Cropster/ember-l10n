@@ -162,6 +162,25 @@ export default Ember.Service.extend(Ember.Evented, {
 		this.setLocale(this.detectLocale());
 	},
 
+  /**
+   * Provides current locale. If not set,
+   * delivers default locale.
+   *
+   * @method setLocale
+   * @param {String} locale
+   * @return {String}
+   * @public
+   */
+  getLocale() {
+    const defaultLocale = this.get("defaultLocale");
+    const locale = this.get("locale");
+    if (Ember.isNone(locale)) {
+      return defaultLocale;
+    }
+
+    return locale;
+  },
+
 	/**
 	 * Sets active locale if available.
 	 *

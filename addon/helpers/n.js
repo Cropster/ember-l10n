@@ -7,7 +7,7 @@ import Ember from 'ember';
  * provided through named arguments (hash).
  *
  * ```html
- * {{n "{{count}} apple" "{{count}} apples" 3 count=3}}
+ * {{n "{{count}} apple" "{{count}} apples" someBoundProperty count=someBoundProperty}}
  * ```
  *
  * @namespace Helper
