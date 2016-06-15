@@ -113,8 +113,7 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   availableLocales: Ember.computed(function(){
     return {
-      'en': this.t('en'),
-      'de': this.t('de'),
+      'en': this.t('en')
     };
   }),
 

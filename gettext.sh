@@ -76,21 +76,21 @@ HELP_MESSAGE=$(cat <<EOF
 Usage: $0 [OPTIONS]
 
 Options:
-		-d Domain pot file (default: $DOMAIN_POT_DEFAULT)
-		-e Input encoding (default: $FROM_CODE_DEFAULT)
-		-i Input directory (default: $INPUT_DEFAULT)
-		-j JSON output directory (default: $JSON_OUTPUT_DEFAULT)
-		-k Keys to be used for lookup (default: $KEYS_DEFAULT)
-		-l Target language of PO-File (default: $LANGUAGE_DEFAULT)
-		-n Plural Forms (default: $PLURAL_FORMS_DEFAULT)
-		-o Output directory (default: $OUTPUT_DEFAULT)
-		-p Package Name (default: $PACKAGE_NAME_DEFAULT)
-		-v Package Version (default: $PACKAGE_VERSION_DEFAULT)
-		-I Install dependencies automatically (default: $INSTALL_DEPS_DEFAULT)
-		-h Show help
+	-d Domain pot file (default: $DOMAIN_POT_DEFAULT)
+	-e Input encoding (default: $FROM_CODE_DEFAULT)
+	-i Input directory (default: $INPUT_DEFAULT)
+	-j JSON output directory (default: $JSON_OUTPUT_DEFAULT)
+	-k Keys to be used for lookup (default: $KEYS_DEFAULT)
+	-l Target language of PO-File (default: $LANGUAGE_DEFAULT)
+	-n Plural Forms (default: $PLURAL_FORMS_DEFAULT)
+	-o Output directory (default: $OUTPUT_DEFAULT)
+	-p Package Name (default: $PACKAGE_NAME_DEFAULT)
+	-v Package Version (default: $PACKAGE_VERSION_DEFAULT)
+	-I Install dependencies automatically (default: $INSTALL_DEPS_DEFAULT)
+	-h Show help
 
 Example:
-		./gettext.sh -l de -k singlekey,pluralkey:1,2 -i ./myemberapp -o ./mypodirectory -j ./myjsondirectory -p "Cropster Hub" -v 1.0
+	./gettext.sh -l de -k singlekey,pluralkey:1,2 -i ./myemberapp -o ./mypodirectory -j ./myjsondirectory -p "Cropster Hub" -v 1.0
 EOF)
 
 # ==============================================
