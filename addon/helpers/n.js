@@ -15,21 +15,22 @@ const { get } = Ember;
  * @namespace Helper
  * @class N
  * @extends Ember.Helper
+ * @public
  */
 export default Ember.Helper.extend({
   l10n: Ember.inject.service(),
 
-  init(){
+  init() {
     this._super(...arguments);
     this.get('l10n').on('translation_loaded', this, this.recompute);
   },
 
-  willDestroy(){
+  willDestroy() {
     this._super(...arguments);
     this.get('l10n').off('translation_loaded', this, this.recompute);
   },
 
-  compute([msgid, msgid_plural, count], hash){
+  compute([msgid, msgidPlural, count], hash) {
     if (Ember.isNone(msgid)) {
       return msgid;
     }
@@ -39,7 +40,7 @@ export default Ember.Helper.extend({
       hash.count = count;
     }
 
-    let trans = this.get('l10n').n(msgid, msgid_plural, count, hash);
+    let trans = this.get('l10n').n(msgid, msgidPlural, count, hash);
     return Ember.String.htmlSafe(trans);
   }
 });

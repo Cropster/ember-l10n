@@ -112,7 +112,7 @@ export default Ember.Service.extend(Ember.Evented, {
    * @type {Object}
    * @public
    */
-  availableLocales: Ember.computed(function(){
+  availableLocales: Ember.computed(function() {
     return {
       'en': this.t('en')
     };
@@ -137,7 +137,7 @@ export default Ember.Service.extend(Ember.Evented, {
    * @default {}
    * @private
    */
-  _cache: Ember.computed(function(){
+  _cache: Ember.computed(function() {
     return {}; // complex type!
   }),
 
@@ -155,7 +155,7 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   init() {
     this._super(...arguments);
-    if (!this.get("autoInitialize")) {
+    if (!this.get('autoInitialize')) {
       return;
     }
 
@@ -172,8 +172,8 @@ export default Ember.Service.extend(Ember.Evented, {
    * @public
    */
   getLocale() {
-    const defaultLocale = this.get("defaultLocale");
-    const locale = this.get("locale");
+    let defaultLocale = this.get('defaultLocale');
+    let locale = this.get('locale');
     if (Ember.isNone(locale)) {
       return defaultLocale;
     }
@@ -195,8 +195,8 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     console.info(`l10n.js: Locale set to: "${locale}"`);
-    this.get("_gettext").setLocale(locale);
-    this.set("locale", locale);
+    this.get('_gettext').setLocale(locale);
+    this.set('locale', locale);
     this._loadJSON();
   },
 
@@ -209,8 +209,8 @@ export default Ember.Service.extend(Ember.Evented, {
    * @public
    */
   hasLocale(locale) {
-    const availableLocales = this.get("availableLocales");
-    const hasLocale = !Ember.isNone(availableLocales[locale]);
+    let availableLocales = this.get('availableLocales');
+    let hasLocale = !Ember.isNone(availableLocales[locale]);
     if (!hasLocale) {
       console.warn(`l10n.js: Locale "${locale}" is not available!`);
     }
@@ -227,20 +227,20 @@ export default Ember.Service.extend(Ember.Evented, {
    * @public
    */
   detectLocale() {
-    const defaultLocale = this.get("defaultLocale");
-    const forceLocale = this.get("forceLocale");
-    const navigator = window.navigator;
+    let defaultLocale = this.get('defaultLocale');
+    let forceLocale = this.get('forceLocale');
+    let { navigator } = window;
     let locale;
 
     // auto detect locale if no force locale
     if (Ember.isNone(forceLocale)) {
 
       // special case: android user agents
-      if( navigator && navigator.userAgent &&
-          (locale = window.navigator.userAgent.match(
-            /android.*\W(\w\w)-(\w\w)\W/i
-          ))
-        ) {
+      if (navigator && navigator.userAgent &&
+        (locale = navigator.userAgent.match(
+          /android.*\W(\w\w)-(\w\w)\W/i
+        ))
+      ) {
         locale = locale[1];
       }
 
@@ -257,7 +257,7 @@ export default Ember.Service.extend(Ember.Evented, {
         }
       }
 
-      locale = locale.substr(0,2);
+      locale = locale.substr(0, 2);
     } else {
       locale = forceLocale;
     }
@@ -287,17 +287,17 @@ export default Ember.Service.extend(Ember.Evented, {
    * @return {String}
    * @public
    */
-  t(msgid,hash = {}) {
-    if (Ember.typeOf(msgid)!=='string') {
-      try{
+  t(msgid, hash = {}) {
+    if (Ember.typeOf(msgid) !== 'string') {
+      try {
         msgid = msgid.toString();
-      } catch(e) {
+      } catch (e) {
         console.log('l10n.js: "msgid" param for t() should be either a string or an object implementing toString() method!');
         return msgid;
       }
     }
 
-    return this._strfmt(this.get('_gettext').gettext(msgid),hash);
+    return this._strfmt(this.get('_gettext').gettext(msgid), hash);
   },
 
   /**
@@ -305,32 +305,32 @@ export default Ember.Service.extend(Ember.Evented, {
    *
    * @method n
    * @param {String} msgid
-   * @param {String} msgid_plural
+   * @param {String} msgidPlural
    * @param {Number} count
    * @param {Object} hash
    * @return {String}
    * @public
    */
-  n(msgid,msgid_plural,count = 1,hash = {}) {
-    if (Ember.typeOf(msgid)!=='string') {
-      try{
+  n(msgid, msgidPlural, count = 1, hash = {}) {
+    if (Ember.typeOf(msgid) !== 'string') {
+      try {
         msgid = msgid.toString();
-      } catch(e) {
+      } catch (e) {
         console.log('l10n.js: "msgid" param for n() should be either a string or an object implementing toString() method!');
         return msgid;
       }
     }
 
-    if (Ember.typeOf(msgid_plural)!=='string') {
-      try{
-        msgid_plural = msgid_plural.toString();
-      } catch(e) {
+    if (Ember.typeOf(msgidPlural) !== 'string') {
+      try {
+        msgidPlural = msgidPlural.toString();
+      } catch (e) {
         console.log('l10n.js: "msgid_plural" param for n() should be either a string or an object implementing toString() method!');
         return msgid;
       }
     }
 
-    return this._strfmt(this.get('_gettext').ngettext(msgid,msgid_plural,count),hash);
+    return this._strfmt(this.get('_gettext').ngettext(msgid, msgidPlural, count), hash);
   },
 
   /**
@@ -342,21 +342,21 @@ export default Ember.Service.extend(Ember.Evented, {
    * @return {String}
    * @private
    */
-  _strfmt(string,hash) {
+  _strfmt(string, hash) {
     // don't process empty hashes
     if (Ember.isNone(hash)) {
       return string;
     }
 
     // find and replace all {{placeholder}}
-    const pattern = /{{\s*([\w]+)\s*}}/g;
-    const replace = (idx,match) => {
+    let pattern = /{{\s*([\w]+)\s*}}/g;
+    let replace = (idx, match) => {
       let value = hash[match];
       if (Ember.isNone(value)) {
         return `{{${match}}}`;
       }
 
-      if (Ember.typeOf(value)==='string') {
+      if (Ember.typeOf(value) === 'string') {
         value = this.get('_gettext').gettext(value);
       }
 
