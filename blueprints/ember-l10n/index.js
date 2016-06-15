@@ -7,26 +7,17 @@ module.exports = {
     // ember generate <entitiyName> <blueprint>
   },
   afterInstall: function() {
-    return this.addAddonsToProject({
-      packages: [
-        {
-          name: 'ember-cli-htmlbars',
-          target: '^1.0.8'
-        },
-        {
-          name: 'ember-truth-helpers',
-          target: '^1.2.0'
-        },
-      ]
-    }).then(() => {
-      this.addAddonsToProject({
+    return this.addPackagesToProject({
         packages: [
+          {
+            name: 'xgettext-template',
+            target: '^2.6.0'
+          },
           {
             name: 'gettext.js',
             target: '^0.5.2'
           }
         ]
-      });
     }).then(() => {
       this.addBowerPackagesToProject([
         {
