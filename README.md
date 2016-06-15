@@ -36,7 +36,7 @@ export function initialize(application) {
         availableLocales: Ember.computed(function(){ // specify all your available languages
           return {
               'en': this.t('en'),
-                'de': this.t('de'),
+              'de': this.t('de'),
             };
         }),
         jsonPath: '/custom/path/to/json/files', // provide different location of JSON files
@@ -51,7 +51,7 @@ export function initialize(application) {
 }
 
 export default {
-  name: 'i18n',
+  name: 'l10n',
   initialize: initialize
 };
 ```
