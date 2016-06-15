@@ -32,8 +32,14 @@ import Ember from 'ember';
  * @class L10N
  * @extends Ember.Service
  * @extends Ember.Evented
+ * @public
  */
-export default Ember.Service.extend(Ember.Evented, {
+export default Ember.Service.extend(Ember.Evented, {
+  // -------------------------------------------------------------------------
+  // Dependencies
+
+  ajax: Ember.inject.service('l10n-ajax'),
+
   // -------------------------------------------------------------------------
   // Properties
 
@@ -368,20 +374,21 @@ export default Ember.Service.extend(Ember.Evented, {
    * @return {Void}
    * @private
    */
-  _loadJSON(){
-    const cache = this.get("_cache");
-    const locale = this.get("locale");
-    const url = `${this.get("jsonPath")}/${locale}.json`;
+  _loadJSON() {
+    let ajax = this.get('ajax');
+    let cache = this.get('_cache');
+    let locale = this.get('locale');
+    let url = `${this.get('jsonPath')}/${locale}.json`;
 
-    const successCallback = response => {
-      const cachedResponse = Ember.copy(response,true);
+    let successCallback = (response) => {
+      let cachedResponse = Ember.copy(response, true);
       this.notifyPropertyChange('availableLocales');
       this.get('_gettext').loadJSON(response);
       this.trigger('translation_loaded');
       cache[locale] = cachedResponse;
     };
 
-    const failureCallback = reason => {
+    let failureCallback = (reason) => {
       console.error(`l10n.js: An error occured loading "${url}": ${reason}`);
     };
 
@@ -392,14 +399,9 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     // otherwise load json file from assets
-    Ember.$.ajax(
-      {
-        url: url,
-        dataType: 'json'
-      }
-    ).then(
-      Ember.run.bind(this,successCallback),
-      Ember.run.bind(this,failureCallback)
+    ajax.request(url).then(
+      successCallback,
+      failureCallback
     );
   }
 
