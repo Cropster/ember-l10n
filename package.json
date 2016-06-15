@@ -37,7 +37,9 @@
     "ember-resolver": "^2.0.3",
     "ember-truth-helpers": "^1.2.0",
     "ember-try": "^0.1.2",
-    "loader.js": "^4.0.0"
+    "loader.js": "^4.0.0",
+    "gettext.js": "^0.5.2",
+    "xgettext-template": "^2.6.0"
   },
   "keywords": [
     "ember-addon",
@@ -51,9 +53,7 @@
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.5",
-    "ember-cli-htmlbars": "^1.0.8",
-    "gettext.js": "^0.5.2",
-    "xgettext-template": "^2.6.0"
+    "ember-cli-htmlbars": "^1.0.8"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
