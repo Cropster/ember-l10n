@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # ==============================================
 # Functions
@@ -68,6 +69,8 @@ KEYS_DEFAULT=("t" "n:1,2") # "k:1,2" for plural forms!
 # https://www.gnu.org/software/gettext/manual/html_node/Plural-forms.html
 PLURAL_FORMS_DEFAULT="nplurals=2; plural=(n!=1);"
 
+INSTALL_DEPS_DEFAULT=0
+
 # help message
 HELP_MESSAGE=$(cat <<EOF
 Usage: $0 [OPTIONS]
@@ -83,6 +86,7 @@ Options:
 		-o Output directory (default: $OUTPUT_DEFAULT)
 		-p Package Name (default: $PACKAGE_NAME_DEFAULT)
 		-v Package Version (default: $PACKAGE_VERSION_DEFAULT)
+		-I Install dependencies automatically (default: $INSTALL_DEPS_DEFAULT)
 		-h Show help
 
 Example:
@@ -94,7 +98,7 @@ EOF)
 # ==============================================
 
 # extract command line arguments
-while getopts ":d:e:hi:j:k:l:n:o:p:v:h" opt; do
+while getopts ":d:e:hi:j:k:l:n:o:p:v:Ih" opt; do
 	case $opt in
 		d)
 			DOMAIN_POT=$OPTARG
@@ -131,6 +135,9 @@ while getopts ":d:e:hi:j:k:l:n:o:p:v:h" opt; do
 		v)
 			PACKAGE_VERSION=$OPTARG
 			;;
+		I)
+			INSTALL_DEPS=1
+			;;
 		:)
 			echo "Error: Option -$OPTARG requires an argument. $(echo_fail)\n" >&2
 			echo "$HELP_MESSAGE"
@@ -154,6 +161,7 @@ done
 : ${LANGUAGE=$LANGUAGE_DEFAULT}
 : ${OUTPUT=$OUTPUT_DEFAULT}
 : ${INPUT=$INPUT_DEFAULT}
+: ${INSTALL_DEPS=$INSTALL_DEPS_DEFAULT}
 
 if [ -z "$KEYS" ]; then
 	KEYS=("${KEYS_DEFAULT[@]}")
@@ -169,60 +177,94 @@ echo "========================================"
 
 CURRENT_DIR="$(pwd)"
 
+
+# 0) sed detection
+# the OS X sed is very limited, many devs have installed gnu gettext
+# but we should handle both
+
+set +e
+sed --version &> /dev/null
+if [ $? == 1 ]; then
+	echo "sed: OS X $(echo_pass)"
+	sed_args="-i ''"
+else
+	echo "sed: GNU $(echo_pass)"
+	sed_args="-i"
+fi
+set -e
+
 # 1) CHECK FOR GETTEXT (gnu library)
 HAS_GETTEXT=$(program_is_installed xgettext)
 echo "gettext $(echo_if $HAS_GETTEXT)"
-if [ $HAS_GETTEXT == 0 ]; then
-	echo "\nINSTALLING GETTEXT..."
-
-	# create tmp directory for gettext
-	GETTEXT_TMP=$(mktemp -p /tmp/gettext_tmp.XXXXXX)
-
-	# get latest gettext from gnu ftp server
-	curl -L http://ftp.gnu.org/pub/gnu/gettext/gettext-latest.tar.gz | \
-		tar -xz - -C $GETTEXT_TMP --strip-components=1
-
-	# install gettext
-	cd $GETTEXT_TMP
-	sh ./configure
-	make
-	make install
-	make clean
-	make distclean
-
-	# cleanup install
-	cd $CURRENT_DIR
-	rm -rf $GETTEXT_TMP
-fi
 
 # CHECK FOR XGETTEXT TEMPLATE (npm package)
 BIN_XGETTEXTTEMPLATE="$CURRENT_DIR/node_modules/xgettext-template/bin/xgettext-template"
 HAS_XGETTEXTTEMPLATE=$(npm_package_is_installed xgettext-template)
 echo "xgettext-template $(echo_if $HAS_XGETTEXTTEMPLATE)"
-if [ $HAS_XGETTEXTTEMPLATE == 0 ]; then
-	echo "\nINSTALLING XGETTEXT_TEMPLATE..."
-	npm install xgettext-template --save-dev
-fi
 
 # CHECK FOR PO2JSON (npm package)
 BIN_GETTEXTJS="$CURRENT_DIR/node_modules/gettext.js/bin/po2json"
 HAS_GETTEXTJS=$(npm_package_is_installed gettext.js)
 echo "po2json $(echo_if $HAS_GETTEXTJS)"
-if [ $HAS_GETTEXTJS == 0 ]; then
-	echo "\nINSTALLING GETTEXTJS..."
-	npm install gettext.js --save-dev
+
+if [ $HAS_GETTEXT == 1 ] && [ $HAS_XGETTEXTTEMPLATE == 1 ] && [ $HAS_GETTEXTJS == 1 ]; then
+	MISSING_DEPS=0
+else
+	MISSING_DEPS=1
 fi
+
+if [ $MISSING_DEPS == 1 ] && [ $INSTALL_DEPS == 1 ]; then
+	if [ $HAS_GETTEXT == 0 ]; then
+		echo "\nINSTALLING GETTEXT..."
+
+		# create tmp directory for gettext
+		GETTEXT_TMP=$(mktemp -d /tmp/gettext_tmp.XXXXXX)
+
+		# get latest gettext from gnu ftp server
+		curl -L http://ftp.gnu.org/pub/gnu/gettext/gettext-latest.tar.gz | \
+			tar -xz - -C $GETTEXT_TMP --strip-components=1
+
+		# install gettext
+		cd $GETTEXT_TMP
+		sh ./configure
+		make
+		make install
+		make clean
+		make distclean
+
+		# cleanup install
+		cd $CURRENT_DIR
+		rm -rf $GETTEXT_TMP
+	fi
+
+	if [ $HAS_XGETTEXTTEMPLATE == 0 ]; then
+		echo "\nINSTALLING XGETTEXT_TEMPLATE..."
+		npm install xgettext-template --save-dev
+	fi
+
+	if [ $HAS_GETTEXTJS == 0 ]; then
+		echo "\nINSTALLING GETTEXTJS..."
+		npm install gettext.js --save-dev
+	fi
+elif [ $MISSING_DEPS == 1 ]  && [ $INSTALL_DEPS == 0 ]; then
+	echo ""
+	echo $(echo_warn "You are missing runtime dependencies.")
+	echo "Please pass the -I flag to install them automatically or install them manually."
+	echo "See the readme for details."
+	exit 1
+fi
+
 
 # CREATE DOMAIN POT FILE AT FIRST
 mkdir -p $OUTPUT
 if [ ! -e "$DOMAIN_POT" ]; then
 	touch $DOMAIN_POT
 	echo "
-		msgid \"\"
-		msgstr \"\"
-		\"Language: ${LANGUAGE}\\\\n\"
-		\"Content-Type: text/plain; charset=${FROM_CODE}\\\\n\"
-		\"Plural-Forms: nplurals=INTEGER; plural= EXPRESSION;\\\\n\"" > $DOMAIN_POT
+	msgid \"\"
+	msgstr \"\"
+	\"Language: ${LANGUAGE}\\\\n\"
+	\"Content-Type: text/plain; charset=${FROM_CODE}\\\\n\"
+	\"Plural-Forms: nplurals=INTEGER; plural= EXPRESSION;\\\\n\"" > $DOMAIN_POT
 fi
 
 # create tmp pot file, we don't want to mess up
@@ -246,46 +288,46 @@ find $INPUT \
 	-name "*.js" \
 	-type f | \
 	while read file
-		do
-			# invoke xgettext utility
-			XGETTEXT_OUTPUT=$(xgettext \
-				--msgid-bugs-address="support@cropster.com" \
-				--package-version="$PACKAGE_VERSION" \
-				--package-name="$PACKAGE_NAME" \
-				--copyright-holder="Cropster" \
-				--output=$DOMAIN_POT_TMP \
-				--from-code=$FROM_CODE \
-				--language=JavaScript \
-				--join-existing \
-				--force-po \
-				$KEY_ARGS \
-				$file 2>&1)
+	do
+		# invoke xgettext utility
+		XGETTEXT_OUTPUT=$(xgettext \
+			--msgid-bugs-address="support@cropster.com" \
+			--package-version="$PACKAGE_VERSION" \
+			--package-name="$PACKAGE_NAME" \
+			--copyright-holder="Cropster" \
+			--output=$DOMAIN_POT_TMP \
+			--from-code=$FROM_CODE \
+			--language=JavaScript \
+			--join-existing \
+			--force-po \
+			$KEY_ARGS \
+			$file 2>&1)
 
-			# log output to stdout
-			if [ -n "$XGETTEXT_OUTPUT" ]; then
-				echo "$XGETTEXT_OUTPUT $(echo_warn)"
-			else
-				echo "$file $(echo_pass)"
-			fi
-done
+		# log output to stdout
+		if [ -n "$XGETTEXT_OUTPUT" ]; then
+			echo "$XGETTEXT_OUTPUT $(echo_warn)"
+		else
+			echo "$file $(echo_pass)"
+		fi
+	done
 
-# EXTRACT TEMPLATE TRANSLATIONS
-echo "\n"
-echo "========================================"
-echo "EXTRACTING TEMPLATE TRANSLATIONS..."
-echo "========================================"
+	# EXTRACT TEMPLATE TRANSLATIONS
+	echo "\n"
+	echo "========================================"
+	echo "EXTRACTING TEMPLATE TRANSLATIONS..."
+	echo "========================================"
 
-# create --keyword a,b ...
-KEY_ARGS=$(IFS=,; echo "--keyword ${KEYS[*]}")
-HAS_ERROR=0
+	# create --keyword a,b ...
+	KEY_ARGS=$(IFS=,; echo "--keyword ${KEYS[*]}")
+	HAS_ERROR=0
 
-find $INPUT \
-	! -path "$INPUT/*styleguide*" \
-	! -path "$INPUT/fixtures/*" \
-	! -path "$INPUT/mirage/*" \
-	-name "*.hbs" \
-	-type f | \
-	while read file
+	find $INPUT \
+		! -path "$INPUT/*styleguide*" \
+		! -path "$INPUT/fixtures/*" \
+		! -path "$INPUT/mirage/*" \
+		-name "*.hbs" \
+		-type f | \
+		while read file
 		do
 			# create tmp files for parser and message merging as
 			# xgettext-template doesn't support --join-existing!
@@ -317,12 +359,12 @@ find $INPUT \
 
 			# prepend header info for gettext msgcat, as node module
 			# doesn't prepend necessary info and has no options yet!
-			sed -i '' '1,2d' $PO_FILE # remove first to lines of file
+			sed $sed_args '1,2d' $PO_FILE # remove first to lines of file
 			echo "
-				msgid \"\"
-				msgstr \"\"
-				\"Content-Type: text/plain; charset=${FROM_CODE}\\\\n\"" | \
-			cat - $PO_FILE > $PO_FILE_TMP && mv $PO_FILE_TMP $PO_FILE
+			msgid \"\"
+			msgstr \"\"
+			\"Content-Type: text/plain; charset=${FROM_CODE}\\\\n\"" | \
+				cat - $PO_FILE > $PO_FILE_TMP && mv $PO_FILE_TMP $PO_FILE
 
 			# merge created .po file with existing translations
 			MSGCAT_OUTPUT=$(msgcat \
@@ -348,61 +390,62 @@ find $INPUT \
 			else
 				echo "$file $(echo_pass)"
 			fi
-done
+		done
 
-if [ $HAS_ERROR == 1 ]; then
-	echo "Stopped extraction due to errors! $(echo_warn)"
-	exit 1
-fi
+		if [ $HAS_ERROR == 1 ]; then
+			echo "Stopped extraction due to errors! $(echo_warn)"
+			exit 1
+		fi
 
-# CREATE OR UPDATE TRANSLATIONS
-echo "\n"
-echo "========================================"
-echo "CREATE/UPDATE TRANSLATIONS..."
-echo "========================================"
+		# CREATE OR UPDATE TRANSLATIONS
+		echo "\n"
+		echo "========================================"
+		echo "CREATE/UPDATE TRANSLATIONS..."
+		echo "========================================"
 
-LANGUAGE_PO_FILE="$OUTPUT/$LANGUAGE.po"
+		LANGUAGE_PO_FILE="$OUTPUT/$LANGUAGE.po"
 
-# a) NEW TRANSLATIONS
-# target po file doesn't exist, create
-# one with gettext's msginit utiltity!
-if [ ! -e "$LANGUAGE_PO_FILE" ] ; then
-	# invoke msginit to create new po file
-	msginit \
-		--output-file=$LANGUAGE_PO_FILE \
-		--input=$DOMAIN_POT_TMP \
-		--locale=$LANGUAGE \
-		--no-translator
+		# a) NEW TRANSLATIONS
+		# target po file doesn't exist, create
+		# one with gettext's msginit utiltity!
+		if [ ! -e "$LANGUAGE_PO_FILE" ] ; then
+			# invoke msginit to create new po file
+			msginit \
+				--output-file=$LANGUAGE_PO_FILE \
+				--input=$DOMAIN_POT_TMP \
+				--locale=$LANGUAGE \
+				--no-translator
 
-	# replace auto-generated plural forms with
-	# provided/default ones for gettext.js lib
-	sed -i '' 's/"Plural-Forms:\(.*\)\\n"/"Plural-Forms: '"$PLURAL_FORMS"'\\n"/g' $LANGUAGE_PO_FILE
+			# replace auto-generated plural forms with
+			# provided/default ones for gettext.js lib
 
-# b) EXISTING TRANSLATIONS
-# target po file already exists, so we
-# merge existing with new translations
-else
-	# invoke msgmerge to combine translations
-	LANGUAGE_PO_FILE_TMP=$(mktemp /tmp/$LANGUAGE_$COUNTRY_CODE.XXXXXX)
-	msgmerge \
-		--output-file=$LANGUAGE_PO_FILE_TMP \
-		--lang=$LANGUAGE \
-		--force-po \
-		--verbose \
-		$LANGUAGE_PO_FILE $DOMAIN_POT_TMP
+			sed $sed_args 's/"Plural-Forms:\(.*\)\\n"/"Plural-Forms: '"${PLURAL_FORMS}"'\\n"/g' ${LANGUAGE_PO_FILE}
 
-	mv $LANGUAGE_PO_FILE_TMP $LANGUAGE_PO_FILE
-	rm -f $LANGUAGE_PO_FILE_TMP
-fi
+			# b) EXISTING TRANSLATIONS
+			# target po file already exists, so we
+			# merge existing with new translations
+		else
+			# invoke msgmerge to combine translations
+			LANGUAGE_PO_FILE_TMP=$(mktemp /tmp/$LANGUAGE_$COUNTRY_CODE.XXXXXX)
+			msgmerge \
+				--output-file=$LANGUAGE_PO_FILE_TMP \
+				--lang=$LANGUAGE \
+				--force-po \
+				--verbose \
+				$LANGUAGE_PO_FILE $DOMAIN_POT_TMP
 
-# create json files from po
-mkdir -p $JSON_OUTPUT
-node $BIN_GETTEXTJS \
-	$LANGUAGE_PO_FILE \
-	"$JSON_OUTPUT/$LANGUAGE.json" \
-	-p
+			mv $LANGUAGE_PO_FILE_TMP $LANGUAGE_PO_FILE
+			rm -f $LANGUAGE_PO_FILE_TMP
+		fi
 
-# clean domain pot tmp file
-rm -f $DOMAIN_POT_TMP
+		# create json files from po
+		mkdir -p $JSON_OUTPUT
+		node $BIN_GETTEXTJS \
+			$LANGUAGE_PO_FILE \
+			"$JSON_OUTPUT/$LANGUAGE.json" \
+			-p
 
-echo "\n$(echo_pass FINISHED)"
+		# clean domain pot tmp file
+		rm -f $DOMAIN_POT_TMP
+
+		echo "\n$(echo_pass FINISHED)"
