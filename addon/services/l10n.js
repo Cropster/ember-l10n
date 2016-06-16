@@ -35,11 +35,6 @@ import Ember from 'ember';
  */
 export default Ember.Service.extend(Ember.Evented, {
   // -------------------------------------------------------------------------
-  // Dependencies
-
-  ajax: Ember.inject.service(),
-
-  // -------------------------------------------------------------------------
   // Properties
 
   /**
@@ -403,8 +398,8 @@ export default Ember.Service.extend(Ember.Evented, {
         dataType: 'json'
       }
     ).then(
-      successCallback,
-      failureCallback
+      Ember.run.bind(this,successCallback),
+      Ember.run.bind(this,failureCallback)
     );
   }
 
