@@ -12,7 +12,7 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
       this.get(
         '/assets/locales/en.json',
         function() {
-          const response = {
+          let response = {
             '': {
               'language': 'en',
               'plural-forms': 'nplurals=2; plural=(n!=1);'
