@@ -87,13 +87,13 @@ export default L10n.extend({
 
 You can create an initializer to inject the l10n-service everywhere with the following blueprint:
 
-```
+```bash
 ember g ember-l10n-initializer my-l10n-initializer
 ```
 
 This will produce an initializer such as:
 
-```
+```js
 export function initialize(application) {
   application.inject('model', 'l10n', 'service:l10n');
   application.inject('route', 'l10n', 'service:l10n');
@@ -118,7 +118,7 @@ The `t` helper provides gettext singularization for message ids. It takes
 singular message id as positional arguments. All placeholders can be provided
 through named arguments.
 
-```
+```hbs
 {{t "Your current role: {{role}}" role=someBoundProperty}}
 ```
 
@@ -130,7 +130,7 @@ arguments. All placeholders can be provided through named arguments (hash).
 
 _Short version:_
 
-```
+```hbs
 {{n "{{count}} apple" "{{count}} apples" countProperty}}
 ```
 _Long version:_
@@ -139,7 +139,7 @@ Please note: If your count placeholder has another name than "{{count}}",
 you have to explicitly provide it as named hashed in addition to positional 
 parameter (as well as for all other placeholders within those message ids!).
 
-```
+```hbs
 {{n "{{customCount}} apple from shop {{shopName}}" "{{customCount}} apples from shop {{shopName}}" countProperty customCount=countProperty shopName=shopProperty}}
 ```
 
@@ -149,7 +149,7 @@ If you have complex message ids, which should contain "dynamic" placeholders,
 which can also be replaced with components (such as a `link-to`), you can use
 the `get-text` component.
 
-```
+```hbs
 {{#get-text 
   message=(t "My translation with {{dynamicLink 'optional link text'}} and {{staticLink}}.") as |text placeholder|}}
   {{!-- You can omit the if helper if you have only one placeholder --}}
