@@ -88,7 +88,7 @@ export default Ember.Component.extend({
       try {
         message = message.toString();
       } catch (e) {
-        console.error('get-text.js: "messag" must be either a string or an object implementing toString() method!');
+        console.error('get-text.js: "message" must be either a string or an object implementing toString() method!');
         return;
       }
     }
