@@ -13,6 +13,8 @@ Using the string extractor requires:
 * [xgettext-template](https://www.npmjs.com/package/xgettext-template) - extracts strings from handlebars templates
 * [gettext.js](https://www.npmjs.com/package/gettext.js) - lightweight port of gettext for JS
 
+ember-l10n uses ember-ajax to fetch locale data.
+
 ## Usage
 
 There are two primary parts to ember-l10n
@@ -25,8 +27,8 @@ There are two primary parts to ember-l10n
 ember-l10n follows the gettext convention that the message ids in your source files
 are the default language (usually English).
 
-In the ember-l10n workflow, you use the `t`, and `n` helpers and `l10n.t()`
-function to define your strings in your project. Then you run the extractor script
+In the ember-l10n workflow, you use the `t`, and `n` helpers and `l10n.t()` / `l10n.n()`
+functions to define your strings in your project. Then you run the extractor script
 to generate pot and po files, which you send off to your translators.
 
 After receiving the translated po files for additional locales, you use the same script
@@ -45,7 +47,7 @@ The  service translates through gettext.js. There are two available methods to
 be used for translations message ids from JS source:
 
 * `t(msgid, hash)`
-* `n(msgid, msgid_plural, count, hash)`
+* `n(msgid, msgidPlural, count, hash)`
 
 Furthermore, there's an auto initialization feature (default: true), which
 detects user's locale according to system preferences. If the user's locale is
@@ -65,7 +67,25 @@ To configure the path of the JSON files (depending on the path configured via
 extractor's `-j` option) use the `jsonPath` property (default:
 "/assets/locales").
 
-You can create an initializer to configure all options with the following blueprint:
+When installing via `ember install ember-l10n`, an `l10n` service will be created for you under `app/services/l10n.js`.
+There, you can configure (and overwrite) all service properties/methods:
+
+```js
+import Ember from 'ember';
+import L10n from 'ember-l10n/services/l10n';
+
+export default L10n.extend({
+  availableLocales: Ember.computed(function() {
+    return {
+      'en': this.t('en')
+    };
+  }),
+  autoInitialize: true,
+  jsonPath: '/assets/locales'
+});
+```
+
+You can create an initializer to inject the l10n-service everywhere with the following blueprint:
 
 ```
 ember g ember-l10n-initializer my-l10n-initializer
@@ -74,21 +94,7 @@ ember g ember-l10n-initializer my-l10n-initializer
 This will produce an initializer such as:
 
 ```
-import L10N from 'ember-l10n/services/l10n';
-
 export function initialize(application) {
-  L10N.reopen({
-      availableLocales: Ember.computed(function(){ // specify all your available languages
-        return {
-            'en': this.t('en'),
-            'de': this.t('de'),
-          };
-      }),
-      jsonPath: '/custom/path/to/json/files', // provide different location of JSON files
-      autoInitialize: false, // no detection, triggered only when calling setLocale() manually
-      forceLocale: 'de', // skips language detection, only useful if `autoInitialize:true` (= default)
-  });
-
   application.inject('model', 'l10n', 'service:l10n');
   application.inject('route', 'l10n', 'service:l10n');
   application.inject('controller', 'l10n', 'service:l10n');
@@ -100,7 +106,6 @@ export default {
   initialize: initialize
 };
 ```
-
 
 ### Helpers
 
@@ -124,7 +129,7 @@ singular and plural message ids as well as actual amount as positional
 arguments. All placeholders can be provided through named arguments (hash).
 
 ```
-{{n "{{count}} apple" "{{count}} apples" someBoundProperty count=someBoundProperty}}
+{{n "{{count}} apple" "{{count}} apples" countProperty}}
 ```
 
 

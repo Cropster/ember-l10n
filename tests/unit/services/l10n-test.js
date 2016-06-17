@@ -1,32 +1,34 @@
-import { moduleFor, test } from "ember-qunit";
-import wait from 'ember-test-helpers/wait';
+import { moduleFor, test } from 'ember-qunit';
 import Pretender from 'pretender';
+import wait from 'ember-test-helpers/wait';
 
 let server;
 
-moduleFor("service:l10n", "Unit | Service | l10n", {
+moduleFor('service:l10n', 'Unit | Service | l10n', {
+  needs: ['service:l10n-ajax'],
+
   beforeEach() {
-    server = new Pretender(function(){
+    server = new Pretender(function() {
       this.get(
         '/assets/locales/en.json',
         function() {
-          const response = {
-            "": {
-              "language": "en",
-              "plural-forms": "nplurals=2; plural=(n!=1);"
+          let response = {
+            '': {
+              'language': 'en',
+              'plural-forms': 'nplurals=2; plural=(n!=1);'
             },
-            "en":"English",
-            "I'm a {{placeholder}}.":"I'm a {{placeholder}}.",
-            "You have {{count}} unit in your cart.":[
-              "You have {{count}} unit in your cart.",
-              "You have {{count}} units in your cart."
+            'en': 'English',
+            'I\'m a {{placeholder}}.': 'I\'m a {{placeholder}}.',
+            'You have {{count}} unit in your cart.': [
+              'You have {{count}} unit in your cart.',
+              'You have {{count}} units in your cart.'
             ]
           };
 
           return [
             200,
             {
-              "Content-Type": "application/json"
+              'Content-Type': 'application/json'
             },
             JSON.stringify(response)
           ];
@@ -34,70 +36,73 @@ moduleFor("service:l10n", "Unit | Service | l10n", {
       );
     });
   },
+
   afterEach() {
     server.shutdown();
   }
 });
 
-test("it works", function (assert) {
-	const service = this.subject({
+test('it works', function(assert) {
+  let service = this.subject({
     autoInitialize: false
+    // ajax: mockAjax
   });
 
-  assert.expect(7);
-  assert.ok(service, 'Service exists.');
-	const defaultLocale = service.get("defaultLocale");
+  assert.ok(service);
 
-	service.setLocale('en');
+  let defaultLocale = service.get('defaultLocale');
 
-	assert.equal(
-		defaultLocale,
-		"en",
-		"English is default locale."
-	);
+  // override detected locale!
+  service.setLocale('en');
 
-	service.setLocale("hi"); // = Hindi
-	assert.equal(
-		service.get("locale"),
-		defaultLocale,
-		"Setting an unsupported locale doesn't work."
-	);
+  assert.equal(
+    defaultLocale,
+    'en',
+    'English is default locale.'
+  );
+
+  service.setLocale('hi'); // = Hindi
+  assert.equal(
+    service.get('locale'),
+    defaultLocale,
+    'Setting an unsupported locale doesn\'t work.'
+  );
 
   return wait().then(() => {
-  	assert.equal(
-  		service.t("en"),
-  		"English",
-  		"Singular translations work correctly."
-  	);
-  	assert.equal(
-  		service.t(
-  			"I'm a {{placeholder}}.",
-  			{ placeholder:'rockstar' }
-  		),
-  		"I'm a rockstar.",
-  		"Placeholders work correctly."
-  	);
+    assert.equal(
+      service.t('en'),
+      'English',
+      'Singular translations work correctly.'
+    );
+    assert.equal(
+      service.t(
+        'I\'m a {{placeholder}}.',
+        { placeholder: 'rockstar' }
+      ),
+      'I\'m a rockstar.',
+      'Placeholders work correctly.'
+    );
 
-  	assert.equal(
-  		service.n(
-  			"You have {{count}} unit in your cart.",
-  			"You have {{count}} units in your cart.",
-  			1,
-  			{ count:1 }
-  		),
-  		"You have 1 unit in your cart.",
-  		"Plural translations work correctly with singular form."
-  	);
+    assert.equal(
+      service.n(
+        'You have {{count}} unit in your cart.',
+        'You have {{count}} units in your cart.',
+        1,
+        { count: 1 }
+      ),
+      'You have 1 unit in your cart.',
+      'Plural translations work correctly with singular form.'
+    );
 
-  	assert.equal(
-  		service.n(
-  			"You have {{count}} unit in your cart.",
-  			"You have {{count}} units in your cart.",
-  			5,
-  			{ count:5 }
-  		),
-  		"You have 5 units in your cart.",
-  		"Plural translations work correctly with plural form."
-  	);
+    assert.equal(
+      service.n(
+        'You have {{count}} unit in your cart.',
+        'You have {{count}} units in your cart.',
+        5,
+        { count: 5 }
+      ),
+      'You have 5 units in your cart.',
+      'Plural translations work correctly with plural form.'
+    );
   });
 });

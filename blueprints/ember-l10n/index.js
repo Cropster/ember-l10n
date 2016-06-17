@@ -1,4 +1,5 @@
 /*jshint node:true*/
+// jscs:disable
 module.exports = {
   description: 'Adds addons, packages and bower packages for ember-l10n',
   normalizeEntityName: function() {
@@ -8,14 +9,18 @@ module.exports = {
   },
   afterInstall: function() {
     return this.addPackagesToProject([
-        {
-          name: 'xgettext-template',
-          target: '^2.6.0'
-        },
-        {
-          name: 'gettext.js',
-          target: '^0.5.2'
-        }
+      {
+        name: 'xgettext-template',
+        target: '^2.6.0'
+      },
+      {
+        name: 'gettext.js',
+        target: '^0.5.2'
+      },
+      {
+        name: 'ember-ajax',
+        target: '^2.4.1'
+      }
     ]).then(() => {
       return this.addBowerPackagesToProject([
         {
