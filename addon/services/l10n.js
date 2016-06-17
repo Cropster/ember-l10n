@@ -6,7 +6,7 @@ import Ember from 'ember';
  * for translations message ids from JS source:
  *
  * - t(msgid, hash);
- * - n(msgid, msgid_plural, count, hash);
+ * - n(msgid, msgidPlural, count, hash);
  *
  * Furthermore, there's an auto initialization
  * feature (default: true), which detects user's
