@@ -140,7 +140,7 @@ you have to explicitly provide it as named hashed in addition to positional
 parameter (as well as for all other placeholders within those message ids!).
 
 ```
-{{n "{{customCount}}" apple from shop {{shopName}}" "{{customCount}} apples from shop {{shopName}}" countProperty customCount=countProperty shopName=shopProperty}}
+{{n "{{customCount}} apple from shop {{shopName}}" "{{customCount}} apples from shop {{shopName}}" countProperty customCount=countProperty shopName=shopProperty}}
 ```
 
 ### Components
