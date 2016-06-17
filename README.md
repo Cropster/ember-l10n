@@ -102,8 +102,8 @@ export function initialize(application) {
 }
 
 export default {
-  name: 'l10n',
-  initialize: initialize
+  initialize: initialize,
+  name: 'my-l10n-initializer'
 };
 ```
 
@@ -128,10 +128,20 @@ The `n` helper provides gettext pluralization for message ids. It takes
 singular and plural message ids as well as actual amount as positional
 arguments. All placeholders can be provided through named arguments (hash).
 
+_Short version:_
+
 ```
 {{n "{{count}} apple" "{{count}} apples" countProperty}}
 ```
+_Long version:_
 
+Please note: If your count placeholder has another name than "{{count}}", 
+you have to explicitly provide it as named hashed in addition to positional 
+parameter (as well as for all other placeholders within those message ids!).
+
+```
+{{n "{{customCount}}" apple from shop {{shopName}}" "{{customCount}} apples from shop {{shopName}}" countProperty customCount=countProperty shopName=shopProperty}}
+```
 
 ### Components
 
