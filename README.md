@@ -216,6 +216,32 @@ which could be configured with `-i` option:
 
 * `node_modules/ember-l10n/gettext.sh -i path/to/po/files`
 
+Example of a project specific POT file for translation constants:
+
+```pot
+#
+# MY PROJECT TRANSLATIONS
+# This is the template file for all generated po files.
+# It is used to provide all "static" translations like ENUMS.
+#
+msgid ""
+msgstr ""
+"Language: en\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Report-Msgid-Bugs-To: support@mycompany.com\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n" # default value necessary, gets replaced with value of -n option!
+
+#
+# CONSTANTS
+#
+msgid "FIRST_CONSTANT"
+msgstr "My first constant's translation"
+
+msgid "SECOND_CONSTANT"
+msgstr "My second constant's translation"
+```
+
 Please note: The script can install all necessary dependencies, just pass the `-I` flag.
 
 * GNU gettext utilities (https://www.gnu.org/software/gettext/manual/gettext.html)
