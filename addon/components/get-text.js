@@ -25,7 +25,8 @@ import layout from '../templates/get-text';
  */
 export default Ember.Component.extend({
 
-  layout,
+  tagName: "",
+  layout: layout,
 
   // -------------------------------------------------------------------------
   // Attributes
