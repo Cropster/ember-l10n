@@ -87,13 +87,13 @@ export default L10n.extend({
 
 You can create an initializer to inject the l10n-service everywhere with the following blueprint:
 
-```
+```bash
 ember g ember-l10n-initializer my-l10n-initializer
 ```
 
 This will produce an initializer such as:
 
-```
+```js
 export function initialize(application) {
   application.inject('model', 'l10n', 'service:l10n');
   application.inject('route', 'l10n', 'service:l10n');
@@ -102,8 +102,8 @@ export function initialize(application) {
 }
 
 export default {
-  name: 'l10n',
-  initialize: initialize
+  initialize: initialize,
+  name: 'my-l10n-initializer'
 };
 ```
 
@@ -118,7 +118,7 @@ The `t` helper provides gettext singularization for message ids. It takes
 singular message id as positional arguments. All placeholders can be provided
 through named arguments.
 
-```
+```hbs
 {{t "Your current role: {{role}}" role=someBoundProperty}}
 ```
 
@@ -128,10 +128,20 @@ The `n` helper provides gettext pluralization for message ids. It takes
 singular and plural message ids as well as actual amount as positional
 arguments. All placeholders can be provided through named arguments (hash).
 
-```
+_Short version:_
+
+```hbs
 {{n "{{count}} apple" "{{count}} apples" countProperty}}
 ```
+_Long version:_
 
+Please note: If your count placeholder has another name than "{{count}}", 
+you have to explicitly provide it as named hashed in addition to positional 
+parameter (as well as for all other placeholders within those message ids!).
+
+```hbs
+{{n "{{customCount}} apple from shop {{shopName}}" "{{customCount}} apples from shop {{shopName}}" countProperty customCount=countProperty shopName=shopProperty}}
+```
 
 ### Components
 
@@ -139,7 +149,7 @@ If you have complex message ids, which should contain "dynamic" placeholders,
 which can also be replaced with components (such as a `link-to`), you can use
 the `get-text` component.
 
-```
+```hbs
 {{#get-text 
   message=(t "My translation with {{dynamicLink 'optional link text'}} and {{staticLink}}.") as |text placeholder|}}
   {{!-- You can omit the if helper if you have only one placeholder --}}
@@ -205,6 +215,32 @@ Or simply put a file called `domain.pot` within your translations directory,
 which could be configured with `-i` option:
 
 * `node_modules/ember-l10n/gettext.sh -i path/to/po/files`
+
+Example of a project specific POT file for translation constants:
+
+```pot
+#
+# MY PROJECT TRANSLATIONS
+# This is the template file for all generated po files.
+# It is used to provide all "static" translations like ENUMS.
+#
+msgid ""
+msgstr ""
+"Language: en\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Report-Msgid-Bugs-To: support@mycompany.com\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n" # default value necessary, gets replaced with value of -n option!
+
+#
+# CONSTANTS
+#
+msgid "FIRST_CONSTANT"
+msgstr "My first constant's translation"
+
+msgid "SECOND_CONSTANT"
+msgstr "My second constant's translation"
+```
 
 Please note: The script can install all necessary dependencies, just pass the `-I` flag.
 
