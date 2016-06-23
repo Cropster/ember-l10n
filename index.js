@@ -11,8 +11,12 @@ module.exports = {
       app = app.app;
     }
 
-    if (!process.env.EMBER_CLI_FASTBOOT) {
-      app.import('bower_components/gettext.js/dist/gettext.min.js');
-    }
+    app.import('bower_components/gettext.js/dist/gettext.min.js',{
+      exports: {
+        'get-text': [
+          'default'
+        ]
+      }
+    });
   }
 };

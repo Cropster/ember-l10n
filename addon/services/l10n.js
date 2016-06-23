@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import _ from 'get-text';
 
 /**
  * This service translates through gettext.js.
@@ -119,16 +120,6 @@ export default Ember.Service.extend(Ember.Evented, {
   }),
 
   /**
-   * Reference to gettext library.
-   *
-   * @property _gettext
-   * @type {String}
-   * @default null
-   * @private
-   */
-  _gettext: window.i18n(),
-
-  /**
    * Cache persisting loaded JSON files to
    * avoid duplicated requests going out.
    *
@@ -195,8 +186,8 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     console.info(`l10n.js: Locale set to: "${locale}"`);
-    this.get('_gettext').setLocale(locale);
     this.set('locale', locale);
+    _.setLocale(locale);
     this._loadJSON();
   },
 
@@ -297,7 +288,7 @@ export default Ember.Service.extend(Ember.Evented, {
       }
     }
 
-    return this._strfmt(this.get('_gettext').gettext(msgid), hash);
+    return this._strfmt(_.gettext(msgid), hash);
   },
 
   /**
@@ -330,7 +321,7 @@ export default Ember.Service.extend(Ember.Evented, {
       }
     }
 
-    return this._strfmt(this.get('_gettext').ngettext(msgid, msgidPlural, count), hash);
+    return this._strfmt(_.ngettext(msgid, msgidPlural, count), hash);
   },
 
   /**
@@ -357,7 +348,7 @@ export default Ember.Service.extend(Ember.Evented, {
       }
 
       if (Ember.typeOf(value) === 'string') {
-        value = this.get('_gettext').gettext(value);
+        value = _.gettext(value);
       }
 
       return value;
@@ -383,7 +374,8 @@ export default Ember.Service.extend(Ember.Evented, {
     let successCallback = (response) => {
       let cachedResponse = Ember.copy(response, true);
       this.notifyPropertyChange('availableLocales');
-      this.get('_gettext').loadJSON(response);
+      _.loadJSON(response);
+
       this.trigger('translation_loaded');
       cache[locale] = cachedResponse;
     };
