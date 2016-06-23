@@ -4,6 +4,11 @@
 module.exports = {
   name: 'ember-l10n',
 
+  isDevelopingAddon: function() {
+    // @see: https://ember-cli.com/extending/#link-to-addon-while-developing
+    return true;
+  },
+
   included: function(app) {
     // @see: https://github.com/ember-cli/ember-cli/issues/3718
     this._super.included.apply(this, arguments);
