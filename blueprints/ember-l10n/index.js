@@ -24,8 +24,9 @@ module.exports = {
     ]).then(() => {
       return this.addBowerPackagesToProject([
         {
+          source: 'git://github.com/Cropster/gettext.js#master',
           name: 'gettext.js',
-          target: '^0.5.2'
+          target: ''
         }
       ]);
     });

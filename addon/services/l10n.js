@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import GetText from 'i18n';
 
 /**
  * This service translates through gettext.js.
@@ -119,16 +120,6 @@ export default Ember.Service.extend(Ember.Evented, {
   }),
 
   /**
-   * Reference to gettext library.
-   *
-   * @property _gettext
-   * @type {String}
-   * @default null
-   * @private
-   */
-  _gettext: window.i18n(),
-
-  /**
    * Cache persisting loaded JSON files to
    * avoid duplicated requests going out.
    *
@@ -140,6 +131,17 @@ export default Ember.Service.extend(Ember.Evented, {
   _cache: Ember.computed(function() {
     return {}; // complex type!
   }),
+
+  /**
+   * Reference to gettext library. This gets
+   * lazily initialized within `init` method.
+   *
+   * @property _gettext
+   * @type {String}
+   * @default null
+   * @private
+   */
+  _gettext: null,
 
   // -------------------------------------------------------------------------
   // Methods
@@ -155,6 +157,7 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   init() {
     this._super(...arguments);
+    this.set('_gettext', new GetText());
     if (!this.get('autoInitialize')) {
       return;
     }
@@ -195,8 +198,8 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     console.info(`l10n.js: Locale set to: "${locale}"`);
-    this.get('_gettext').setLocale(locale);
     this.set('locale', locale);
+    this.get('_gettext').setLocale(locale);
     this._loadJSON();
   },
 
@@ -384,6 +387,7 @@ export default Ember.Service.extend(Ember.Evented, {
       let cachedResponse = Ember.copy(response, true);
       this.notifyPropertyChange('availableLocales');
       this.get('_gettext').loadJSON(response);
+
       this.trigger('translation_loaded');
       cache[locale] = cachedResponse;
     };
