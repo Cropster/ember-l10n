@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import _ from 'get-text';
+import GetText from 'i18n';
 
 /**
  * This service translates through gettext.js.
@@ -132,6 +132,17 @@ export default Ember.Service.extend(Ember.Evented, {
     return {}; // complex type!
   }),
 
+  /**
+   * Reference to gettext library. This gets
+   * lazily initialized within `init` method.
+   *
+   * @property _gettext
+   * @type {String}
+   * @default null
+   * @private
+   */
+  _gettext: null,
+
   // -------------------------------------------------------------------------
   // Methods
 
@@ -146,6 +157,7 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   init() {
     this._super(...arguments);
+    this.set('_gettext', new GetText());
     if (!this.get('autoInitialize')) {
       return;
     }
@@ -187,7 +199,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
     console.info(`l10n.js: Locale set to: "${locale}"`);
     this.set('locale', locale);
-    _.setLocale(locale);
+    this.get('_gettext').setLocale(locale);
     this._loadJSON();
   },
 
@@ -288,7 +300,7 @@ export default Ember.Service.extend(Ember.Evented, {
       }
     }
 
-    return this._strfmt(_.gettext(msgid), hash);
+    return this._strfmt(this.get('_gettext').gettext(msgid), hash);
   },
 
   /**
@@ -321,7 +333,7 @@ export default Ember.Service.extend(Ember.Evented, {
       }
     }
 
-    return this._strfmt(_.ngettext(msgid, msgidPlural, count), hash);
+    return this._strfmt(this.get('_gettext').ngettext(msgid, msgidPlural, count), hash);
   },
 
   /**
@@ -348,7 +360,7 @@ export default Ember.Service.extend(Ember.Evented, {
       }
 
       if (Ember.typeOf(value) === 'string') {
-        value = _.gettext(value);
+        value = this.get('_gettext').gettext(value);
       }
 
       return value;
@@ -374,8 +386,7 @@ export default Ember.Service.extend(Ember.Evented, {
     let successCallback = (response) => {
       let cachedResponse = Ember.copy(response, true);
       this.notifyPropertyChange('availableLocales');
-      _.loadJSON(response);
-
+      this.get('_gettext').loadJSON(response);
       this.trigger('translation_loaded');
       cache[locale] = cachedResponse;
     };
