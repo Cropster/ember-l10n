@@ -50,6 +50,13 @@ be used for translations message ids from JS source:
 
 * `t(msgid, hash)`
 * `n(msgid, msgidPlural, count, hash)`
+* `tVar(msgid, hash)`
+
+`tVar()` works exactly the same as `t()`, but it will be ignored by the 
+gettext parser. This is useful if your message ids are variables, for example:
+`l10n.t(myProperty)` would create a `myProperty` entry in your po-file
+when gettext is run. So in this case, `l10n.tVar(myProperty)` should be used
+instead.
 
 Furthermore, there's an auto initialization feature (default: true), which
 detects user's locale according to system preferences. If the user's locale is
@@ -123,6 +130,10 @@ through named arguments.
 ```hbs
 {{t "Your current role: {{role}}" role=someBoundProperty}}
 ```
+
+If you have strings which are variables (e.g. enums), you can also
+use the t-var helper: `{{t-var myProperty}}`. It works the same way
+as the t-helper, but it will be ignored by the gettext parser.
 
 ###### Plural translations:
 
