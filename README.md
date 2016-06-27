@@ -169,6 +169,26 @@ the `get-text` component.
 Please note: If your message id contains HTML, you have to set
 `escapeText=true` on the component.
 
+### Testing
+
+In acceptance tests, ember-l10n should work without any further work.
+In integration tests, you can use the provided test helpers to provide easy to use `{{t}}` and `{{n}}` helpers:
+
+```js
+// tests/integration/components/my-component-test.js
+import l10nTestHelper from 'ember-l10n/test-helpers';
+
+moduleForComponent('my-component', 'Integration | Component | my component', {
+  integration: true,
+
+  beforeEach() {
+    l10nTestHelper(this);
+  }
+});
+```
+
+These helpers will basically just pass the string through.
+
 ## 2. Extracting Strings
 
 The extractor (`gettext.sh`) extracts message ids from the JS and HBS files in
