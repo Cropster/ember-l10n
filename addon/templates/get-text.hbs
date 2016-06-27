@@ -1,10 +1,10 @@
 {{~#each messageParts as |part|}}
   {{~#if part.name~}}
     {{~yield part.text part.name}}
-    {{~else~}}
+  {{~else~}}
     {{~#if escapeText~}}
       {{{part.text}}}
-      {{~else~}}
+    {{~else~}}
       {{~part.text}}
     {{~/if~}}
   {{~/if~}}
