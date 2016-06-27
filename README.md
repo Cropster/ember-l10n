@@ -1,5 +1,7 @@
 # Ember-l10n
 
+[![Build Status](https://travis-ci.org/Cropster/ember-l10n.svg?branch=master)](https://travis-ci.org/Cropster/ember-l10n)
+
 > A GNU gettext based localization workflow for ember.
 
 ## Installation
