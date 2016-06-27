@@ -431,6 +431,7 @@ else
   LANGUAGE_PO_FILE_TMP=$(mktemp /tmp/$LANGUAGE_$COUNTRY_CODE.XXXXXX)
   msgmerge \
     --output-file=$LANGUAGE_PO_FILE_TMP \
+    --no-fuzzy-matching \
     --lang=$LANGUAGE \
     --force-po \
     --verbose \
