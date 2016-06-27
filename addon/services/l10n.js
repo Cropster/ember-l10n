@@ -198,7 +198,6 @@ export default Ember.Service.extend(Ember.Evented, {
       return;
     }
 
-    console.info(`l10n.js: Locale set to: "${locale}"`);
     this.set('locale', locale);
     this.get('_gettext').setLocale(locale);
 
