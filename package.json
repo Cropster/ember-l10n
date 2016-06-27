@@ -38,6 +38,7 @@
     "ember-resolver": "^2.0.3",
     "ember-truth-helpers": "1.2.0",
     "ember-suave": "DockYard/ember-suave#master",
+    "ember-try": "^0.2.4",
     "gettext.js": "^0.5.2",
     "loader.js": "^4.0.10",
     "xgettext-template": "^2.6.0"
