@@ -185,11 +185,12 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   /**
-   * Sets active locale if available.
+   * Sets active locale if available. Returns a
+   * RSPV Promise for asynchronous JSON request.
    *
    * @method setLocale
    * @param {String} locale
-   * @return {String}
+   * @return {RSVP.Promise}
    * @public
    */
   setLocale(locale) {
@@ -200,7 +201,8 @@ export default Ember.Service.extend(Ember.Evented, {
     console.info(`l10n.js: Locale set to: "${locale}"`);
     this.set('locale', locale);
     this.get('_gettext').setLocale(locale);
-    this._loadJSON();
+
+    return this._loadJSON();
   },
 
   /**
@@ -402,7 +404,7 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     // otherwise load json file from assets
-    ajax.request(url).then(
+    return ajax.request(url).then(
       successCallback,
       failureCallback
     );
