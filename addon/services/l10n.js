@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import GetText from 'i18n';
+import GetText from 'i18n';
 
 /**
  * This service translates through gettext.js.
@@ -302,6 +302,21 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     return this._strfmt(this.get('_gettext').gettext(msgid), hash);
+  },
+
+  /**
+   * Translate a singular string without indexing it.
+   * This is useful when passing variables to it, e.g. `l10n.tVar(myVar)`
+   * If you would use `l10n.t(myVar)` in this case, myVar would be (wrongly) parsed by `gettext.sh`.
+   *
+   * @method tVariable
+   * @param {String} msgid
+   * @param {Object} hash
+   * @return {String}
+   * @public
+   */
+  tVar(msgid, hash = {}) {
+    return this.t(msgid, hash);
   },
 
   /**

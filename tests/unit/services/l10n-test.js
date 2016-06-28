@@ -84,6 +84,15 @@ test('it works', function(assert) {
     );
 
     assert.equal(
+      service.tVar(
+        'I\'m a {{placeholder}}.',
+        { placeholder: 'rockstar' }
+      ),
+      'I\'m a rockstar.',
+      'tVar works correctly.'
+    );
+
+    assert.equal(
       service.n(
         'You have {{count}} unit in your cart.',
         'You have {{count}} units in your cart.',
