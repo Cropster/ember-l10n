@@ -68,8 +68,8 @@ KEYS_DEFAULT=("t" "n:1,2") # "k:1,2" for plural forms!
 
 # https://www.gnu.org/software/gettext/manual/html_node/Plural-forms.html
 PLURAL_FORMS_DEFAULT="nplurals=2; plural=(n!=1);"
-
 INSTALL_DEPS_DEFAULT=0
+UPDATE_JSON_DEFAULT=0
 
 # help message
 HELP_MESSAGE=$(cat <<EOF
@@ -86,6 +86,7 @@ Options:
   -o Output directory (default: $OUTPUT_DEFAULT)
   -p Package Name (default: $PACKAGE_NAME_DEFAULT)
   -v Package Version (default: $PACKAGE_VERSION_DEFAULT)
+  -u Update JSON files only (default: $UPDATE_JSON_DEFAULT)
   -I Install dependencies automatically (default: $INSTALL_DEPS_DEFAULT)
   -h Show help
 
@@ -98,7 +99,7 @@ EOF)
 # ==============================================
 
 # extract command line arguments
-while getopts ":d:e:hi:j:k:l:n:o:p:v:Ih" opt; do
+while getopts ":d:e:hi:j:k:l:n:o:p:v:uIh" opt; do
   case $opt in
     d)
       DOMAIN_POT=$OPTARG
@@ -135,6 +136,9 @@ while getopts ":d:e:hi:j:k:l:n:o:p:v:Ih" opt; do
     v)
       PACKAGE_VERSION=$OPTARG
       ;;
+    u)
+      UPDATE_JSON=1
+      ;;
     I)
       INSTALL_DEPS=1
       ;;
@@ -155,13 +159,14 @@ done
 : ${PACKAGE_VERSION=$PACKAGE_VERSION_DEFAULT}
 : ${PLURAL_FORMS=$PLURAL_FORMS_DEFAULT}
 : ${PACKAGE_NAME=$PACKAGE_NAME_DEFAULT}
+: ${INSTALL_DEPS=$INSTALL_DEPS_DEFAULT}
+: ${UPDATE_JSON=$UPDATE_JSON_DEFAULT}
 : ${JSON_OUTPUT=$JSON_OUTPUT_DEFAULT}
 : ${DOMAIN_POT=$DOMAIN_POT_DEFAULT}
 : ${FROM_CODE=$FROM_CODE_DEFAULT}
 : ${LANGUAGE=$LANGUAGE_DEFAULT}
 : ${OUTPUT=$OUTPUT_DEFAULT}
 : ${INPUT=$INPUT_DEFAULT}
-: ${INSTALL_DEPS=$INSTALL_DEPS_DEFAULT}
 
 if [ -z "$KEYS" ]; then
   KEYS=("${KEYS_DEFAULT[@]}")
@@ -253,9 +258,14 @@ elif [ $MISSING_DEPS == 1 ]  && [ $INSTALL_DEPS == 0 ]; then
   exit 1
 fi
 
+# CHECK/CREATE DOMAIN POT FILE
+echo "\n"
+echo "========================================"
+echo "CHECKING POT FILE..."
+echo "========================================"
 
-# CREATE DOMAIN POT FILE AT FIRST
 mkdir -p $OUTPUT
+
 if [ ! -e "$DOMAIN_POT" ]; then
   touch $DOMAIN_POT
   DOMAIN_TEMPLATE='
@@ -265,12 +275,33 @@ if [ ! -e "$DOMAIN_POT" ]; then
         "Content-Type: text/plain; charset='"${FROM_CODE}"'\\n"
         "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\\n"'
   printf '%b' "$DOMAIN_TEMPLATE" > $DOMAIN_POT
+  echo "No POT-File given, using auto-generated one $(echo_pass)"
+else
+  echo "POT-File given, using $DOMAIN_POT $(echo_pass)"
 fi
 
 # create tmp pot file, we don't want to mess up
 # original pot file containing static messages!
 DOMAIN_POT_TMP=$(mktemp /tmp/domainpot.XXXXXX)
 cp $DOMAIN_POT $DOMAIN_POT_TMP
+
+# CHECK UPDATE OPTION AT FIRST
+LANGUAGE_PO_FILE="$OUTPUT/$LANGUAGE.po"
+LANGUAGE_PO_BAK_FILE="$LANGUAGE_PO_FILE.pobak"
+if [ $UPDATE_JSON == 1 ]; then
+  echo "\n"
+  echo "========================================"
+  echo "UPDATING JSON FILE..."
+  echo "========================================"
+
+  node $BIN_GETTEXTJS \
+    $LANGUAGE_PO_FILE \
+    "$JSON_OUTPUT/$LANGUAGE.json" \
+    -p
+
+  echo "\n$(echo_pass FINISHED)"
+  exit 1
+fi
 
 # EXTRACT JAVASCRIPT TRANSLATIONS
 echo "\n"
@@ -405,9 +436,6 @@ echo "\n"
 echo "========================================"
 echo "CREATE/UPDATE TRANSLATIONS..."
 echo "========================================"
-
-LANGUAGE_PO_FILE="$OUTPUT/$LANGUAGE.po"
-LANGUAGE_PO_BAK_FILE="$LANGUAGE_PO_FILE.pobak"
 
 # a) NEW TRANSLATIONS
 # target po file doesn't exist, create
