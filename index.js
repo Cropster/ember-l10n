@@ -1,4 +1,5 @@
 /* jshint node: true */
+// jscs: disable
 'use strict';
 
 module.exports = {
@@ -7,6 +8,12 @@ module.exports = {
   isDevelopingAddon: function() {
     // @see: https://ember-cli.com/extending/#link-to-addon-while-developing
     return true;
+  },
+
+  includedCommands: function() {
+    return {
+      'l10n:extract': require('./lib/commands/extract')
+    };
   },
 
   included: function(app) {
