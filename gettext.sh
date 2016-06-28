@@ -63,7 +63,7 @@ OUTPUT_DEFAULT="./translations"
 DOMAIN_POT_DEFAULT="$OUTPUT_DEFAULT/domain.pot"
 FROM_CODE_DEFAULT="UTF-8"
 LANGUAGE_DEFAULT="en"
-INPUT_DEFAULT="./app"
+INPUT_DEFAULT=("./app")
 KEYS_DEFAULT=("t" "n:1,2") # "k:1,2" for plural forms!
 
 # https://www.gnu.org/software/gettext/manual/html_node/Plural-forms.html
@@ -112,7 +112,8 @@ while getopts ":d:e:hi:j:k:l:n:o:p:v:uIh" opt; do
       exit 1
       ;;
     i)
-      INPUT=$OPTARG
+      IFS=',' #split
+      INPUT=($OPTARG)
       ;;
     j)
       JSON_OUTPUT=$OPTARG
@@ -166,7 +167,10 @@ done
 : ${FROM_CODE=$FROM_CODE_DEFAULT}
 : ${LANGUAGE=$LANGUAGE_DEFAULT}
 : ${OUTPUT=$OUTPUT_DEFAULT}
-: ${INPUT=$INPUT_DEFAULT}
+
+if [ -z "$INPUT" ]; then
+  INPUT=("${INPUT_DEFAULT[@]}")
+fi
 
 if [ -z "$KEYS" ]; then
   KEYS=("${KEYS_DEFAULT[@]}")
@@ -303,6 +307,21 @@ if [ $UPDATE_JSON == 1 ]; then
   exit 1
 fi
 
+# CHECK FOR EMBER ADDON SOURCES
+L10N_ADDON="ember-l10n"
+NODE_MODULES="./node_modules/*"
+for ADDON in $NODE_MODULES; do
+    if [ -d ${ADDON} ]; then
+      PACKAGE="$ADDON/package.json"
+      if grep -q "$L10N_ADDON" $PACKAGE; then
+        BASE_ADDON=$(basename $ADDON)
+        if [ $L10N_ADDON != $BASE_ADDON ]; then
+          INPUT+=($ADDON)
+        fi
+      fi
+    fi
+done
+
 # EXTRACT JAVASCRIPT TRANSLATIONS
 echo "\n"
 echo "========================================"
@@ -312,10 +331,10 @@ echo "========================================"
 # create --keyword=a --keyword=b ...
 KEY_ARGS=$(echo "${KEYS[@]/#/--keyword=}")
 
-find $INPUT \
-  ! -path "$INPUT/*styleguide*" \
-  ! -path "$INPUT/fixtures/*" \
-  ! -path "$INPUT/mirage/*" \
+find "${INPUT[@]}" \
+  ! -path "${INPUT[0]}/*styleguide*" \
+  ! -path "${INPUT[0]}/fixtures/*" \
+  ! -path "${INPUT[0]}/mirage/*" \
   -name "*.js" \
   -type f | \
   while read file
@@ -331,7 +350,7 @@ find $INPUT \
         --language=JavaScript \
         --join-existing \
         --force-po \
-        $KEY_ARGS \
+        "$KEY_ARGS" \
         $file 2>&1)
 
       # log output to stdout
@@ -350,12 +369,12 @@ echo "========================================"
 
 # create --keyword a,b ...
 KEY_ARGS=$(IFS=,; echo "--keyword ${KEYS[*]}")
-HAS_ERROR=0
+IFS=$' \t\n' # reset IFS to default!
 
-find $INPUT \
-  ! -path "$INPUT/*styleguide*" \
-  ! -path "$INPUT/fixtures/*" \
-  ! -path "$INPUT/mirage/*" \
+find "${INPUT[@]}" \
+  ! -path "${INPUT[0]}/*styleguide*" \
+  ! -path "${INPUT[0]}/fixtures/*" \
+  ! -path "${INPUT[0]}/mirage/*" \
   -name "*.hbs" \
   -type f | \
   while read file
@@ -370,15 +389,7 @@ find $INPUT \
 
       # clean all whitespaces from .hbs files, otherwise
       # xgettext-template included parser doesn't work!
-      #
-      FILE_CAT_OUTPUT=$(cat $file 2>&1)
-      if [ ! $? == 0 ]; then
-        echo "Cannot open file $file! $(echo_warn)"
-        HAS_ERROR=1
-        exit 1
-      fi
-
-      echo $FILE_CAT_OUTPUT | sed 's/\s+/ /g' > $HBS_FILE
+      echo $(cat $file) | sed 's/\s+/ /g' > $HBS_FILE
 
       # invoke xgettext-template with provided options
       node $BIN_XGETTEXTTEMPLATE \
@@ -425,11 +436,6 @@ find $INPUT \
         echo "$file $(echo_pass)"
       fi
     done
-
-if [ $HAS_ERROR == 1 ]; then
-  echo "Stopped extraction due to errors! $(echo_warn)"
-  exit 1
-fi
 
 # CREATE OR UPDATE TRANSLATIONS
 echo "\n"
