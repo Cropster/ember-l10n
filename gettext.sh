@@ -258,12 +258,13 @@ fi
 mkdir -p $OUTPUT
 if [ ! -e "$DOMAIN_POT" ]; then
   touch $DOMAIN_POT
-  echo "
-  msgid \"\"
-  msgstr \"\"
-  \"Language: ${LANGUAGE}\\\\n\"
-  \"Content-Type: text/plain; charset=${FROM_CODE}\\\\n\"
-  \"Plural-Forms: nplurals=INTEGER; plural= EXPRESSION;\\\\n\"" > $DOMAIN_POT
+  DOMAIN_TEMPLATE='
+        msgid ""
+        msgstr ""
+        "Language: '"${LANGUAGE}"'\\n"
+        "Content-Type: text/plain; charset='"${FROM_CODE}"'\\n"
+        "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\\n"'
+  printf '%b' "$DOMAIN_TEMPLATE" > $DOMAIN_POT
 fi
 
 # create tmp pot file, we don't want to mess up
@@ -360,10 +361,11 @@ find $INPUT \
       # prepend header info for gettext msgcat, as node module
       # doesn't prepend necessary info and has no options yet!
       sed -i.pobak '1,2d' $PO_FILE # remove first to lines of file
-      echo "
-      msgid \"\"
-      msgstr \"\"
-      \"Content-Type: text/plain; charset=${FROM_CODE}\\\\n\"" | \
+      HEADER_TEMPLATE='
+        msgid ""
+        msgstr ""
+        "Content-Type: text/plain; charset='"${FROM_CODE}"'\\n"'
+      printf '%b' "$HEADER_TEMPLATE" | \
         cat - $PO_FILE > $PO_FILE_TMP && mv $PO_FILE_TMP $PO_FILE
 
       # merge created .po file with existing translations
