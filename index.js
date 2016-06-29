@@ -12,7 +12,8 @@ module.exports = {
 
   includedCommands: function() {
     return {
-      'l10n:extract': require('./lib/commands/extract')
+      'l10n:extract': require('./lib/commands/extract'),
+      'l10n:convert': require('./lib/commands/convert')
     };
   },
 
