@@ -22,7 +22,7 @@ INPUT_DEFAULT=("./app")
 KEYS_DEFAULT=("t" "n:1,2") # "k:1,2" for plural forms!
 
 # https://www.gnu.org/software/gettext/manual/html_node/Plural-forms.html
-PLURAL_FORMS_DEFAULT="nplurals=2; plural=(n!=1);"
+PLURAL_FORMS_DEFAULT="nplurals=2; plural=n != 1;"
 INSTALL_DEPS_DEFAULT=0
 UPDATE_JSON_DEFAULT=0
 
@@ -50,11 +50,11 @@ Example:
 EOF)
 
 # ==============================================
-# Options
+# OPTIONS
 # ==============================================
 
 # extract command line arguments
-while getopts ":d:e:hi:j:k:l:n:o:p:v:uIh" opt; do
+while getopts ":d:e:hi:j:k:l:n:o:p:v:uI" opt; do
   case $opt in
     d)
       DOMAIN_POT=$OPTARG
@@ -132,7 +132,7 @@ if [ -z "$KEYS" ]; then
 fi
 
 # ==============================================
-# Program
+# PROGRAM
 # ==============================================
 echo "\n"
 echo "========================================"
@@ -242,11 +242,16 @@ fi
 # create tmp pot file, we don't want to mess up
 # original pot file containing static messages!
 DOMAIN_POT_TMP=$(mktemp /tmp/domainpot.XXXXXX)
-cp $DOMAIN_POT $DOMAIN_POT_TMP
+
+# important: replace plural forms BEFORE invoking
+# xgettext/xgettext-template parser to work correctly
+sed \
+  's/"Plural-Forms:\(.*\)\\n"/"Plural-Forms: '"${PLURAL_FORMS}"'\\n"/g' \
+  $DOMAIN_POT > $DOMAIN_POT_TMP
 
 # CHECK UPDATE OPTION AT FIRST
 LANGUAGE_PO_FILE="$OUTPUT/$LANGUAGE.po"
-LANGUAGE_PO_BAK_FILE="$LANGUAGE_PO_FILE.pobak"
+
 if [ $UPDATE_JSON == 1 ]; then
   echo "\n"
   echo "========================================"
@@ -305,7 +310,7 @@ find "${INPUT[@]}" \
         --language=JavaScript \
         --join-existing \
         --force-po \
-        "$KEY_ARGS" \
+        $KEY_ARGS \
         $file 2>&1)
 
       # log output to stdout
@@ -371,7 +376,6 @@ find "${INPUT[@]}" \
         --to-code=$FROM_CODE \
         --lang="$LANGUAGE" \
         --use-first \
-        --unique \
         $DOMAIN_POT_TMP $PO_FILE 2>&1)
 
       # overwrite domain pot from tmp pot
@@ -407,12 +411,8 @@ if [ ! -e "$LANGUAGE_PO_FILE" ] ; then
     --output-file=$LANGUAGE_PO_FILE \
     --input=$DOMAIN_POT_TMP \
     --locale=$LANGUAGE \
-    --no-translator
-
-  # replace auto-generated plural forms with
-  # provided/default ones for gettext.js lib
-  sed -i.pobak 's/"Plural-Forms:\(.*\)\\n"/"Plural-Forms: '"${PLURAL_FORMS}"'\\n"/g' ${LANGUAGE_PO_FILE}
-  rm -f $LANGUAGE_PO_BAK_FILE
+    --no-translator \
+    --no-wrap
 
 # b) EXISTING TRANSLATIONS
 # target po file already exists, so we
@@ -425,6 +425,7 @@ else
     --no-fuzzy-matching \
     --lang=$LANGUAGE \
     --force-po \
+    --no-wrap \
     --verbose \
     $LANGUAGE_PO_FILE $DOMAIN_POT_TMP
 
