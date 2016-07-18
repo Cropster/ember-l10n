@@ -6,7 +6,7 @@ module.exports = {
 
   isDevelopingAddon: function() {
     // @see: https://ember-cli.com/extending/#link-to-addon-while-developing
-    return true;
+    return false; // Set this to true for local development
   },
 
   included: function(app) {
