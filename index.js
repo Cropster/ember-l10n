@@ -12,7 +12,12 @@ module.exports = {
   included: function(app) {
     this._super.included(app);
 
-    app.import(app.bowerDirectory + '/gettext.js/dist/gettext.min.js',{
+    // Fix for loading it in addons/engines
+    if (typeof app.import !== 'function' && app.app) {
+      app = app.app;
+    }
+
+    app.import(app.bowerDirectory + '/gettext.js/dist/gettext.min.js', {
       exports: {
         'i18n': [
           'default'
