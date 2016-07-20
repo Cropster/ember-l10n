@@ -21,10 +21,8 @@ ember-l10n uses ember-ajax to fetch locale data.
 
 There are two primary parts to ember-l10n
 
-1. the Ember side: Service, Helpers, and Components
-2. `gettext.sh` - the string extractor - a script that extracts your message id
-   strings from js and handlebar files
-
+1. Ember side: Service, Helpers, and Components
+2. CLI: Contains a string extractor for `JS` and `HBS` files generating `POT`/`PO` files, a converter to convert `PO` files to `JSON` as well as a synchronizer for exchanging message ids in `JS` and `HBS` files (f.e. after proof read original version).
 
 ember-l10n follows the gettext convention that the message ids in your source files
 are the default language (usually English).
@@ -41,7 +39,7 @@ ember-l10n provides powerful string substitution and even component
 substitution for dynamic strings. See the Components section below.
 
 
-## The Ember Side
+## Ember Side
 
 ### Service
 
@@ -200,90 +198,97 @@ moduleForComponent('my-component', 'Integration | Component | my component', {
 
 These helpers will basically just pass the string through.
 
-## 2. Extracting Strings
+## 2. CLI
 
-The extractor (`gettext.sh`) extracts message ids from the JS and HBS files in
-your Ember project. It generates the corresponding PO files for translation.
-Later, it will convert the translated POs into JSON files to be used for client side
-translation within your Ember app.
+### Extractor
 
-Run the following command from your Ember project root to extract message ids:
+The extractor extracts message ids from the JS and HBS files in your Ember project. It generates the corresponding PO files for translation. Later, it will convert the translated POs into JSON files to be used for client side translation within your Ember app.
 
-* `node_modules/ember-l10n/gettext.sh`
+Run the following command from your Ember project root for extraction:
+
+* `ember l10n:extract`
 
 To see all available command line options for the extractor script please run:
 
-* `node_modules/ember-l10n/gettext.sh -h`
+* `ember l10n:extract -h`
 
-```bash
-Usage: ./gettext.sh [OPTIONS]
-
-Options:
-	-d Domain pot file (default: ./translations/domain.pot)
-	-e Input encoding (default: UTF-8)
-	-i Input directory (default: ./app)
-	-j JSON output directory (default: ./public/assets/locales)
-	-k Keys to be used for lookup (default: t)
-	-l Target language of PO-File (default: en)
-	-n Plural Forms (default: nplurals=2; plural=(n!=1);)
-	-o Output directory (default: ./translations)
-	-p Package Name (default: Cropster App)
-	-v Package Version (default: 1.0)
-	-I Install dependencies automatically (default: 0)
-	-h Show help
-
-Example:
-	./gettext.sh -l de -k singlekey,pluralkey:1,2 -i ./myemberapp -o ./mypodirectory -j ./myjsondirectory -p "My Package" -v 1.0
+```
+ember l10n:extract <options...>
+  Extract message ids from app
+  --default-language (String) (Default: en) The default language used in message ids
+    aliases: -d <value>
+  --bug-address (String) (Default: support@mycompany.com) The email address for translation bugs
+    aliases: -b <value>
+  --copyright (String) (Default: My Company) The copyright information
+    aliases: -c <value>
+  --from-code (String) (Default: UTF-8) The encoding of the input files
+    aliases: -e <value>
+  --input-directories (Array) (Default: ./app) The directory from which to extract the strings
+    aliases: -i <value>
+  --output-directory (String) (Default: ./translations) Output directory of the PO file
+    aliases: -o <value>
+  --keys (Array) (Default: t,n:1,2) Function/Helper Keys to be used for lookup
+    aliases: -k <value>
+  --language (String) (Default: en) Target language of the PO-file
+    aliases: -l <value>
+  --package (String) (Default: My App) The name of the package
+    aliases: -p <value>
+  --version (String) (Default: 1.0) The version of the package
+    aliases: -v <value>
+  --generate-only (Boolean) (Default: false) If only PO file should be created from POT without extraction
+    aliases: -g
+  --xgettext-template-path (String) (Default: ./node_modules/xgettext-template/bin/xgettext-template) The path where xgettext-template is available
+  --gettextjs-path (String) (Default: ./node_modules/gettext.js/bin/po2json) The path where gettext.js is available
 ```
 
-Using a POT file for "static" translations such as server-side constants etc.:
+### Converter
 
-In case you have message ids, which are not covered in your JS or HBS sources,
-you can provide a POT file containing all these messages used as a base for
-generating resulting PO files. To do so, either use `-d` option:
+The converter will turn a given `PO` into a `JSON` file to be loaded by the service.
 
-* `node_modules/ember-l10n/gettext.sh -d path/to/pot/file.pot`
+Run the following command from your Ember project root for conversion:
 
-Or simply put a file called `domain.pot` within your translations directory,
-which could be configured with `-i` option:
+* `ember l10n:convert`
 
-* `node_modules/ember-l10n/gettext.sh -i path/to/po/files`
+To see all available command line options for the converter script please run:
 
-Example of a project specific POT file for translation constants:
+* `ember l10n:convert -h`
 
-```pot
-#
-# MY PROJECT TRANSLATIONS
-# This is the template file for all generated po files.
-# It is used to provide all "static" translations like ENUMS.
-#
-msgid ""
-msgstr ""
-"Language: en\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Report-Msgid-Bugs-To: support@mycompany.com\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n" # default value necessary, gets replaced with value of -n option!
-
-#
-# CONSTANTS
-#
-msgid "FIRST_CONSTANT"
-msgstr "My first constant's translation"
-
-msgid "SECOND_CONSTANT"
-msgstr "My second constant's translation"
+```
+ember l10n:convert <options...>
+  Convert PO files to JSON
+  --input-directory (String) (Default: ./translations) Directory of PO file to convert
+    aliases: -i <value>
+  --output-directory (String) (Default: ./public/assets/locales) Directory to write JSON files to
+    aliases: -o <value>
+  --language (String) (Default: en) Target language for PO to JSON conversion
+    aliases: -l <value>
+  --gettextjs-path (String) (Default: ./node_modules/gettext.js/bin/po2json) The path where gettext.js is available
 ```
 
-Please note: The script can install all necessary dependencies, just pass the `-I` flag.
+### Synchronizer
 
-* GNU gettext utilities (https://www.gnu.org/software/gettext/manual/gettext.html)
-* HBS template parser (https://github.com/gmarty/xgettext)
-* PO2JSON converter (https://github.com/guillaumepotier/gettext.js)
+The synchronizer will parse a given `PO` file, use the message ids from each entry and uses them as new message ids accross `JS` and `HBS` files in your app. This is especially helpful if you proof read your current message ids before handing them over to translators for other languages.
 
-Compiling GNU gettext utilities may take a while, so go get a coffee :)
+Run the following command from your Ember project root for synchronization:
 
-Or install gettext from your package manager and call it a day.
+* `ember l10n:sync`
+
+To see all available command line options for the synchronization script please run:
+
+* `ember l10n:sync -h`
+
+```
+ember l10n:sync <options...>
+  Synchronize message strings with message ids (proof reading)
+  --input-directory (String) (Default: ./translations) Directory of PO file to convert
+    aliases: -i <value>
+  --output-directories (Array) (Default: ./app) Directory to write JSON files to
+    aliases: -o <value>
+  --language (String) (Default: en) Target language for PO to JSON conversion
+    aliases: -l <value>
+  --keys (Array) (Default: t,n:1,2) Function/Helper Keys to be used for lookup
+    aliases: -k <value>
+```
 
 ## Looking for help? ##
 
