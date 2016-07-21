@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import GetText from 'i18n';
 
+const { RSVP: { Promise } } = Ember;
+
 /**
  * This service translates through gettext.js.
  * There are two available methods to be used
@@ -194,14 +196,38 @@ export default Ember.Service.extend(Ember.Evented, {
    * @public
    */
   setLocale(locale) {
-    if (!this.hasLocale(locale)) {
-      return;
-    }
+    return new Promise((resolve,reject) => {
+      if (!this.hasLocale(locale)) {
+        reject();
+        return;
+      }
 
-    this.set('locale', locale);
-    this.get('_gettext').setLocale(locale);
+      let old = this.getLocale();
 
-    return this._loadJSON();
+      this.set('locale', locale);
+      this.get('_gettext').setLocale(locale);
+
+      let successCallback = () => {
+        this.notifyPropertyChange('locale');
+        this.notifyPropertyChange('availableLocales');
+
+        resolve();
+      };
+
+      let failureCallback = () => {
+        try {
+          this.get('_gettext').setLocale(old);
+          this.set('locale', old);
+        } catch(e) {}
+
+        reject();
+      };
+
+      this._loadJSON(locale).then(
+        successCallback,
+        failureCallback
+      );
+    });
   },
 
   /**
@@ -387,42 +413,47 @@ export default Ember.Service.extend(Ember.Evented, {
 
   /**
    * Loads current locale translation file.
-   * Triggers `translation_loaded` event.
+   * Note that `locale` will trigger change
+   * after loading JSON file, so watching the
+   * `locale` informs about new translations!
    *
-   * @method _load
+   * @method _loadJSON
+   * @param {String} locale
    * @return {Void}
    * @private
    */
-  _loadJSON() {
-    let ajax = this.get('ajax');
-    let cache = this.get('_cache');
-    let locale = this.get('locale');
-    let url = `${this.get('jsonPath')}/${locale}.json`;
+  _loadJSON(locale) {
+    return new Promise((resolve,reject) => {
+      let ajax = this.get('ajax');
+      let cache = this.get('_cache');
+      let url = `${this.get('jsonPath')}/${locale}.json`;
 
-    let successCallback = (response) => {
-      let cachedResponse = Ember.copy(response, true);
-      this.notifyPropertyChange('availableLocales');
-      this.get('_gettext').loadJSON(response);
+      let successCallback = (response) => {
+        let cachedResponse = Ember.copy(response, true);
+        this.get('_gettext').loadJSON(response);
 
-      this.trigger('translation_loaded');
-      cache[locale] = cachedResponse;
-    };
+        cache[locale] = cachedResponse;
+        resolve();
+      };
 
-    let failureCallback = (reason) => {
-      console.error(`l10n.js: An error occured loading "${url}": ${reason}`);
-    };
+      let failureCallback = (reason) => {
+        console.error(`l10n.js: An error occured loading "${url}": ${reason}`);
+        reject();
+      };
 
-    // used cache translation if present
-    if (cache.hasOwnProperty(locale)) {
-      successCallback(cache[locale]);
-      return;
-    }
+      // used cache translation if present
+      if (cache.hasOwnProperty(locale)) {
+        successCallback(cache[locale]);
+        resolve(cache[locale]);
+        return;
+      }
 
-    // otherwise load json file from assets
-    return ajax.request(url).then(
-      successCallback,
-      failureCallback
-    );
+      // otherwise load json file from assets
+      ajax.request(url).then(
+        successCallback,
+        failureCallback
+      );
+    });
   }
 
 });
