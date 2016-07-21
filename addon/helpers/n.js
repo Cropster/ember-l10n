@@ -20,16 +20,6 @@ const { get } = Ember;
 export default Ember.Helper.extend({
   l10n: Ember.inject.service(),
 
-  init() {
-    this._super(...arguments);
-    this.get('l10n').on('translation_loaded', this, this.recompute);
-  },
-
-  willDestroy() {
-    this._super(...arguments);
-    this.get('l10n').off('translation_loaded', this, this.recompute);
-  },
-
   compute([msgid, msgidPlural, count], hash) {
     if (Ember.isNone(msgid)) {
       return msgid;
@@ -42,5 +32,12 @@ export default Ember.Helper.extend({
 
     let trans = this.get('l10n').n(msgid, msgidPlural, count, hash);
     return Ember.String.htmlSafe(trans);
-  }
+  },
+
+  _watchLocale: Ember.observer(
+    'l10n.locale',
+    function() {
+      this.recompute();
+    }
+  )
 });
