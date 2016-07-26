@@ -22,12 +22,9 @@ module.exports = {
   included: function(app) {
     this._super.included(app);
 
-    // Fix for loading it in addons/engines
-    if (typeof app.import !== 'function' && app.app) {
-      app = app.app;
-    }
+    var bowerDirectory = app.bowerDirectory || 'bower_components';
 
-    app.import(app.bowerDirectory + '/gettext.js/dist/gettext.min.js', {
+    this.import(bowerDirectory + '/gettext.js/dist/gettext.min.js', {
       exports: {
         'i18n': [
           'default'
