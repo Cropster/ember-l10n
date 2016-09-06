@@ -202,7 +202,7 @@ These helpers will basically just pass the string through.
 
 ### Extractor
 
-The extractor extracts message ids from the JS and HBS files in your Ember project. It generates the corresponding PO files for translation. Later, it will convert the translated POs into JSON files to be used for client side translation within your Ember app.
+The extractor extracts message ids from the JS and HBS files in your Ember project. It generates the corresponding PO files for translation. Later, it will convert the translated POs into JSON files to be used for client side translation within your Ember app. Please note: Make sure turning off the development server while extracting, otherwise process slows down due to livereload!
 
 Run the following command from your Ember project root for extraction:
 
@@ -217,29 +217,49 @@ ember l10n:extract <options...>
   Extract message ids from app
   --default-language (String) (Default: en) The default language used in message ids
     aliases: -d <value>
-  --bug-address (String) (Default: support@mycompany.com) The email address for translation bugs
+  --bug-address (String) (Default: support@cropster.com) The email address for translation bugs (configured in config/l10n-extract.js)
     aliases: -b <value>
-  --copyright (String) (Default: My Company) The copyright information
+  --copyright (String) (Default: Cropster) The copyright information (configured in config/l10n-extract.js)
     aliases: -c <value>
   --from-code (String) (Default: UTF-8) The encoding of the input files
     aliases: -e <value>
-  --input-directories (Array) (Default: ./app) The directory from which to extract the strings
+  --extract-from (Array) (Default: ./app) The directory from which to extract the strings
     aliases: -i <value>
-  --output-directory (String) (Default: ./translations) Output directory of the PO file
+  --exclude-patterns (Array) (Default: about/legal,terms-of-service(?!-modal)) List of regex patterns to put into a dedicated `excluded.pot` file (configured in config/l10n-extract.js)
+    aliases: -x <value>
+  --skip-patterns (Array) (Default: mirage,fixtures,styleguide) List of regex patterns to completely ignore from extraction
+    aliases: -s <value>
+  --extract-to (String) (Default: ./translations) Output directory of the PO-file
     aliases: -o <value>
   --keys (Array) (Default: t,n:1,2) Function/Helper Keys to be used for lookup
     aliases: -k <value>
   --language (String) (Default: en) Target language of the PO-file
     aliases: -l <value>
-  --package (String) (Default: My App) The name of the package
+  --package (String) (Default: Cropster HUB) The name of the package (configured in config/l10n-extract.js)
     aliases: -p <value>
   --version (String) (Default: 1.0) The version of the package
     aliases: -v <value>
-  --generate-only (Boolean) (Default: false) If only PO file should be created from POT without extraction
+  --generate-only (Boolean) (Default: false) If only PO-file should be created from POT without extraction
     aliases: -g
+  --generate-from (String) (Default: messages.pot) Source POT-file to be used in conjunction with `-g` flag
+    aliases: -f <value>
+  --generate-to (String) (Default: null) Target PO-file to be used in conjunction with `-g` flag - CAUTION: uses `${language}.po` as default
+    aliases: -t <value>
   --xgettext-template-path (String) (Default: ./node_modules/xgettext-template/bin/xgettext-template) The path where xgettext-template is available
   --gettextjs-path (String) (Default: ./node_modules/gettext.js/bin/po2json) The path where gettext.js is available
 ```
+
+###### Usage hints:
+
+Once you have extracted message ids with `ember l10n:extract`, which creates a domain `messages.pot` file, you can generate `PO-files` for other languages by using `-g` option without having to run extraction again like so:
+
+* `ember l10n:extract -g -l de` (creates german PO file from POT file)
+
+If you have excluded some files from prior extractions with `-x`  and want to merge them with your messages.pot you can do:
+
+* `ember l10n:extract -g -f excluded.pot -t messages.pot` (merge POT files)
+* `ember l10n:extract -g -l en (merge english PO file)
+* `ember l10n:extract -g -l de (merge german PO file)
 
 ### Converter
 
@@ -256,9 +276,9 @@ To see all available command line options for the converter script please run:
 ```
 ember l10n:convert <options...>
   Convert PO files to JSON
-  --input-directory (String) (Default: ./translations) Directory of PO file to convert
+  --convert-from (String) (Default: ./translations) Directory of PO file to convert
     aliases: -i <value>
-  --output-directory (String) (Default: ./public/assets/locales) Directory to write JSON files to
+  --convert-to (String) (Default: ./public/assets/locales) Directory to write JSON files to
     aliases: -o <value>
   --language (String) (Default: en) Target language for PO to JSON conversion
     aliases: -l <value>
@@ -280,14 +300,34 @@ To see all available command line options for the synchronization script please 
 ```
 ember l10n:sync <options...>
   Synchronize message strings with message ids (proof reading)
-  --input-directory (String) (Default: ./translations) Directory of PO file to convert
+  --sync-from (String) (Default: ./translations) Directory of PO files
     aliases: -i <value>
-  --output-directories (Array) (Default: ./app) Directory to write JSON files to
+  --sync-to (Array) (Default: ./app) Directory of JS/HBS files
     aliases: -o <value>
-  --language (String) (Default: en) Target language for PO to JSON conversion
+  --language (String) (Default: en) Language of PO file being used as base
     aliases: -l <value>
   --keys (Array) (Default: t,n:1,2) Function/Helper Keys to be used for lookup
     aliases: -k <value>
+```
+
+### Global options
+
+If you want to set global options for any of the above commands for your project, you can do so by providing a config file under `config/l10n-${command}.js`. An example of global options for `extract` command located under `config/l10n-extract.js` could look like this:
+
+```
+{
+  "bug-address": "support@anothercompany.com",
+  "copyright": "Copyright by Another Company",
+  "package": "Another App",
+  "exclude-patterns": [
+    "\/some\/exclude\/path",
+    "some-other-pattern(?!not-followed-by-this)",
+  ],
+  "skip-patterns": [
+    "\/some\/skip\/path",
+    "(?:\/another\/skip)?path",
+  ]
+}
 ```
 
 ## Looking for help? ##
