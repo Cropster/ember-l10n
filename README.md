@@ -258,8 +258,8 @@ Once you have extracted message ids with `ember l10n:extract`, which creates a d
 If you have excluded some files from prior extractions with `-x`  and want to merge them with your messages.pot you can do:
 
 * `ember l10n:extract -g -f excluded.pot -t messages.pot` (merge POT files)
-* `ember l10n:extract -g -l en (merge english PO file)
-* `ember l10n:extract -g -l de (merge german PO file)
+* `ember l10n:extract -g -l en` (merge english PO file)
+* `ember l10n:extract -g -l de` (merge german PO file)
 
 ### Converter
 
