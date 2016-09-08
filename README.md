@@ -235,6 +235,8 @@ ember l10n:extract <options...>
     aliases: -k <value>
   --language (String) (Default: en) Target language of the PO-file
     aliases: -l <value>
+  --pot-name (String) (Default: client.pot) The name of generated POT-file (configured in config/l10n-extract.js)
+    aliases: -n <value>
   --package (String) (Default: Cropster HUB) The name of the package (configured in config/l10n-extract.js)
     aliases: -p <value>
   --version (String) (Default: 1.0) The version of the package
