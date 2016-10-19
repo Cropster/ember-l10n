@@ -227,6 +227,10 @@ ember l10n:extract <options...>
     aliases: -x <value>
   --skip-patterns (Array) (Default: ['mirage','fixtures','styleguide']) List of regex patterns to completely ignore from extraction
     aliases: -s <value>
+  --skip-dependencies (Array) (Default: ) An array of dependency names to exclude from parsing.
+    aliases: -sd <value>
+  --skip-all-dependencies (Boolean) (Default: true) If this is true, do not parse the node_modules/lib folders. (configured in config/l10n-extract.js)
+    aliases: -sad  
   --extract-to (String) (Default: './translations') Output directory of the PO-file
     aliases: -o <value>
   --keys (Array) (Default: ['t','n:1,2']) Function/Helper Keys to be used for lookup
