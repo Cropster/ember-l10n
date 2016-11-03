@@ -1,6 +1,14 @@
 import Ember from 'ember';
 
-const { get } = Ember;
+const {
+  Helper,
+  inject,
+  isNone,
+  get,
+  merge,
+  String: EmberString,
+  observer
+} = Ember;
 
 /**
  * This helper provides gettext pluralization for message ids.
@@ -17,24 +25,26 @@ const { get } = Ember;
  * @extends Ember.Helper
  * @public
  */
-export default Ember.Helper.extend({
-  l10n: Ember.inject.service(),
+export default Helper.extend({
+  l10n: inject.service(),
 
   compute([msgid, msgidPlural, count], hash) {
-    if (Ember.isNone(msgid)) {
+    if (isNone(msgid)) {
       return msgid;
     }
 
     // If hash.count is not set, use the provided count positional param
     if (!get(hash, 'count')) {
+      // hash should not be mutated
+      hash = merge({}, hash);
       hash.count = count;
     }
 
     let trans = this.get('l10n').n(msgid, msgidPlural, count, hash);
-    return Ember.String.htmlSafe(trans);
+    return EmberString.htmlSafe(trans);
   },
 
-  _watchLocale: Ember.observer(
+  _watchLocale: observer(
     'l10n.locale',
     function() {
       this.recompute();
