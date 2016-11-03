@@ -1,6 +1,13 @@
 import Ember from 'ember';
 import layout from '../templates/get-text';
 
+const {
+  get,
+  Component,
+  typeOf: getTypeOf,
+  isEmpty
+} = Ember;
+
 /**
  * A simple helper component to include dynamic parts - mostly link-to helper - within gettext message ids.
  *
@@ -23,7 +30,7 @@ import layout from '../templates/get-text';
  * @extends Ember.Component
  * @public
  */
-export default Ember.Component.extend({
+export default Component.extend({
 
   tagName: '',
   layout,
@@ -78,14 +85,14 @@ export default Ember.Component.extend({
    */
   didReceiveAttrs() {
     this._super(...arguments);
+    let message = get(this, 'message');
 
-    if (!this.attrs.hasOwnProperty('message')) {
+    if (!message) {
       console.error('get-text.js: You need to provide a "message" attribute containing a gettext message!');
       return;
     }
 
-    let { message } = this.attrs;
-    if (Ember.typeOf(message) !== 'string') {
+    if (getTypeOf(message) !== 'string') {
       try {
         message = message.toString();
       } catch (e) {
@@ -120,7 +127,7 @@ export default Ember.Component.extend({
     }
 
     // add last part if any
-    if (!Ember.isEmpty(text)) {
+    if (!isEmpty(text)) {
       parts.push({
         isPlaceholder: false,
         text
