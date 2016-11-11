@@ -1,7 +1,11 @@
 import Ember from 'ember';
 import GetText from 'i18n';
 
-const { RSVP: { Promise } } = Ember;
+const {
+  RSVP: { Promise },
+  get,
+  merge
+} = Ember;
 
 /**
  * This service translates through gettext.js.
@@ -196,7 +200,7 @@ export default Ember.Service.extend(Ember.Evented, {
    * @public
    */
   setLocale(locale) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       if (!this.hasLocale(locale)) {
         reject();
         return;
@@ -218,7 +222,8 @@ export default Ember.Service.extend(Ember.Evented, {
         try {
           this.get('_gettext').setLocale(old);
           this.set('locale', old);
-        } catch(e) {}
+        } catch (e) {
+        }
 
         reject();
       };
@@ -375,6 +380,14 @@ export default Ember.Service.extend(Ember.Evented, {
       }
     }
 
+    // If count is not manually set in the hash, use the provided count variable
+    // This is a small utility function that can reduce boilerplate code
+    if (!get(hash, 'count')) {
+      // hash should not be mutated
+      hash = merge({}, hash);
+      hash.count = count;
+    }
+
     return this._strfmt(this.get('_gettext').ngettext(msgid, msgidPlural, count), hash);
   },
 
@@ -423,7 +436,7 @@ export default Ember.Service.extend(Ember.Evented, {
    * @private
    */
   _loadJSON(locale) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       let ajax = this.get('ajax');
       let cache = this.get('_cache');
       let url = `${this.get('jsonPath')}/${locale}.json`;

@@ -107,6 +107,16 @@ test('it works', function(assert) {
       service.n(
         'You have {{count}} unit in your cart.',
         'You have {{count}} units in your cart.',
+        2
+      ),
+      'You have 2 units in your cart.',
+      'Plural translations use count implicitly if not set in hash.'
+    );
+
+    assert.equal(
+      service.n(
+        'You have {{count}} unit in your cart.',
+        'You have {{count}} units in your cart.',
         5,
         { count: 5 }
       ),
