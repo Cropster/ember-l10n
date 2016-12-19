@@ -1,6 +1,6 @@
 {
   "name": "ember-l10n",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A generic localization solution for ember projects using gettext.",
   "directories": {
     "doc": "doc",
