@@ -302,6 +302,8 @@ ember l10n:convert <options...>
     aliases: -i <value>
   --convert-to (String) (Default: './public/assets/locales') Directory to write JSON files to
     aliases: -o <value>
+  --fingerprint-map (String) (Default: ./app/utils/l10n-fingerprint-map.js) Path to the fingerprint-map file. Set to false to deactivate fingerprinting.
+    aliases: -f <value>
   --language (String) (Default: 'en') Target language for PO to JSON conversion
     aliases: -l <value>
   --gettextjs-path (String) (Default: './node_modules/gettext.js/bin/po2json') The path where gettext.js is available
