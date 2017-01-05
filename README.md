@@ -38,6 +38,9 @@ and replaced at runtime.
 ember-l10n provides powerful string substitution and even component
 substitution for dynamic strings. See the Components section below.
 
+## Note for Upgrading
+
+The latest version has introduced fingerprinting for the generated JSON files. Please read the [Fingerprinting](#fingerprinting) & [Converter](#converter) sections.
 
 ## Ember Side
 
@@ -76,17 +79,24 @@ When installing via `ember install ember-l10n`, an `l10n` service will be create
 There, you can configure (and overwrite) all service properties/methods:
 
 ```js
-import Ember from 'ember';
+import computed from 'ember-computed';
 import L10n from 'ember-l10n/services/l10n';
+import l10nFingerprintMap from './../utils/l10n-fingerprint-map';
 
 export default L10n.extend({
-  availableLocales: Ember.computed(function() {
+
+  availableLocales: computed(function() {
     return {
       'en': this.t('en')
     };
   }),
+
   autoInitialize: true,
-  jsonPath: '/assets/locales'
+
+  jsonPath: '/assets/locales',
+
+  // Make this return null if you do not want to use fingerprinting
+  fingerprintMap: l10nFingerprintMap
 });
 ```
 
@@ -111,6 +121,14 @@ export default {
   name: 'my-l10n-initializer'
 };
 ```
+
+### Fingerprinting
+
+By default, it is assumed that the locale files are fingerprinted. This makes it possible to aggressively cache them. For this, the default blueprint will generate a file `app/utils/l10n-fingerprint-map.js`. (If you upgraded recently, run `ember g ember-l10n` to create the file).
+
+Whenever you convert a .po file to JSON with `ember l10n:convert`, it will then by default put the created JSON in a fingerprinted subfolder, and update the `l10n-fingerprint-map.js` file with the new fingerprint. This map is then in turn used by the `l10n` service. Note that this means that every language file is fingerprinted separately.
+
+If you do not wish to use fingerprinting, make the `fingerprintMap` property on the service return `null`. Also, you need to deactivate it when converting the .po file: `ember l10n:convert -fingerprint-map=false`.
 
 ### Helpers
 
@@ -289,6 +307,8 @@ ember l10n:convert <options...>
   --gettextjs-path (String) (Default: './node_modules/gettext.js/bin/po2json') The path where gettext.js is available
 ```
 
+Note that by default, this will create a fingerprinted json file & update the `app/utils/l10n-fingerprint-map.js` accordingly. If you do not wish to use fingerprinting, use  `--fingerprint-map=false`.
+
 ### Synchronizer
 
 The synchronizer will parse a given `PO` file, use the message ids from each entry and uses them as new message ids accross `JS` and `HBS` files in your app. This is especially helpful if you proof read your current message ids before handing them over to translators for other languages.
@@ -344,7 +364,7 @@ This library follows [Semantic Versioning](http://semver.org)
 
 ## Legal
 
-[Cropster](https://cropster.com), GmbH &copy; 2016
+[Cropster](https://cropster.com), GmbH &copy; 2017
 
 [@cropster](http://twitter.com/cropster)
 
