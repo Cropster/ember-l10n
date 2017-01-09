@@ -2,9 +2,16 @@ import Ember from 'ember';
 import GetText from 'i18n';
 
 const {
+  computed,
+  Service,
+  inject,
   RSVP: { Promise },
   get,
-  merge
+  merge,
+  copy,
+  typeOf: getTypeOf,
+  Evented,
+  isNone
 } = Ember;
 
 /**
@@ -41,11 +48,11 @@ const {
  * @extends Ember.Evented
  * @public
  */
-export default Ember.Service.extend(Ember.Evented, {
+export default Service.extend(Evented, {
   // -------------------------------------------------------------------------
   // Dependencies
 
-  ajax: Ember.inject.service('l10n-ajax'),
+  ajax: inject.service('l10n-ajax'),
 
   // -------------------------------------------------------------------------
   // Properties
@@ -113,13 +120,23 @@ export default Ember.Service.extend(Ember.Evented, {
   jsonPath: '/assets/locales',
 
   /**
+   * A map of fingerprints per language.
+   * Overwrite this with your actual fingerprint map!
+   *
+   * @property fingerprintMap
+   * @type {Object}
+   * @protected
+   */
+  fingerprintMap: null,
+
+  /**
    * Currently available translations hash.
    *
    * @property availableLocales
    * @type {Object}
    * @public
    */
-  availableLocales: Ember.computed(function() {
+  availableLocales: computed(function() {
     return {
       'en': this.t('en')
     };
@@ -134,7 +151,7 @@ export default Ember.Service.extend(Ember.Evented, {
    * @default {}
    * @private
    */
-  _cache: Ember.computed(function() {
+  _cache: computed(function() {
     return {}; // complex type!
   }),
 
@@ -183,7 +200,7 @@ export default Ember.Service.extend(Ember.Evented, {
   getLocale() {
     let defaultLocale = this.get('defaultLocale');
     let locale = this.get('locale');
-    if (Ember.isNone(locale)) {
+    if (isNone(locale)) {
       return defaultLocale;
     }
 
@@ -245,7 +262,7 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   hasLocale(locale) {
     let availableLocales = this.get('availableLocales');
-    let hasLocale = !Ember.isNone(availableLocales[locale]);
+    let hasLocale = !isNone(availableLocales[locale]);
     if (!hasLocale) {
       console.warn(`l10n.js: Locale "${locale}" is not available!`);
     }
@@ -268,7 +285,7 @@ export default Ember.Service.extend(Ember.Evented, {
     let locale;
 
     // auto detect locale if no force locale
-    if (Ember.isNone(forceLocale)) {
+    if (isNone(forceLocale)) {
 
       // special case: android user agents
       if (navigator && navigator.userAgent &&
@@ -280,7 +297,7 @@ export default Ember.Service.extend(Ember.Evented, {
       }
 
       // for all other browsers
-      if (Ember.isNone(locale) && navigator) {
+      if (isNone(locale) && navigator) {
         if (navigator.language) {
           locale = navigator.language;
         } else if (navigator.browserLanguage) {
@@ -304,7 +321,7 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     // otherwise return detected locale
-    if (Ember.isNone(forceLocale)) {
+    if (isNone(forceLocale)) {
       console.info(`l10n.js: Automatically detected user language: "${locale}"`);
     } else {
       console.info(`l10n.js: Using forced locale: "${locale}"`);
@@ -323,7 +340,7 @@ export default Ember.Service.extend(Ember.Evented, {
    * @public
    */
   t(msgid, hash = {}) {
-    if (Ember.typeOf(msgid) !== 'string') {
+    if (getTypeOf(msgid) !== 'string') {
       try {
         msgid = msgid.toString();
       } catch (e) {
@@ -362,7 +379,7 @@ export default Ember.Service.extend(Ember.Evented, {
    * @public
    */
   n(msgid, msgidPlural, count = 1, hash = {}) {
-    if (Ember.typeOf(msgid) !== 'string') {
+    if (getTypeOf(msgid) !== 'string') {
       try {
         msgid = msgid.toString();
       } catch (e) {
@@ -371,7 +388,7 @@ export default Ember.Service.extend(Ember.Evented, {
       }
     }
 
-    if (Ember.typeOf(msgidPlural) !== 'string') {
+    if (getTypeOf(msgidPlural) !== 'string') {
       try {
         msgidPlural = msgidPlural.toString();
       } catch (e) {
@@ -402,7 +419,7 @@ export default Ember.Service.extend(Ember.Evented, {
    */
   _strfmt(string, hash) {
     // don't process empty hashes
-    if (Ember.isNone(hash)) {
+    if (isNone(hash)) {
       return string;
     }
 
@@ -410,11 +427,11 @@ export default Ember.Service.extend(Ember.Evented, {
     let pattern = /{{\s*([\w]+)\s*}}/g;
     let replace = (idx, match) => {
       let value = hash[match];
-      if (Ember.isNone(value)) {
+      if (isNone(value)) {
         return `{{${match}}}`;
       }
 
-      if (Ember.typeOf(value) === 'string') {
+      if (getTypeOf(value) === 'string') {
         value = this.get('_gettext').gettext(value);
       }
 
@@ -439,10 +456,16 @@ export default Ember.Service.extend(Ember.Evented, {
     return new Promise((resolve, reject) => {
       let ajax = this.get('ajax');
       let cache = this.get('_cache');
-      let url = `${this.get('jsonPath')}/${locale}.json`;
+
+      let fingerprintMap = get(this, 'fingerprintMap');
+      let fingerprint = fingerprintMap ? get(fingerprintMap, locale) : null;
+
+      let basePath = this.get('jsonPath');
+      let path = fingerprint ? `${basePath}/${fingerprint}` : basePath;
+      let url = `${path}/${locale}.json`;
 
       let successCallback = (response) => {
-        let cachedResponse = Ember.copy(response, true);
+        let cachedResponse = copy(response, true);
         this.get('_gettext').loadJSON(response);
 
         cache[locale] = cachedResponse;
@@ -450,7 +473,7 @@ export default Ember.Service.extend(Ember.Evented, {
       };
 
       let failureCallback = (reason) => {
-        console.error(`l10n.js: An error occured loading "${url}": ${reason}`);
+        console.error(`l10n.js: An error occurred loading "${url}": ${reason}`);
         reject();
       };
 
