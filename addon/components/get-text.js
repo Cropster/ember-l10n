@@ -102,7 +102,7 @@ export default Component.extend({
     }
 
     let parts = [];
-    let pattern = /{{\s*(\w+)(?:\s*(?:'|")([\w\s]*)(?:'|"))?\s*}}/;
+    let pattern = /{{\s*(\w+)(?:\s*(?:'|")([^'"]*)(?:'|"))?\s*}}/;
 
     let result;
     let text = message;
