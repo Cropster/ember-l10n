@@ -71,6 +71,9 @@ test('it works', function(assert) {
   l10nService.setLocale('en');
 
   return wait().then(() => {
+    this.render(hbs`{{n '<b>I am bold.</b>'}}`);
+    assert.equal(this.$().html(), '&lt;b&gt;I am bold.&lt;/b&gt;', 'It escapes text per default.');
+
     this.set('count', 1);
     this.render(hbs`{{n 'I am one plural translation.' 'We are multiple plural translations.' count}}`);
     assert.equal(this.$().text().trim(), 'I am one plural translation.', 'Plural translations for count=1 are working.');

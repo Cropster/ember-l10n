@@ -22,8 +22,10 @@ export default Ember.Helper.extend({
       return msgid;
     }
 
-    let trans = this.get('l10n').t(msgid, hash);
-    return Ember.String.htmlSafe(trans);
+    return this.get('l10n').t(
+      msgid,
+      hash
+    );
   },
 
   _watchLocale: Ember.observer(

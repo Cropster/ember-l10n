@@ -40,8 +40,12 @@ export default Helper.extend({
       hash.count = count;
     }
 
-    let trans = this.get('l10n').n(msgid, msgidPlural, count, hash);
-    return EmberString.htmlSafe(trans);
+    return this.get('l10n').n(
+      msgid,
+      msgidPlural,
+      count,
+      hash
+    );
   },
 
   _watchLocale: observer(

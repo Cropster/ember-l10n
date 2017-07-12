@@ -49,14 +49,16 @@ export default Component.extend({
   message: '',
 
   /**
-   * Whether parsed strings should be escaped with three curly brackets
-   * or not. This should be set to true if your message contains HTML.
+   * Whether parsed strings should be unescaped with three curly brackets
+   * or not. This should be set to true if your message contains any HTML.
+   * Be sure to use this option only in combination with safe strings and
+   * don't make use of it when dealing with user generated inputs (XSS)!
    *
-   * @attribute escapeText
+   * @attribute unescapeText
    * @type {String}
    * @public
    */
-  escapeText: false,
+  unescapeText: false,
 
   // -------------------------------------------------------------------------
   // Properties

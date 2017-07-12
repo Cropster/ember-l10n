@@ -2,7 +2,7 @@
   {{~#if part.name~}}
     {{~yield part.text part.name}}
   {{~else~}}
-    {{~#if escapeText~}}
+    {{~#if unescapeText~}}
       {{{part.text}}}
     {{~else~}}
       {{~part.text}}

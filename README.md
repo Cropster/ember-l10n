@@ -191,8 +191,9 @@ the `get-text` component.
 {{/get-text}}
 ```
 
-Please note: If your message id contains HTML, you have to set
-`escapeText=true` on the component.
+Please note: If your message id contains HTML, you have to set `unescapeText=true` on the component. 
+Be sure to use this option only in combination with safe strings and don't make use of it when dealing 
+with user generated inputs (XSS)!
 
 ### Testing
 

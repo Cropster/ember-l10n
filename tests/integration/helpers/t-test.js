@@ -63,6 +63,9 @@ test('it works', function(assert) {
     this.render(hbs`{{t 'en'}}`);
     assert.equal(this.$().text().trim(), 'English', 'Common translations are working.');
 
+    this.render(hbs`{{t '<b>I am bold.</b>'}}`);
+    assert.equal(this.$().html(), '&lt;b&gt;I am bold.&lt;/b&gt;', 'It escapes text per default.');
+
     this.set('value', 'PLACEHOLDER');
     this.render(hbs`{{t "I'm a {{placeholder}}." placeholder=value}}`);
     assert.equal(this.$().text().trim(), 'I\'m a PLACEHOLDER.', 'Placeholder translations are working.');
