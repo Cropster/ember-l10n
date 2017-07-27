@@ -53,6 +53,7 @@ export default Service.extend(Evented, {
   // Dependencies
 
   ajax: inject.service('l10n-ajax'),
+  window: inject.service('window'),
 
   // -------------------------------------------------------------------------
   // Properties
@@ -279,9 +280,9 @@ export default Service.extend(Evented, {
    * @public
    */
   detectLocale() {
+    let navigator = this.get('window.navigator');
     let defaultLocale = this.get('defaultLocale');
     let forceLocale = this.get('forceLocale');
-    let { navigator } = window;
     let locale;
 
     // auto detect locale if no force locale
@@ -307,6 +308,14 @@ export default Service.extend(Evented, {
         } else if (navigator.userLanguage) {
           locale = navigator.userLanguage;
         }
+      }
+
+      if (locale) {
+        locale = locale.substr(0,2);
+      } else {
+        locale = defaultLocale
+          ? defaultLocale
+          : "en";
       }
 
       locale = locale.substr(0, 2);
