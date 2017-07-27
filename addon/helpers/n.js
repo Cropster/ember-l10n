@@ -17,7 +17,7 @@ const {
  * provided through named arguments (hash).
  *
  * ```html
- * {{n '{{count}} apple' '{{count}} apples' someBoundProperty}}
+ * {{n '{{count}} apple' '{{count}} apples' someBoundProperty}}
  * ```
  *
  * @namespace Helper

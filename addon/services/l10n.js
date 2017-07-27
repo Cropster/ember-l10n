@@ -241,6 +241,7 @@ export default Service.extend(Evented, {
           this.get('_gettext').setLocale(old);
           this.set('locale', old);
         } catch (e) {
+          // probably destroyed
         }
 
         reject();
@@ -265,7 +266,7 @@ export default Service.extend(Evented, {
     let availableLocales = this.get('availableLocales');
     let hasLocale = !isNone(availableLocales[locale]);
     if (!hasLocale) {
-      console.warn(`l10n.js: Locale "${locale}" is not available!`);
+      console.warn(`l10n.js: Locale "${locale}" is not available!`);
     }
 
     return hasLocale;
@@ -343,7 +344,7 @@ export default Service.extend(Evented, {
    * Translates a singular form message id.
    *
    * @method t
-   * @param {String} msgid
+   * @param {String} msgid
    * @param {Object} hash
    * @return {String}
    * @public
@@ -380,8 +381,8 @@ export default Service.extend(Evented, {
    * Translates a plural form message id.
    *
    * @method n
-   * @param {String} msgid
-   * @param {String} msgidPlural
+   * @param {String} msgid
+   * @param {String} msgidPlural
    * @param {Number} count
    * @param {Object} hash
    * @return {String}
@@ -418,7 +419,7 @@ export default Service.extend(Evented, {
   },
 
   /**
-   * Replaces placeholders like {{placeholder}} from string.
+   * Replaces placeholders like {{placeholder}} from string.
    *
    * @method _strfmt
    * @param {String} string

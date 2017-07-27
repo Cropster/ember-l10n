@@ -1,5 +1,4 @@
-/*jshint node:true*/
-// jscs:disable
+/* global module */
 module.exports = {
   description: 'Adds addons, packages and bower packages for ember-l10n',
   normalizeEntityName: function() {

@@ -108,7 +108,7 @@ export default Component.extend({
 
     let result;
     let text = message;
-    while (result = pattern.exec(text)) {
+    while ((result = pattern.exec(text))) {
       let split = text.split(result[0]);
 
       // 1) normal text

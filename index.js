@@ -1,5 +1,4 @@
-/* jshint node: true */
-// jscs: disable
+/* eslint-env node */
 'use strict';
 
 module.exports = {

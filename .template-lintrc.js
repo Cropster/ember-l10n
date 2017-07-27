@@ -1,7 +1,6 @@
-/* jshint node:true */
-'use strict';
-
 module.exports = {
   extends: 'recommended',
-  'triple-curlies': false
+  rules: {
+    'triple-curlies': false
+  }
 };
