@@ -26,7 +26,8 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
             'You have {{count}} unit in your cart.': [
               'You have {{count}} unit in your cart.',
               'You have {{count}} units in your cart.'
-            ]
+            ],
+            'STATUS_ACTIVE': 'active'
           };
 
           return [
@@ -99,6 +100,7 @@ test('it works', function(assert) {
       'English',
       'Singular translations work correctly.'
     );
+
     assert.strictEqual(
       service.t(
         'I\'m a {{placeholder}}.',
@@ -106,6 +108,15 @@ test('it works', function(assert) {
       ),
       'I\'m a rockstar.',
       'Placeholders work correctly.'
+    );
+
+    assert.strictEqual(
+      service.t(
+        'Current status: {{status}}',
+        { status: service.t('STATUS_ACTIVE') }
+      ),
+      'Current status: active',
+      'Placeholders translations work correctly.'
     );
 
     assert.strictEqual(

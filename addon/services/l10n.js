@@ -440,10 +440,6 @@ export default Service.extend(Evented, {
         return `{{${match}}}`;
       }
 
-      if (getTypeOf(value) === 'string') {
-        value = this.get('_gettext').gettext(value);
-      }
-
       return value;
     };
 
