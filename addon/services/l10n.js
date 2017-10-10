@@ -11,7 +11,9 @@ const {
   copy,
   typeOf: getTypeOf,
   Evented,
-  isNone
+  isNone,
+  Logger,
+  testing
 } = Ember;
 
 /**
@@ -240,7 +242,7 @@ export default Service.extend(Evented, {
         try {
           this.get('_gettext').setLocale(old);
           this.set('locale', old);
-        } catch (e) {
+        } catch(e) {
           // probably destroyed
         }
 
@@ -266,7 +268,7 @@ export default Service.extend(Evented, {
     let availableLocales = this.get('availableLocales');
     let hasLocale = !isNone(availableLocales[locale]);
     if (!hasLocale) {
-      console.warn(`l10n.js: Locale "${locale}" is not available!`);
+      this._log(`l10n.js: Locale "${locale}" is not available!`, 'warn');
     }
 
     return hasLocale;
@@ -312,7 +314,7 @@ export default Service.extend(Evented, {
       }
 
       if (locale) {
-        locale = locale.substr(0,2);
+        locale = locale.substr(0, 2);
       } else {
         locale = defaultLocale
           ? defaultLocale
@@ -326,15 +328,15 @@ export default Service.extend(Evented, {
 
     // provide default locale if not available
     if (!this.hasLocale(locale)) {
-      console.info(`l10n.js: Falling back to default language: "${defaultLocale}"!`);
+      this._log(`l10n.js: Falling back to default language: "${defaultLocale}"!`);
       return defaultLocale;
     }
 
     // otherwise return detected locale
     if (isNone(forceLocale)) {
-      console.info(`l10n.js: Automatically detected user language: "${locale}"`);
+      this._log(`l10n.js: Automatically detected user language: "${locale}"`);
     } else {
-      console.info(`l10n.js: Using forced locale: "${locale}"`);
+      this._log(`l10n.js: Using forced locale: "${locale}"`);
     }
 
     return locale;
@@ -353,8 +355,8 @@ export default Service.extend(Evented, {
     if (getTypeOf(msgid) !== 'string') {
       try {
         msgid = msgid.toString();
-      } catch (e) {
-        console.log('l10n.js: "msgid" param for t() should be either a string or an object implementing toString() method!');
+      } catch(e) {
+        this._log('l10n.js: "msgid" param for t() should be either a string or an object implementing toString() method!');
         return msgid;
       }
     }
@@ -392,8 +394,8 @@ export default Service.extend(Evented, {
     if (getTypeOf(msgid) !== 'string') {
       try {
         msgid = msgid.toString();
-      } catch (e) {
-        console.log('l10n.js: "msgid" param for n() should be either a string or an object implementing toString() method!');
+      } catch(e) {
+        this._log('l10n.js: "msgid" param for n() should be either a string or an object implementing toString() method!');
         return msgid;
       }
     }
@@ -401,8 +403,8 @@ export default Service.extend(Evented, {
     if (getTypeOf(msgidPlural) !== 'string') {
       try {
         msgidPlural = msgidPlural.toString();
-      } catch (e) {
-        console.log('l10n.js: "msgid_plural" param for n() should be either a string or an object implementing toString() method!');
+      } catch(e) {
+        this._log('l10n.js: "msgid_plural" param for n() should be either a string or an object implementing toString() method!');
         return msgid;
       }
     }
@@ -479,7 +481,7 @@ export default Service.extend(Evented, {
       };
 
       let failureCallback = (reason) => {
-        console.error(`l10n.js: An error occurred loading "${url}": ${reason}`);
+        this._log(`l10n.js: An error occurred loading "${url}": ${reason}`, 'error');
         reject();
       };
 
@@ -496,6 +498,27 @@ export default Service.extend(Evented, {
         failureCallback
       );
     });
+  },
+
+  /**
+   * Log a message.
+   * When testing, this will be swallowed to keep the output clean.
+   *
+   * @method _log
+   * @param {String} str
+   * @param {'log'|'warn'|'error'} type
+   * @private
+   */
+  _log(str, type = 'log') {
+    if (testing) {
+      return;
+    }
+
+    if (!['log', 'warn', 'error'].includes(type)) {
+      type = 'log';
+    }
+
+    Logger[type](str);
   }
 
 });
