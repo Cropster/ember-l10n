@@ -55,7 +55,6 @@ export default Service.extend(Evented, {
   // Dependencies
 
   ajax: inject.service('l10n-ajax'),
-  window: inject.service('window'),
 
   // -------------------------------------------------------------------------
   // Properties
@@ -156,6 +155,19 @@ export default Service.extend(Evented, {
    */
   _cache: computed(function() {
     return {}; // complex type!
+  }),
+
+  /**
+   * The window object.
+   * This can be overwritten for tests or similar.
+   *
+   * @property _window
+   * @type {Object}
+   * @readOnly
+   * @private
+   */
+  _window: computed(function() {
+    return window || {};
   }),
 
   /**
@@ -283,7 +295,7 @@ export default Service.extend(Evented, {
    * @public
    */
   detectLocale() {
-    let navigator = this.get('window.navigator');
+    let navigator = get(this, '_window.navigator');
     let defaultLocale = this.get('defaultLocale');
     let forceLocale = this.get('forceLocale');
     let locale;

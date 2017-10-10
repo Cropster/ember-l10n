@@ -1,14 +1,12 @@
 import { moduleFor, test } from 'ember-qunit';
 import Pretender from 'pretender';
 import wait from 'ember-test-helpers/wait';
-import WindowService from 'ember-window/services/window';
 
 let server;
 
 moduleFor('service:l10n', 'Unit | Service | l10n', {
   needs: [
-    'service:l10n-ajax',
-    'service:window'
+    'service:l10n-ajax'
   ],
 
   beforeEach() {
@@ -163,13 +161,7 @@ test('it works', function(assert) {
 });
 
 test('detect and swap locale test', function(assert) {
-  let mockWindowService = WindowService.extend({
-    windowObject: {
-      navigator: null
-    }
-  });
-
-  let mockWindow = mockWindowService.create();
+  let window = {};
 
   let service = this.subject({
     availableLocales: {
@@ -179,12 +171,12 @@ test('detect and swap locale test', function(assert) {
     },
     autoInitialize: false,
     defaultLocale: 'de',
-    window: mockWindow
+    _window: window
   });
 
   assert.strictEqual(service.detectLocale(), 'de', '`defaultLocale` is used on failed detection.');
 
-  mockWindow.set('windowObject.navigator', { language: 'it' });
+  window.navigator = { language: 'it' };
 
   assert.strictEqual(service.detectLocale(), 'it', 'Detected locale is used if listed in `availableLocales`.');
 
