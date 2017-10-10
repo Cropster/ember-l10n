@@ -10,7 +10,7 @@ module.exports = {
     return this.addPackagesToProject([
       {
         name: 'xgettext-template',
-        target: '^2.6.0'
+        target: '^3.3.0'
       },
       {
         name: 'gettext.js',
@@ -18,16 +18,8 @@ module.exports = {
       },
       {
         name: 'ember-ajax',
-        target: '^2.4.1'
+        target: '^2.5.3'
       }
-    ]).then(() => {
-      return this.addBowerPackagesToProject([
-        {
-          source: 'git://github.com/Cropster/gettext.js#master',
-          name: 'gettext.js',
-          target: ''
-        }
-      ]);
-    });
+    ]);
   }
 };

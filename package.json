@@ -41,8 +41,8 @@
     "ember-source": "~2.14.1",
     "ember-truth-helpers": "1.2.0",
     "gettext.js": "^0.5.2",
-    "loader.js": "^4.2.3",
-    "xgettext-template": "^2.6.0"
+    "loader.js": "^4.0.10",
+    "xgettext-template": "^3.3.0"
   },
   "keywords": [
     "ember-addon",
@@ -56,14 +56,13 @@
   ],
   "dependencies": {
     "chalk": "^1.1.3",
-    "ember-cli-babel": "^6.3.0",
-    "ember-cli-htmlbars": "^2.0.1",
-    "ember-window": "~1.0.5",
+    "ember-cli-babel": "^5.2.1",
+    "ember-cli-htmlbars": "^1.1.1",
     "inquirer": "^1.1.2",
     "make-array": "^1.0.1",
     "merge": "^1.2.0",
     "nopt": "^3.0.6",
-    "shelljs": "^0.7.0"
+    "shelljs": "^0.7.6"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
