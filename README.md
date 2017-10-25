@@ -246,7 +246,7 @@ ember l10n:extract <options...>
     aliases: -x <value>
   --skip-patterns (Array) (Default: ['mirage','fixtures','styleguide']) List of regex patterns to completely ignore from extraction
     aliases: -s <value>
-  --skip-dependencies (Array) (Default: ) An array of dependency names to exclude from parsing.
+  --skip-dependencies (Array) (Default: []) An array of dependency names to exclude from parsing.
     aliases: -sd <value>
   --skip-all-dependencies (Boolean) (Default: true) If this is true, do not parse the node_modules/lib folders. (configured in config/l10n-extract.js)
     aliases: -sad  
@@ -314,7 +314,7 @@ Note that by default, this will create a fingerprinted json file & update the `a
 
 ### Synchronizer
 
-The synchronizer will parse a given `PO` file, use the message ids from each entry and uses them as new message ids accross `JS` and `HBS` files in your app. This is especially helpful if you proof read your current message ids before handing them over to translators for other languages.
+The synchronizer will parse a given `PO` file, use message strings from each entry and uses them as new message ids accross `JS` and `HBS` files in your app. This is especially helpful if you proof read your current message ids before handing them over to translators for other languages.
 
 Run the following command from your Ember project root for synchronization:
 
