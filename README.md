@@ -38,6 +38,9 @@ and replaced at runtime.
 ember-l10n provides powerful string substitution and even component
 substitution for dynamic strings. See the Components section below.
 
+###### Usage hints:
+Unfortunately, ```xgettext``` doesn't support ES6 template strings ([at the moment](https://savannah.gnu.org/bugs/?50920)), but the addon provides an easy way to handle variables in strings, please refer to [Helpers](#helpers) and [Components](#components) sections.
+
 ## Note for Upgrading
 
 The latest version has introduced fingerprinting for the generated JSON files. Please read the [Fingerprinting](#fingerprinting) & [Converter](#converter) sections.
