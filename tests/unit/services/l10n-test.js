@@ -25,6 +25,7 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
               'You have {{count}} unit in your cart.',
               'You have {{count}} units in your cart.'
             ],
+            'I\'m a multiline.': 'I\'m a multiline.',
             'STATUS_ACTIVE': 'active'
           };
 
@@ -69,7 +70,6 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
 test('it works', function(assert) {
   let service = this.subject({
     autoInitialize: false
-    // ajax: mockAjax
   });
 
   assert.ok(service);
@@ -156,6 +156,33 @@ test('it works', function(assert) {
       ),
       'You have 5 units in your cart.',
       'Plural translations work correctly with plural form.'
+    );
+
+    assert.strictEqual(
+      service.t(
+        `I'm
+        a
+        multiline
+        phrase.`
+      ),
+      'I\'m a multiline phrase.',
+      'Multiline key lookups work correctly.'
+    );
+
+    assert.strictEqual(
+      service.t(null),
+      null,
+      'Non-string values are returned untransformed.'
+    );
+
+    assert.strictEqual(
+      service.t({
+        toString: function(){
+          return 'en';
+        }
+      }),
+      'English',
+      'Objects with toString() methods uses string representations.'
     );
   });
 });

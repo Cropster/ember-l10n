@@ -364,16 +364,16 @@ export default Service.extend(Evented, {
    * @public
    */
   t(msgid, hash = {}) {
-    if (getTypeOf(msgid) !== 'string') {
-      try {
-        msgid = msgid.toString();
-      } catch(e) {
-        this._log('l10n.js: "msgid" param for t() should be either a string or an object implementing toString() method!');
-        return msgid;
-      }
+    let key = this._sanitizeKey(msgid);
+    if (getTypeOf(key)!=='string') {
+      return key;
     }
 
-    return this._strfmt(this.get('_gettext').gettext(msgid), hash);
+    console.log(key);
+
+    let message = this.get('_gettext').gettext(key);
+
+    return this._strfmt(message, hash);
   },
 
   /**
@@ -403,33 +403,46 @@ export default Service.extend(Evented, {
    * @public
    */
   n(msgid, msgidPlural, count = 1, hash = {}) {
-    if (getTypeOf(msgid) !== 'string') {
+    let singularKey = this._sanitizeKey(msgid);
+    if (getTypeOf(singularKey)!=='string') {
+      return singularKey;
+    }
+
+    let pluralKey = this._sanitizeKey(msgidPlural);
+    if (getTypeOf(pluralKey)!=='string') {
+      return singularKey;
+    }
+
+    let message = this.get('_gettext').ngettext(
+      singularKey,
+      pluralKey,
+      count
+    );
+
+    hash = merge({ count }, hash);
+
+    return this._strfmt(message, hash);
+  },
+
+  /**
+   * Sanitizes message ids by removing unallowed characters like whitespace.
+   *
+   * @method _prepareKey
+   * @param {String} key
+   * @return {String}
+   * @private
+   */
+  _sanitizeKey(key) {
+    if (getTypeOf(key) !== 'string') {
       try {
-        msgid = msgid.toString();
+        key = key.toString();
       } catch(e) {
-        this._log('l10n.js: "msgid" param for n() should be either a string or an object implementing toString() method!');
-        return msgid;
+        this._log('l10n.js: Message ids should be either a string or an object implementing toString() method!');
+        return key;
       }
     }
 
-    if (getTypeOf(msgidPlural) !== 'string') {
-      try {
-        msgidPlural = msgidPlural.toString();
-      } catch(e) {
-        this._log('l10n.js: "msgid_plural" param for n() should be either a string or an object implementing toString() method!');
-        return msgid;
-      }
-    }
-
-    // If count is not manually set in the hash, use the provided count variable
-    // This is a small utility function that can reduce boilerplate code
-    if (!get(hash, 'count')) {
-      // hash should not be mutated
-      hash = merge({}, hash);
-      hash.count = count;
-    }
-
-    return this._strfmt(this.get('_gettext').ngettext(msgid, msgidPlural, count), hash);
+    return key.replace(/\s+/g, ' ');
   },
 
   /**
