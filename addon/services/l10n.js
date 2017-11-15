@@ -369,8 +369,6 @@ export default Service.extend(Evented, {
       return key;
     }
 
-    console.log(key);
-
     let message = this.get('_gettext').gettext(key);
 
     return this._strfmt(message, hash);
