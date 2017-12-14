@@ -1,4 +1,9 @@
-import Ember from 'ember';
+import {
+  get,
+  observer
+} from '@ember/object';
+import Helper from '@ember/component/helper';
+import { inject as service } from '@ember/service';
 
 /**
  * This helper provides gettext singularization for message ids.
@@ -14,21 +19,21 @@ import Ember from 'ember';
  * @extends Ember.Helper
  * @public
  */
-export default Ember.Helper.extend({
-  l10n: Ember.inject.service(),
+export default Helper.extend({
+  l10n: service(),
 
   compute([msgid], hash) {
-    if (Ember.isNone(msgid)) {
+    if (!msgid) {
       return msgid;
     }
 
-    return this.get('l10n').t(
+    return get(this, 'l10n').t(
       msgid,
       hash
     );
   },
 
-  _watchLocale: Ember.observer(
+  _watchLocale: observer(
     'l10n.locale',
     function() {
       this.recompute();

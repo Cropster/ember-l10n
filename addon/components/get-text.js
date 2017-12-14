@@ -1,12 +1,10 @@
-import Ember from 'ember';
-import layout from '../templates/get-text';
-
-const {
-  get,
-  Component,
-  typeOf: getTypeOf,
+import {
+  typeOf,
   isEmpty
-} = Ember;
+} from '@ember/utils';
+import { get } from '@ember/object';
+import Component from "@ember/component"
+import layout from '../templates/get-text';
 
 /**
  * A simple helper component to include dynamic parts - mostly link-to helper - within gettext message ids.
@@ -90,25 +88,27 @@ export default Component.extend({
     let message = get(this, 'message');
 
     if (!message) {
+      // eslint-disable-next-line no-console
       console.error('get-text.js: You need to provide a "message" attribute containing a gettext message!');
       return;
     }
 
-    if (getTypeOf(message) !== 'string') {
+    if (typeOf(message) !== 'string') {
       try {
         message = message.toString();
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error('get-text.js: "message" must be either a string or an object implementing toString() method!');
         return;
       }
     }
 
     let parts = [];
-    let pattern = /{{\s*(\w+)(?:\s*(?:'|")([^'"]*)(?:'|"))?\s*}}/;
+    let regex = /{{\s*(\w+)(?:\s*(?:'|")([^'"]*)(?:'|"))?\s*}}/;
 
     let result;
     let text = message;
-    while ((result = pattern.exec(text))) {
+    while ((result = regex.exec(text))) {
       let split = text.split(result[0]);
 
       // 1) normal text

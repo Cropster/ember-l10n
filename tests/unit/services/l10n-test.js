@@ -1,14 +1,12 @@
 import { moduleFor, test } from 'ember-qunit';
+import { get, set } from '@ember/object';
 import Pretender from 'pretender';
-import wait from 'ember-test-helpers/wait';
-import WindowService from 'ember-window/services/window';
 
 let server;
 
 moduleFor('service:l10n', 'Unit | Service | l10n', {
   needs: [
-    'service:l10n-ajax',
-    'service:window'
+    'service:l10n-ajax'
   ],
 
   beforeEach() {
@@ -17,17 +15,36 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
         '/assets/locales/en.json',
         function() {
           let response = {
-            '': {
+            'headers': {
               'language': 'en',
               'plural-forms': 'nplurals=2; plural=(n!=1);'
             },
-            'en': 'English',
-            'I\'m a {{placeholder}}.': 'I\'m a {{placeholder}}.',
-            'You have {{count}} unit in your cart.': [
-              'You have {{count}} unit in your cart.',
-              'You have {{count}} units in your cart.'
-            ],
-            'STATUS_ACTIVE': 'active'
+            'translations': {
+              '': {
+                'en': {
+                  'msgid': 'en',
+                  'msgstr': [
+                    'English'
+                  ]
+                },
+                'I\'m a {{placeholder}}.': {
+                  'msgstr': [
+                    'I\'m a {{placeholder}}.'
+                  ]
+                },
+                'You have {{count}} unit in your cart.': {
+                  'msgstr': [
+                    'You have {{count}} unit in your cart.',
+                    'You have {{count}} units in your cart.'
+                  ],
+                },
+                'STATUS_ACTIVE': {
+                  'msgstr': [
+                    'active'
+                  ]
+                }
+              }
+            }
           };
 
           return [
@@ -44,11 +61,19 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
         '/assets/locales/de.json',
         function() {
           let response = {
-            '': {
+            'headers': {
               'language': 'de',
               'plural-forms': 'nplurals=2; plural=(n!=1);'
             },
-            'testing': 'Test'
+            'translations': {
+              '': {
+                'testing': {
+                  'msgstr': [
+                    'Test'
+                  ]
+                }
+              }
+            }
           };
 
           return [
@@ -68,109 +93,112 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
   }
 });
 
-test('it works', function(assert) {
+test('it works', async function(assert) {
   let service = this.subject({
-    autoInitialize: false
-    // ajax: mockAjax
+    autoInitialize: false,
+    _window: {
+      navigator: {
+        language: 'en'
+      }
+    }
   });
 
   assert.ok(service);
 
-  let defaultLocale = service.get('defaultLocale');
-
-  // override detected locale!
-  service.setLocale('en');
-
   assert.strictEqual(
-    defaultLocale,
+    get(service, 'defaultLocale'),
     'en',
     'English is default locale.'
   );
 
-  service.setLocale('hi'); // = Hindi
+  try {
+    await service.setLocale('hi'); // = Hindi
+  } catch(e) {
+    // noop
+  }
+
+  await service.setLocale('en'); // = English
+
   assert.strictEqual(
-    service.get('locale'),
-    defaultLocale,
+    service.getLocale(),
+    get(service, 'defaultLocale'),
     'Setting an unsupported locale doesn\'t work.'
   );
 
-  return wait().then(() => {
-    assert.strictEqual(
-      service.t('en'),
-      'English',
-      'Singular translations work correctly.'
-    );
+  console.log('Y')
 
-    assert.strictEqual(
-      service.t(
-        'I\'m a {{placeholder}}.',
-        { placeholder: 'rockstar' }
-      ),
-      'I\'m a rockstar.',
-      'Placeholders work correctly.'
-    );
+  assert.strictEqual(
+    service.t('en'),
+    'English',
+    'Singular translations work correctly.'
+  );
 
-    assert.strictEqual(
-      service.t(
-        'Current status: {{status}}',
-        { status: service.t('STATUS_ACTIVE') }
-      ),
-      'Current status: active',
-      'Placeholders translations work correctly.'
-    );
+  assert.strictEqual(
+    service.t(
+      'I\'m a {{placeholder}}.',
+      { placeholder: 'rockstar' }
+    ),
+    'I\'m a rockstar.',
+    'Placeholders work correctly.'
+  );
 
-    assert.strictEqual(
-      service.tVar(
-        'I\'m a {{placeholder}}.',
-        { placeholder: 'rockstar' }
-      ),
-      'I\'m a rockstar.',
-      'tVar works correctly.'
-    );
+  assert.strictEqual(
+    service.t(
+      'Current status: {{status}}',
+      { status: service.t('STATUS_ACTIVE') }
+    ),
+    'Current status: active',
+    'Placeholders translations work correctly.'
+  );
 
-    assert.strictEqual(
-      service.n(
-        'You have {{count}} unit in your cart.',
-        'You have {{count}} units in your cart.',
-        1,
-        { count: 1 }
-      ),
-      'You have 1 unit in your cart.',
-      'Plural translations work correctly with singular form.'
-    );
+  assert.strictEqual(
+    service.tVar(
+      'I\'m a {{placeholder}}.',
+      { placeholder: 'rockstar' }
+    ),
+    'I\'m a rockstar.',
+    'tVar works correctly.'
+  );
 
-    assert.strictEqual(
-      service.n(
-        'You have {{count}} unit in your cart.',
-        'You have {{count}} units in your cart.',
-        2
-      ),
-      'You have 2 units in your cart.',
-      'Plural translations use count implicitly if not set in hash.'
-    );
+  assert.strictEqual(
+    service.n(
+      'You have {{count}} unit in your cart.',
+      'You have {{count}} units in your cart.',
+      1,
+      { count: 1 }
+    ),
+    'You have 1 unit in your cart.',
+    'Plural translations work correctly with singular form.'
+  );
 
-    assert.strictEqual(
-      service.n(
-        'You have {{count}} unit in your cart.',
-        'You have {{count}} units in your cart.',
-        5,
-        { count: 5 }
-      ),
-      'You have 5 units in your cart.',
-      'Plural translations work correctly with plural form.'
-    );
-  });
+  assert.strictEqual(
+    service.n(
+      'You have {{count}} unit in your cart.',
+      'You have {{count}} units in your cart.',
+      2
+    ),
+    'You have 2 units in your cart.',
+    'Plural translations use count implicitly if not set in hash.'
+  );
+
+  assert.strictEqual(
+    service.n(
+      'You have {{count}} unit in your cart.',
+      'You have {{count}} units in your cart.',
+      5,
+      { count: 5 }
+    ),
+    'You have 5 units in your cart.',
+    'Plural translations work correctly with plural form.'
+  );
 });
 
-test('detect and swap locale test', function(assert) {
-  let mockWindowService = WindowService.extend({
-    windowObject: {
-      navigator: null
+test('detect and swap locale test', async function(assert) {
+  let _window = {
+    navigator: {
+      language: null
     }
-  });
-
-  let mockWindow = mockWindowService.create();
-
+  };
   let service = this.subject({
     availableLocales: {
       'de': true,
@@ -179,31 +207,29 @@ test('detect and swap locale test', function(assert) {
     },
     autoInitialize: false,
     defaultLocale: 'de',
-    window: mockWindow
+    _window
   });
 
   assert.strictEqual(service.detectLocale(), 'de', '`defaultLocale` is used on failed detection.');
 
-  mockWindow.set('windowObject.navigator', { language: 'it' });
+  set(_window, 'navigator.language', 'it');
 
   assert.strictEqual(service.detectLocale(), 'it', 'Detected locale is used if listed in `availableLocales`.');
 
-  service.set('forceLocale', 'it');
+  set(service, 'forceLocale', 'it');
 
   assert.strictEqual(service.detectLocale(), 'it', '`forceLocale` is used if listed in `availableLocales`.');
 
-  service.set('forceLocale', 'es');
+  set(service, 'forceLocale', 'es');
 
   assert.strictEqual(service.detectLocale(), 'de', '`defaultLocale` is used if not in `availableLocales`.');
 
-  service.set('defaultLocale', 'en');
+  set(service, 'defaultLocale', 'en');
 
   assert.strictEqual(service.getLocale(), 'en', '`defaultLocale` is provided if no locale set.');
 
-  service.setLocale('de');
+  await service.setLocale('de');
 
-  return wait().then(() => {
-    assert.strictEqual(service.getLocale(), 'de', 'Changing locales via `setLocale()` changes for supported locales.');
-    assert.strictEqual(service.t('testing'), 'Test', 'Changing locales via `setLocale()` loads corresponding translations.');
-  });
+  assert.strictEqual(service.getLocale(), 'de', 'Changing locales via `setLocale()` changes for supported locales.');
+  assert.strictEqual(service.t('testing'), 'Test', 'Changing locales via `setLocale()` loads corresponding translations.');
 });

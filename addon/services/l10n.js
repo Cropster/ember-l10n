@@ -1,18 +1,17 @@
-import Ember from 'ember';
-import GetText from 'i18n';
-
-const {
-  computed,
-  Service,
-  inject,
-  RSVP: { Promise },
+import {
+  typeOf
+} from '@ember/utils';
+import {
   get,
-  merge,
-  copy,
-  typeOf: getTypeOf,
-  Evented,
-  isNone
-} = Ember;
+  set,
+  computed
+} from '@ember/object';
+import RSVP from 'rsvp';
+import Service from '@ember/service';
+import { assign } from '@ember/polyfills';
+import { inject as service } from '@ember/service';
+
+const { Promise } = RSVP;
 
 /**
  * This service translates through gettext.js.
@@ -20,6 +19,7 @@ const {
  * for translations message ids from JS source:
  *
  * - t(msgid, hash);
+ * - tVar(msgid, hash);
  * - n(msgid, msgidPlural, count, hash);
  *
  * Furthermore, there's an auto initialization
@@ -48,12 +48,11 @@ const {
  * @extends Ember.Evented
  * @public
  */
-export default Service.extend(Evented, {
+export default Service.extend({
   // -------------------------------------------------------------------------
   // Dependencies
 
-  ajax: inject.service('l10n-ajax'),
-  window: inject.service('window'),
+  ajax: service('l10n-ajax'),
 
   // -------------------------------------------------------------------------
   // Properties
@@ -110,6 +109,16 @@ export default Service.extend(Evented, {
   autoInitialize: true,
 
   /**
+   * A map of fingerprints per language.
+   * Overwrite this with your actual fingerprint map!
+   *
+   * @property fingerprintMap
+   * @type {Object}
+   * @protected
+   */
+  fingerprintMap: null,
+
+  /**
    * Directory containing JSON files with all
    * translations for corresponding locale.
    *
@@ -121,51 +130,48 @@ export default Service.extend(Evented, {
   jsonPath: '/assets/locales',
 
   /**
-   * A map of fingerprints per language.
-   * Overwrite this with your actual fingerprint map!
-   *
-   * @property fingerprintMap
-   * @type {Object}
-   * @protected
-   */
-  fingerprintMap: null,
-
-  /**
    * Currently available translations hash.
    *
    * @property availableLocales
    * @type {Object}
    * @public
    */
-  availableLocales: computed(function() {
+  availableLocales: computed('locale', function() {
     return {
       'en': this.t('en')
     };
   }),
 
   /**
-   * Cache persisting loaded JSON files to
-   * avoid duplicated requests going out.
+   * Hashmap storing loaded translations by
+   * locale at runtime to avoid requests on
+   * consequent invocations of `setLocale()`.
    *
-   * @property _cache
+   * @property _data
    * @type {Object}
    * @default {}
    * @private
    */
-  _cache: computed(function() {
-    return {}; // complex type!
+  _data: computed(function() {
+    return {};
+  }),
+
+  _plurals: computed(function() {
+    return {};
   }),
 
   /**
-   * Reference to gettext library. This gets
-   * lazily initialized within `init` method.
+   * The window object.
+   * This can be overwritten for tests or similar.
    *
-   * @property _gettext
-   * @type {String}
-   * @default null
+   * @property _window
+   * @type {Object}
+   * @readOnly
    * @private
    */
-  _gettext: null,
+  _window: computed(function() {
+    return window || {};
+  }),
 
   // -------------------------------------------------------------------------
   // Methods
@@ -181,12 +187,10 @@ export default Service.extend(Evented, {
    */
   init() {
     this._super(...arguments);
-    this.set('_gettext', new GetText());
-    if (!this.get('autoInitialize')) {
-      return;
-    }
 
-    this.setLocale(this.detectLocale());
+    if (get(this, 'autoInitialize')) {
+      this.setLocale(this.detectLocale());
+    }
   },
 
   /**
@@ -199,13 +203,10 @@ export default Service.extend(Evented, {
    * @public
    */
   getLocale() {
-    let defaultLocale = this.get('defaultLocale');
-    let locale = this.get('locale');
-    if (isNone(locale)) {
-      return defaultLocale;
-    }
+    let defaultLocale = get(this, 'defaultLocale');
+    let locale = get(this, 'locale');
 
-    return locale;
+    return locale || defaultLocale;
   },
 
   /**
@@ -224,26 +225,12 @@ export default Service.extend(Evented, {
         return;
       }
 
-      let old = this.getLocale();
-
-      this.set('locale', locale);
-      this.get('_gettext').setLocale(locale);
-
       let successCallback = () => {
-        this.notifyPropertyChange('locale');
-        this.notifyPropertyChange('availableLocales');
-
+        set(this, 'locale', locale);
         resolve();
       };
 
       let failureCallback = () => {
-        try {
-          this.get('_gettext').setLocale(old);
-          this.set('locale', old);
-        } catch (e) {
-          // probably destroyed
-        }
-
         reject();
       };
 
@@ -263,10 +250,10 @@ export default Service.extend(Evented, {
    * @public
    */
   hasLocale(locale) {
-    let availableLocales = this.get('availableLocales');
-    let hasLocale = !isNone(availableLocales[locale]);
+    let availableLocales = get(this, 'availableLocales');
+    let hasLocale = !!availableLocales[locale];
     if (!hasLocale) {
-      console.warn(`l10n.js: Locale "${locale}" is not available!`);
+      this._log(`Locale "${locale}" is not available!`, 'warn');
     }
 
     return hasLocale;
@@ -281,25 +268,14 @@ export default Service.extend(Evented, {
    * @public
    */
   detectLocale() {
-    let navigator = this.get('window.navigator');
-    let defaultLocale = this.get('defaultLocale');
-    let forceLocale = this.get('forceLocale');
+    let navigator = get(this, '_window.navigator');
+    let defaultLocale = get(this, 'defaultLocale');
+    let forceLocale = get(this, 'forceLocale');
     let locale;
 
     // auto detect locale if no force locale
-    if (isNone(forceLocale)) {
-
-      // special case: android user agents
-      if (navigator && navigator.userAgent &&
-        (locale = navigator.userAgent.match(
-          /android.*\W(\w\w)-(\w\w)\W/i
-        ))
-      ) {
-        locale = locale[1];
-      }
-
-      // for all other browsers
-      if (isNone(locale) && navigator) {
+    if (!forceLocale) {
+      if (navigator) {
         if (navigator.language) {
           locale = navigator.language;
         } else if (navigator.browserLanguage) {
@@ -308,6 +284,8 @@ export default Service.extend(Evented, {
           locale = navigator.systemLanguage;
         } else if (navigator.userLanguage) {
           locale = navigator.userLanguage;
+        } else if (navigator.languages) {
+          locale = navigator.languages[0];
         }
       }
 
@@ -326,15 +304,15 @@ export default Service.extend(Evented, {
 
     // provide default locale if not available
     if (!this.hasLocale(locale)) {
-      console.info(`l10n.js: Falling back to default language: "${defaultLocale}"!`);
+      this._log(`Falling back to default language: "${defaultLocale}"!`);
       return defaultLocale;
     }
 
     // otherwise return detected locale
-    if (isNone(forceLocale)) {
-      console.info(`l10n.js: Automatically detected user language: "${locale}"`);
+    if (forceLocale) {
+      this._log(`Automatically detected user language: "${locale}"`);
     } else {
-      console.info(`l10n.js: Using forced locale: "${locale}"`);
+      this._log(`Using forced locale: "${locale}"`);
     }
 
     return locale;
@@ -349,17 +327,47 @@ export default Service.extend(Evented, {
    * @return {String}
    * @public
    */
-  t(msgid, hash = {}) {
-    if (getTypeOf(msgid) !== 'string') {
-      try {
-        msgid = msgid.toString();
-      } catch (e) {
-        console.log('l10n.js: "msgid" param for t() should be either a string or an object implementing toString() method!');
-        return msgid;
-      }
+  t(msgid, hash = {}, msgctxt = '') {
+    let key = this._sanitizeKey(msgid);
+    if (typeOf(key) !== 'string') {
+      return msgid;
     }
 
-    return this._strfmt(this.get('_gettext').gettext(msgid), hash);
+    let [ message ] = this._readKey(key, msgctxt);
+
+    return this._strfmt(message || key, hash);
+  },
+
+  /**
+   * Translates a plural form message id.
+   *
+   * @method n
+   * @param {String} msgid
+   * @param {String} msgidPlural
+   * @param {Number} count
+   * @param {Object} hash
+   * @return {String}
+   * @public
+   */
+  n(msgid, msgidPlural, count = 1, hash = {}, msgctxt = '') {
+    let sKey = this._sanitizeKey(msgid);
+    if (typeOf(sKey) !== 'string') {
+      return msgid;
+    }
+
+    let pKey = this._sanitizeKey(msgidPlural);
+    if (typeOf(pKey) !== 'string') {
+      return msgid;
+    }
+
+    let locale = this.getLocale();
+    let messages = this._readKey(sKey, msgctxt);
+    let pluralFunc = get(this, `_plurals.${locale}`);
+
+    let { plural: mIndex } = pluralFunc(count);
+    let message = messages[mIndex] || sKey;
+
+    return this._strfmt(message, assign({ count }, hash));
   },
 
   /**
@@ -378,44 +386,52 @@ export default Service.extend(Evented, {
   },
 
   /**
-   * Translates a plural form message id.
+   * Reads JSON data for given message id containing an array like:
    *
-   * @method n
-   * @param {String} msgid
-   * @param {String} msgidPlural
-   * @param {Number} count
-   * @param {Object} hash
-   * @return {String}
-   * @public
+   * ```
+   * [
+   *   'ID of plural message' || null,
+   *   'Translated singular',
+   *   'Translated plural'
+   * ]
+   * ```
+   *
+   * @method _getMessages
+   * @param {String} key
+   * @param {String} context
+   * @return {Array}
+   * @private
    */
-  n(msgid, msgidPlural, count = 1, hash = {}) {
-    if (getTypeOf(msgid) !== 'string') {
+  _readKey(key, context = '') {
+    let locale = get(this, 'locale');
+    let _data = get(this, '_data');
+    let json = _data[locale] || {};
+
+    json = json.translations || {};
+    json = json[context] || json[''] || {};
+
+    return json[key] && json[key].msgstr || [];
+  },
+
+  /**
+   * Sanitizes message ids by removing unallowed characters like whitespace.
+   *
+   * @method _sanitizeKey
+   * @param {String} key
+   * @return {String}
+   * @private
+   */
+  _sanitizeKey(key) {
+    if (typeOf(key) !== 'string') {
       try {
-        msgid = msgid.toString();
-      } catch (e) {
-        console.log('l10n.js: "msgid" param for n() should be either a string or an object implementing toString() method!');
-        return msgid;
+        key = key.toString();
+      } catch(e) {
+        this._log('Message ids should be either a string or an object implementing toString() method!');
+        return key;
       }
     }
 
-    if (getTypeOf(msgidPlural) !== 'string') {
-      try {
-        msgidPlural = msgidPlural.toString();
-      } catch (e) {
-        console.log('l10n.js: "msgid_plural" param for n() should be either a string or an object implementing toString() method!');
-        return msgid;
-      }
-    }
-
-    // If count is not manually set in the hash, use the provided count variable
-    // This is a small utility function that can reduce boilerplate code
-    if (!get(hash, 'count')) {
-      // hash should not be mutated
-      hash = merge({}, hash);
-      hash.count = count;
-    }
-
-    return this._strfmt(this.get('_gettext').ngettext(msgid, msgidPlural, count), hash);
+    return key.replace(/\s+/g, ' ');
   },
 
   /**
@@ -428,20 +444,19 @@ export default Service.extend(Evented, {
    * @private
    */
   _strfmt(string, hash) {
-    // don't process empty hashes
-    if (isNone(hash)) {
+    // ignore each invalid hash param
+    if (typeOf(hash) !== 'object') {
       return string;
     }
 
-    // find and replace all {{placeholder}}
+    // find all: {{placeholderName}}
     let pattern = /{{\s*([\w]+)\s*}}/g;
     let replace = (idx, match) => {
       let value = hash[match];
-      if (isNone(value)) {
-        return `{{${match}}}`;
-      }
 
-      return value;
+      return value
+        ? value
+        : `{{${match}}}`
     };
 
     return string.replace(pattern, replace);
@@ -460,33 +475,39 @@ export default Service.extend(Evented, {
    */
   _loadJSON(locale) {
     return new Promise((resolve, reject) => {
-      let ajax = this.get('ajax');
-      let cache = this.get('_cache');
+      let _data = get(this, '_data');
+
+      let ajax = get(this, 'ajax');
 
       let fingerprintMap = get(this, 'fingerprintMap');
       let fingerprint = fingerprintMap ? get(fingerprintMap, locale) : null;
 
-      let basePath = this.get('jsonPath');
+      let basePath = get(this, 'jsonPath');
       let path = fingerprint ? `${basePath}/${fingerprint}` : basePath;
       let url = `${path}/${locale}.json`;
 
       let successCallback = (response) => {
-        let cachedResponse = copy(response, true);
-        this.get('_gettext').loadJSON(response);
+        if (get(this, 'isDestroyed')) {
+          return;
+        }
 
-        cache[locale] = cachedResponse;
+        this._saveJSON(response);
         resolve();
       };
 
       let failureCallback = (reason) => {
-        console.error(`l10n.js: An error occurred loading "${url}": ${reason}`);
+        if (get(this, 'isDestroyed')) {
+          return;
+        }
+
+        this._log(`An error occurred loading "${url}": ${reason}`, 'error');
         reject();
       };
 
-      // used cache translation if present
-      if (cache.hasOwnProperty(locale)) {
-        successCallback(cache[locale]);
-        resolve(cache[locale]);
+      // used cached translation from hash map
+      if (_data.hasOwnProperty(locale)) {
+        successCallback(_data[locale]);
+        resolve(_data[locale]);
         return;
       }
 
@@ -496,6 +517,79 @@ export default Service.extend(Evented, {
         failureCallback
       );
     });
+  },
+
+  /**
+   * Extracts `plural-forms` key from meta data stored in data's `''` key.
+   * Transforms and stores it into a callable function for usage in `n()`.
+   * Besides, it saves whole response containing translations in hash map.
+   *
+   * @method _saveJSON
+   * @param {Object} response
+   * @return {Void}
+   * @private
+   */
+  _saveJSON(response) {
+    let regex = new RegExp('^\\s*nplurals\\s*=\\s*[\\d]+\\s*;\\s*plural\\s*=\\s*(?:[-+*/%?!&|=<>():;n\\d\\s]+);$');
+    let fallback = 'nplurals=2; plural=(n != 1)';
+
+    let {
+      headers: {
+        language: locale,
+        'plural-forms': pluralForm
+      }
+    } = response;
+
+    if (!pluralForm.match(regex)) {
+      this._log(`Plural form "${pluralForm}" is invalid: Falling back to english version "${fallback}"!`);
+      pluralForm = fallback;
+    }
+
+    let func = new Function('n', `
+      var nplurals, plural; ${pluralForm};
+
+      switch (typeof plural) {
+        case 'boolean':
+          plural = plural ? 1 : 0;
+          break;
+        case 'number':
+          plural = plural;
+          break;
+        default:
+          plural = 0;
+      }
+
+      let max = nplurals - 1;
+      if (plural > max) {
+        plural = 0;
+      }
+
+      return {
+        plural: plural,
+        nplurals: nplurals
+      };
+    `);
+
+    set(this, `_plurals.${locale}`, func);
+    set(this, `_data.${locale}`, response);
+  },
+
+  /**
+   * Log a message.
+   * When testing, this will be swallowed to keep the output clean.
+   *
+   * @method _log
+   * @param {String} str
+   * @param {'log'|'warn'|'error'} type
+   * @private
+   */
+  _log(str, type = 'log') {
+    if (!['log', 'warn', 'error'].includes(type)) {
+      type = 'log';
+    }
+
+    // eslint-disable-next-line no-console
+    console[type](`l10n.js: ${str}`);
   }
 
 });

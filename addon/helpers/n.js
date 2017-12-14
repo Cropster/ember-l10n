@@ -1,14 +1,9 @@
-import Ember from 'ember';
-
-const {
-  Helper,
-  inject,
-  isNone,
+import {
   get,
-  merge,
-  String: EmberString,
   observer
-} = Ember;
+} from '@ember/object';
+import Helper from '@ember/component/helper';
+import { inject as service } from '@ember/service';
 
 /**
  * This helper provides gettext pluralization for message ids.
@@ -26,21 +21,16 @@ const {
  * @public
  */
 export default Helper.extend({
-  l10n: inject.service(),
+  l10n: service(),
 
   compute([msgid, msgidPlural, count], hash) {
-    if (isNone(msgid)) {
+    let l10n = get(this, 'l10n');
+
+    if (!msgid) {
       return msgid;
     }
 
-    // If hash.count is not set, use the provided count positional param
-    if (!get(hash, 'count')) {
-      // hash should not be mutated
-      hash = merge({}, hash);
-      hash.count = count;
-    }
-
-    return this.get('l10n').n(
+    return l10n.n(
       msgid,
       msgidPlural,
       count,

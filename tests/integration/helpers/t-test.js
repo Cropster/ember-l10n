@@ -1,38 +1,63 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import Service from 'ember-l10n/services/l10n';
+import L10n from 'ember-l10n/services/l10n';
 import hbs from 'htmlbars-inline-precompile';
-import wait from 'ember-test-helpers/wait';
-import Ember from 'ember';
+import Service from '@ember/service';
 
-const mockAjax = Ember.Service.extend({
-  request() {
+const mockAjax = Service.extend({
+  request(url) {
     return {
       then(func) {
-        let en = {
-          '': {
-            'language': 'en',
-            'plural-forms': 'nplurals=2; plural=(n!=1);'
+        let json = {
+          '/assets/locales/en.json': {
+            'headers': {
+              'language': 'en',
+              'plural-forms': 'nplurals=2; plural=(n != 1);'
+            },
+            'translations': {
+              '': {
+                'en': {
+                  'msgstr': [
+                    'English'
+                  ]
+                },
+                'I\'m a {{placeholder}}.': {
+                  'msgstr': [
+                    'I\'m a {{placeholder}}.'
+                  ]
+                }
+              }
+            }
           },
-          'en': 'English',
-          'I\'m a {{placeholder}}.': 'I\'m a {{placeholder}}.'
-        };
 
-        let de = {
-          '': {
-            'language': 'de',
-            'plural-forms': 'nplurals=2; plural=(n!=1);'
-          },
-          'en': 'Englisch',
-          'I\'m a {{placeholder}}.': 'Ich bin ein {{placeholder}}.'
-        };
+          '/assets/locales/de.json': {
+            'headers': {
+              'language': 'de',
+              'plural-forms': 'nplurals=2; plural=(n != 1);'
+            },
+            'translations': {
+              '': {
+                'en': {
+                  'msgstr': [
+                    'English'
+                  ]
+                },
+                'I\'m a {{placeholder}}.': {
+                  'msgstr': [
+                    'Ich bin ein {{placeholder}}.'
+                  ]
+                }
+              }
+            }
+          }
+        }
 
-        func(l10nService.get('locale') === 'en' ? en : de);
+        func(json[url]);
       }
     };
   }
 });
 
-const mockL10nService = Service.extend({
+const mockL10nService = L10n.extend({
   ajax: mockAjax.create(),
   autoInitialize: false,
   availableLocales: {
@@ -53,30 +78,23 @@ moduleForComponent('t', 'Integration | Helper | t', {
   }
 });
 
-test('it works', function(assert) {
-  // no detection due to set
-  // `autoInitialize:false`!
-  l10nService.setLocale('en');
+test('it works', async function(assert) {
+  await l10nService.setLocale('en');
 
-  return wait().then(() => {
+  this.render(hbs`{{t 'en'}}`);
+  assert.equal(this.$().text().trim(), 'English', 'Common translations are working.');
 
-    this.render(hbs`{{t 'en'}}`);
-    assert.equal(this.$().text().trim(), 'English', 'Common translations are working.');
+  this.render(hbs`{{t '<b>I am bold.</b>'}}`);
+  assert.equal(this.$().html(), '&lt;b&gt;I am bold.&lt;/b&gt;', 'It escapes text per default.');
 
-    this.render(hbs`{{t '<b>I am bold.</b>'}}`);
-    assert.equal(this.$().html(), '&lt;b&gt;I am bold.&lt;/b&gt;', 'It escapes text per default.');
+  this.set('value', 'PLACEHOLDER');
+  this.render(hbs`{{t "I'm a {{placeholder}}." placeholder=value}}`);
+  assert.equal(this.$().text().trim(), 'I\'m a PLACEHOLDER.', 'Placeholder translations are working.');
 
-    this.set('value', 'PLACEHOLDER');
-    this.render(hbs`{{t "I'm a {{placeholder}}." placeholder=value}}`);
-    assert.equal(this.$().text().trim(), 'I\'m a PLACEHOLDER.', 'Placeholder translations are working.');
+  await l10nService.setLocale('de');
 
-    l10nService.setLocale('de');
+  assert.equal(this.$().text().trim(), 'Ich bin ein PLACEHOLDER.', 'Changing locale recomputes translations properly.');
 
-    return wait().then(() => {
-      assert.equal(this.$().text().trim(), 'Ich bin ein PLACEHOLDER.', 'Changing locale recomputes translations properly.');
-
-      this.set('value', 'PLATZHALTER');
-      assert.equal(this.$().text().trim(), 'Ich bin ein PLATZHALTER.', 'Updating a bound property recomputes translations properly.');
-    });
-  });
+  this.set('value', 'PLATZHALTER');
+  assert.equal(this.$().text().trim(), 'Ich bin ein PLATZHALTER.', 'Updating a bound property recomputes translations properly.');
 });
