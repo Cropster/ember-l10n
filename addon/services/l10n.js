@@ -7,6 +7,7 @@ import {
   computed
 } from '@ember/object';
 import RSVP from 'rsvp';
+import Ember from 'ember';
 import Service from '@ember/service';
 import { assign } from '@ember/polyfills';
 import { inject as service } from '@ember/service';
@@ -143,6 +144,32 @@ export default Service.extend({
   }),
 
   /**
+   * Wrapper for window object for mocking tests.
+   *
+   * @property _window
+   * @type {Object}
+   * @readOnly
+   * @private
+   */
+  _window: computed(function() {
+    return window || {};
+  }),
+
+  /**
+   * Hashmap storing callable plural function
+   * for each target language parsed from the
+   * `plural-form` header of JSON files.
+   *
+   * @property _data
+   * @type {Object}
+   * @default {}
+   * @private
+   */
+  _plurals: computed(function() {
+    return {};
+  }),
+
+  /**
    * Hashmap storing loaded translations by
    * locale at runtime to avoid requests on
    * consequent invocations of `setLocale()`.
@@ -154,23 +181,6 @@ export default Service.extend({
    */
   _data: computed(function() {
     return {};
-  }),
-
-  _plurals: computed(function() {
-    return {};
-  }),
-
-  /**
-   * The window object.
-   * This can be overwritten for tests or similar.
-   *
-   * @property _window
-   * @type {Object}
-   * @readOnly
-   * @private
-   */
-  _window: computed(function() {
-    return window || {};
   }),
 
   // -------------------------------------------------------------------------
@@ -335,7 +345,7 @@ export default Service.extend({
 
     let [ message ] = this._readKey(key, msgctxt);
 
-    return this._strfmt(message || key, hash);
+    return strfmt(message || key, hash);
   },
 
   /**
@@ -360,14 +370,20 @@ export default Service.extend({
       return msgid;
     }
 
+    let plural = 0;
+    let message = '';
     let locale = this.getLocale();
     let messages = this._readKey(sKey, msgctxt);
     let pluralFunc = get(this, `_plurals.${locale}`);
 
-    let { plural: mIndex } = pluralFunc(count);
-    let message = messages[mIndex] || sKey;
+    if (typeOf(pluralFunc) === 'function') {
+      ({ plural } = pluralFunc(count));
+      message = messages[plural];
+    }
 
-    return this._strfmt(message, assign({ count }, hash));
+    message = message || (plural ? pKey : sKey);
+
+    return strfmt(message, assign({ count }, hash));
   },
 
   /**
@@ -432,34 +448,6 @@ export default Service.extend({
     }
 
     return key.replace(/\s+/g, ' ');
-  },
-
-  /**
-   * Replaces placeholders like {{placeholder}} from string.
-   *
-   * @method _strfmt
-   * @param {String} string
-   * @param {Object} hash
-   * @return {String}
-   * @private
-   */
-  _strfmt(string, hash) {
-    // ignore each invalid hash param
-    if (typeOf(hash) !== 'object') {
-      return string;
-    }
-
-    // find all: {{placeholderName}}
-    let pattern = /{{\s*([\w]+)\s*}}/g;
-    let replace = (idx, match) => {
-      let value = hash[match];
-
-      return value
-        ? value
-        : `{{${match}}}`
-    };
-
-    return string.replace(pattern, replace);
   },
 
   /**
@@ -559,7 +547,7 @@ export default Service.extend({
           plural = 0;
       }
 
-      let max = nplurals - 1;
+      var max = nplurals - 1;
       if (plural > max) {
         plural = 0;
       }
@@ -584,6 +572,10 @@ export default Service.extend({
    * @private
    */
   _log(str, type = 'log') {
+    if (Ember.testing) {
+      return
+    }
+
     if (!['log', 'warn', 'error'].includes(type)) {
       type = 'log';
     }
@@ -593,3 +585,31 @@ export default Service.extend({
   }
 
 });
+
+/**
+ * Replaces placeholders like {{placeholder}} from string.
+ *
+ * @public
+ * @method strfmt
+ * @param {String} string
+ * @param {Object} hash
+ * @return {String}
+ */
+export const strfmt = function(string, hash) {
+  // ignore each invalid hash param
+  if (typeOf(hash) !== 'object') {
+    return string;
+  }
+
+  // find all: {{placeholderName}}
+  let pattern = /{{\s*([\w]+)\s*}}/g;
+  let replace = (idx, match) => {
+    let value = hash[match];
+
+    return value
+      ? value
+      : `{{${match}}}`
+  };
+
+  return string.replace(pattern, replace);
+};
