@@ -95,7 +95,6 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
 
 test('it works', async function(assert) {
   let service = this.subject({
-    autoInitialize: false,
     _window: {
       navigator: {
         language: 'en'
@@ -117,15 +116,11 @@ test('it works', async function(assert) {
     // noop
   }
 
-  await service.setLocale('en'); // = English
-
   assert.strictEqual(
     service.getLocale(),
     get(service, 'defaultLocale'),
     'Setting an unsupported locale doesn\'t work.'
   );
-
-  console.log('Y')
 
   assert.strictEqual(
     service.t('en'),
@@ -191,6 +186,9 @@ test('it works', async function(assert) {
     'You have 5 units in your cart.',
     'Plural translations work correctly with plural form.'
   );
+
+  assert.strictEqual(service.exists('en'), true, 'exists() delivers correct state for existing keys.');
+  assert.strictEqual(service.exists('de'), false, 'exists() delivers correct state for non-existing keys.');
 });
 
 test('detect and swap locale test', async function(assert) {

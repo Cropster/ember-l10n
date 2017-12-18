@@ -343,7 +343,7 @@ export default Service.extend({
       return msgid;
     }
 
-    let [ message ] = this._readKey(key, msgctxt);
+    let [ message ] = this._getMessages(key, msgctxt);
 
     return strfmt(message || key, hash);
   },
@@ -373,7 +373,7 @@ export default Service.extend({
     let plural = 0;
     let message = '';
     let locale = this.getLocale();
-    let messages = this._readKey(sKey, msgctxt);
+    let messages = this._getMessages(sKey, msgctxt);
     let pluralFunc = get(this, `_plurals.${locale}`);
 
     if (typeOf(pluralFunc) === 'function') {
@@ -402,6 +402,23 @@ export default Service.extend({
   },
 
   /**
+   * Checks if a message id exists for current locale.
+   *
+   * @method exists
+   * @param {String} msgid
+   * @return {Boolean}
+   * @public
+   */
+  exists(msgid, msgctxt = '') {
+    let key = this._sanitizeKey(msgid);
+    if (typeOf(key) !== 'string') {
+      return false;
+    }
+
+    return !!this._readKey(key, msgctxt);
+  },
+
+  /**
    * Reads JSON data for given message id containing an array like:
    *
    * ```
@@ -418,6 +435,24 @@ export default Service.extend({
    * @return {Array}
    * @private
    */
+  _getMessages(key, context = '') {
+    let json = this._readKey(key, context);
+    if (json === null) {
+      return [];
+    }
+
+    return json.msgstr;
+  },
+
+  /**
+   * Tries to lookup JSON data for given key and context.
+   *
+   * @method _readKey
+   * @param {String} key
+   * @param {String} context
+   * @return {Object|null}
+   * @private
+   */
   _readKey(key, context = '') {
     let locale = get(this, 'locale');
     let _data = get(this, '_data');
@@ -426,7 +461,7 @@ export default Service.extend({
     json = json.translations || {};
     json = json[context] || json[''] || {};
 
-    return json[key] && json[key].msgstr || [];
+    return json[key] || null;
   },
 
   /**
