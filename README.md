@@ -61,7 +61,7 @@ be used for translations message ids from JS source:
 * `t(msgid, hash)`
 * `n(msgid, msgidPlural, count, hash)`
 * `pt(msgid, msgctxt, hash)`
-* `n(msgid, msgidPlural, count, msgctxt, hash)`
+* `pn(msgid, msgidPlural, count, msgctxt, hash)`
 * `tVar(msgid, hash)`
 
 `tVar()` works exactly the same as `t()`, but it will be ignored by the gettext parser. This is useful if your message ids are variables, for example: `l10n.t(myProperty)` would create a `myProperty` entry in your po-file when gettext is run. So in this case, `l10n.tVar(myProperty)` should be used instead.
