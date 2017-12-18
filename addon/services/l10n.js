@@ -639,6 +639,8 @@ export default Service.extend({
    * @private
    */
   _log(str, type = 'log') {
+    // @todo: remove on resolution of public modules API
+    // https://github.com/Cropster/ember-l10n/issues/21
     if (Ember.testing) {
       return
     }
