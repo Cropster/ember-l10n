@@ -10,37 +10,43 @@
 
 Using the string extractor requires:
 
-* GNU gettext, xgettext
-*  OS X: `brew install gettext; brew link --force gettext`
-* [xgettext-template](https://www.npmjs.com/package/xgettext-template) - extracts strings from handlebars templates
-* [gettext.js](https://www.npmjs.com/package/gettext.js) - lightweight port of gettext for JS
+* [GNU gettext](https://www.gnu.org/software/gettext/) - extracts strings from JS files & creates PO
+* [gettext-parser](https://github.com/smhg/gettext-parser) - parses/compiles PO/MO files with Node.js
+* [xgettext-template](https://www.npmjs.com/package/xgettext-template) - extracts strings from Handlebars templates
 
-ember-l10n uses ember-ajax to fetch locale data.
+Besides, `ember-l10n` uses [ember-ajax](https://github.com/ember-cli/ember-ajax) to fetch locale data.
+
+__Note:__ Addon's CLI commands will check dependencies for you and install them on demand (by executing `ember l10n:install`), so you don't have to do this on your own.
 
 ## Usage
 
 There are two primary parts to ember-l10n
 
-1. Ember side: Service, Helpers, and Components
-2. CLI: Contains a string extractor for `JS` and `HBS` files generating `POT`/`PO` files, a converter to convert `PO` files to `JSON` as well as a synchronizer for exchanging message ids in `JS` and `HBS` files (f.e. after proof read original version).
+1. Ember side: 
+    * [Service](#service): API and messages in `JS` files
+    * [Helpers](#helpers): Template messages from `HBS` files
+    * [Components](#components): For complex messages in `HBS` files
+2. CLI:
+    * [Extractor](#extractor): Extracts messages from both `JS` and `HBS` files
+    * [Converter](#converter): Converts `PO` files to `JSON` consumed by addon
+    * [Synchronizer](#synchronizer): Synchronizes message strings with ids from source code (proof reading)
 
-ember-l10n follows the gettext convention that the message ids in your source files
-are the default language (usually English).
+`ember-l10n` follows the [gettext](https://www.gnu.org/software/gettext/) convention that the message ids in your source files are the default language (usually English).
 
-In the ember-l10n workflow, you use the `t`, and `n` helpers and `l10n.t()` / `l10n.n()`
-functions to define your strings in your project. Then you run the extractor script
-to generate pot and po files, which you send off to your translators.
+In the ember-l10n workflow, you use the `t`, and `n` helpers and `l10n.t()` / `l10n.n()` functions to define your strings in your project. Then you run the extractor script to generate pot and po files, which you send off to your translators. After receiving the translated po files for additional locales, you use the same script to convert them into json files. These json files are then loaded by ember-l10n in your application and replaced at runtime.
 
-After receiving the translated po files for additional locales, you use the same script
-to convert them into json files. These json files are then loaded by ember-l10n in your application
-and replaced at runtime.
+`ember-l10n` provides powerful string substitution and even component substitution for dynamic strings. See the [Components](#components) section below.
 
-ember-l10n provides powerful string substitution and even component
-substitution for dynamic strings. See the Components section below.
+###### Usage hints:
+Unfortunately, ```xgettext``` doesn't support ES6 template strings ([at the moment](https://savannah.gnu.org/bugs/?50920)), but the addon provides an easy way to handle variables in strings, please refer to [Helpers](#helpers) and [Components](#components) sections.
 
 ## Note for Upgrading
 
-The latest version has introduced fingerprinting for the generated JSON files. Please read the [Fingerprinting](#fingerprinting) & [Converter](#converter) sections.
+###### Version 1.0.0
+This version has dropped the `gettext.js` dependency for inconsistency reasons with asian languages [#21](https://github.com/Cropster/ember-l10n/issues/20) and uses [gettext-parser](https://github.com/smhg/gettext-parser) directly to convert PO to JSON files and built in usage of JSON files into service. This resolves the above issue and releases the addon from bower, **but** requires you to rerun `ember l10n:convert` for **ALL** languages due to changed JSON format. Please read the [release notes](https://github.com/Cropster/ember-l10n/releases/tag/v1.0.0) to get a full list of changes and new features.
+
+###### Version 0.2.0
+This version has introduced fingerprinting for the generated JSON files. Please read the [Fingerprinting](#fingerprinting) & [Converter](#converter) sections.
 
 ## Ember Side
 
@@ -51,19 +57,13 @@ be used for translations message ids from JS source:
 
 * `t(msgid, hash)`
 * `n(msgid, msgidPlural, count, hash)`
+* `pt(msgid, msgctxt, hash)`
+* `n(msgid, msgidPlural, count, msgctxt, hash)`
 * `tVar(msgid, hash)`
 
-`tVar()` works exactly the same as `t()`, but it will be ignored by the 
-gettext parser. This is useful if your message ids are variables, for example:
-`l10n.t(myProperty)` would create a `myProperty` entry in your po-file
-when gettext is run. So in this case, `l10n.tVar(myProperty)` should be used
-instead.
+`tVar()` works exactly the same as `t()`, but it will be ignored by the gettext parser. This is useful if your message ids are variables, for example: `l10n.t(myProperty)` would create a `myProperty` entry in your po-file when gettext is run. So in this case, `l10n.tVar(myProperty)` should be used instead.
 
-Furthermore, there's an auto initialization feature (default: true), which
-detects user's locale according to system preferences. If the user's locale is
-supported in `availableLocales`, the corresponding translations are loaded. If
-the user's locale is not supported, the default locale will be used instead
-(default: "en"). Please use the following method to change locales:
+Furthermore, there's an auto initialization feature (default: true), which detects user's locale according to system preferences. If the user's locale is supported in `availableLocales`, the corresponding translations are loaded. If the user's locale is not supported, the default locale will be used instead (default: "en"). Please use the following method to change locales:
 
 * `setLocale(locale)` 
 
@@ -79,24 +79,57 @@ When installing via `ember install ember-l10n`, an `l10n` service will be create
 There, you can configure (and overwrite) all service properties/methods:
 
 ```js
-import computed from 'ember-computed';
+import { computed } from '@ember/object';
 import L10n from 'ember-l10n/services/l10n';
-import l10nFingerprintMap from './../utils/l10n-fingerprint-map';
+import l10nFingerprintMap from '../utils/l10n-fingerprint-map';
 
 export default L10n.extend({
-
-  availableLocales: computed(function() {
+  /**
+   * Defines available locales as hash map, where key corresponds
+   * to ISO_639-1 country codes and value can be any truthy value.
+   * By default, it's used to translate the language codes, which
+   * could be used for a language drop down. Adjust the hash map
+   * for each new language being added your translatable project.
+   *
+   * @property availableLocales
+   * @type {object}
+   * @public
+   */
+  availableLocales: computed('locale', function() {
     return {
       'en': this.t('en')
     };
   }),
 
-  autoInitialize: true,
+  /**
+   * Activation of fingerprint map living in app's/addon's `/utils`
+   * directory. For opting out from fingerprinting set it to `null`.
+   *
+   * @property fingerprintMap
+   * @type {object|null}
+   * @public
+   */
+  fingerprintMap: l10nFingerprintMap,
 
+  /**
+   * Default path to loadable translations as JSON files. The install
+   * process will generate an empty english JSON file for a kickstart.
+   *
+   * @property jsonPath
+   * @type {string}
+   * @public
+   */
   jsonPath: '/assets/locales',
 
-  // Make this return null if you do not want to use fingerprinting
-  fingerprintMap: l10nFingerprintMap
+  /**
+   * Flag indicating if service should try to detect user langugage
+   * from browser settings and load/set the corresponding JSON file.
+   *
+   * @property autoInitialize
+   * @type {boolean}
+   * @public
+   */
+  autoInitialize: true,
 });
 ```
 
@@ -128,53 +161,54 @@ By default, it is assumed that the locale files are fingerprinted. This makes it
 
 Whenever you convert a .po file to JSON with `ember l10n:convert`, it will then by default put the created JSON in a fingerprinted subfolder, and update the `l10n-fingerprint-map.js` file with the new fingerprint. This map is then in turn used by the `l10n` service. Note that this means that every language file is fingerprinted separately.
 
-If you do not wish to use fingerprinting, make the `fingerprintMap` property on the service return `null`. Also, you need to deactivate it when converting the .po file: `ember l10n:convert -fingerprint-map=false`.
+If you do not wish to use fingerprinting, make the `fingerprintMap` property on the service return `null`. Also, you need to deactivate it when converting the .po file: `ember l10n:convert --fingerprint-map=false`.
 
 ### Helpers
 
-For handling your translations within your handlebar templates you can use `t`
-and `n` helper:
+For handling your translations within your handlebar templates you can use `t` and `n` helper:
 
 ###### Singular translations:
 
-The `t` helper provides gettext singularization for message ids. It takes
-singular message id as positional arguments. All placeholders can be provided
-through named arguments.
+The `t` helper provides gettext singularization for message ids. It takes singular message id as positional arguments. All placeholders can be provided through named arguments.
 
 ```hbs
 {{t "Your current role: {{role}}" role=someBoundProperty}}
 ```
 
-If you have strings which are variables (e.g. enums), you can also
-use the t-var helper: `{{t-var myProperty}}`. It works the same way
-as the t-helper, but it will be ignored by the gettext parser.
+If you have strings which are variables (e.g. enums), you can also use the t-var helper: `{{t-var myProperty}}`. It works the same way as the t-helper, but it will be ignored by the gettext parser.
 
 ###### Plural translations:
 
-The `n` helper provides gettext pluralization for message ids. It takes
-singular and plural message ids as well as actual amount as positional
-arguments. All placeholders can be provided through named arguments (hash).
+The `n` helper provides gettext pluralization for message ids. It takes singular and plural message ids as well as actual amount as positional arguments. All placeholders can be provided through named arguments (hash).
 
 _Short version:_
 
 ```hbs
-{{n "{{count}} apple" "{{count}} apples" countProperty}}
+{{n "{{count}} apple" "{{count}} apples" countProperty}}
 ```
 _Long version:_
 
-Please note: If your count placeholder has another name than "{{count}}", 
-you have to explicitly provide it as named hashed in addition to positional 
-parameter (as well as for all other placeholders within those message ids!).
+Please note: If your count placeholder has another name than "{{count}}", you have to explicitly provide it as named hashed in addition to positional parameter (as well as for all other placeholders within those message ids!).
 
 ```hbs
-{{n "{{customCount}} apple from shop {{shopName}}" "{{customCount}} apples from shop {{shopName}}" countProperty customCount=countProperty shopName=shopProperty}}
+{{n "{{customCount}} apple from shop {{shopName}}" "{{customCount}} apples from shop {{shopName}}" countProperty customCount=countProperty shopName=shopProperty}}
 ```
+
+###### Contextual translations:
+To support contextual translations from templates, there exist both `pt` and `pn` helpers, which accept a context as 2nd or 4th paremeter:
+
+```hbs
+{{pt "user" "MY_CONTEXT"}}
+```
+
+```hbs
+{{pn "user" "users" countProperty "MY_CONTEXT"}}
+```
+Please note: Both contextual helpers also accept placeholders just as their non-contextual counterparts `t` and `n`.
 
 ### Components
 
-If you have complex message ids, which should contain "dynamic" placeholders,
-which can also be replaced with components (such as a `link-to`), you can use
-the `get-text` component.
+If you have complex message ids, which should contain "dynamic" placeholders, which can also be replaced with components (such as a `link-to`), you can use the `get-text` component.
 
 ```hbs
 {{#get-text 
@@ -191,14 +225,11 @@ the `get-text` component.
 {{/get-text}}
 ```
 
-Please note: If your message id contains HTML, you have to set `unescapeText=true` on the component. 
-Be sure to use this option only in combination with safe strings and don't make use of it when dealing 
-with user generated inputs (XSS)!
+Please note: If your message id contains HTML, you have to set `unescapeText=true` on the component. Be sure to use this option only in combination with safe strings and don't make use of it when dealing with user generated inputs (XSS)!
 
 ### Testing
 
-In acceptance tests, ember-l10n should work without any further work.
-In integration tests, you can use the provided test helpers to provide easy to use `{{t}}`,`{{tVar}}` and `{{n}}` helpers:
+In acceptance tests, ember-l10n should work without any further work. In integration tests, you can use the provided test helpers to provide easy to use `{{t}}`,`{{tVar}}` and `{{n}}` helpers:
 
 ```js
 // tests/integration/components/my-component-test.js
@@ -213,7 +244,7 @@ moduleForComponent('my-component', 'Integration | Component | my component', {
 });
 ```
 
-These helpers will basically just pass the string through.
+These helpers will basically just pass the string through replacing only placeholders.
 
 ## 2. CLI
 
@@ -246,7 +277,7 @@ ember l10n:extract <options...>
     aliases: -x <value>
   --skip-patterns (Array) (Default: ['mirage','fixtures','styleguide']) List of regex patterns to completely ignore from extraction
     aliases: -s <value>
-  --skip-dependencies (Array) (Default: ) An array of dependency names to exclude from parsing.
+  --skip-dependencies (Array) (Default: []) An array of dependency names to exclude from parsing.
     aliases: -sd <value>
   --skip-all-dependencies (Boolean) (Default: true) If this is true, do not parse the node_modules/lib folders. (configured in config/l10n-extract.js)
     aliases: -sad  
@@ -311,7 +342,7 @@ Note that by default, this will create a fingerprinted json file & update the `a
 
 ### Synchronizer
 
-The synchronizer will parse a given `PO` file, use the message ids from each entry and uses them as new message ids accross `JS` and `HBS` files in your app. This is especially helpful if you proof read your current message ids before handing them over to translators for other languages.
+The synchronizer will parse a given `PO` file, use message strings from each entry and uses them as new message ids accross `JS` and `HBS` files in your app. This is especially helpful if you proof read your current message ids before handing them over to translators for other languages.
 
 Run the following command from your Ember project root for synchronization:
 
@@ -364,7 +395,7 @@ This library follows [Semantic Versioning](http://semver.org)
 
 ## Legal
 
-[Cropster](https://cropster.com), GmbH &copy; 2017
+[Cropster](https://cropster.com), GmbH &copy; 2018
 
 [@cropster](http://twitter.com/cropster)
 
