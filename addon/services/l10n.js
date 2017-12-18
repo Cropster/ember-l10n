@@ -334,6 +334,7 @@ export default Service.extend({
    * @method t
    * @param {String} msgid
    * @param {Object} hash
+   * @param {String} msgctxt
    * @return {String}
    * @public
    */
@@ -356,6 +357,7 @@ export default Service.extend({
    * @param {String} msgidPlural
    * @param {Number} count
    * @param {Object} hash
+   * @param {String} msgctxt
    * @return {String}
    * @public
    */
@@ -384,6 +386,36 @@ export default Service.extend({
     message = message || (plural ? pKey : sKey);
 
     return strfmt(message, assign({ count }, hash));
+  },
+
+  /**
+   * Translates a contextual singular form message id.
+   *
+   * @method pt
+   * @param {String} msgid
+   * @param {String} msgctxt
+   * @param {Object} hash
+   * @return {String}
+   * @public
+   */
+  pt(msgid, msgctxt, hash = {}) {
+    return this.t(msgid, hash, msgctxt);
+  },
+
+  /**
+   * Translates a contextual plural form message id.
+   *
+   * @method pn
+   * @param {String} msgid
+   * @param {String} msgidPlural
+   * @param {Number} count
+   * @param {String} msgctxt
+   * @param {Object} hash
+   * @return {String}
+   * @public
+   */
+  pn(msgid, msgidPlural, count, msgctxt, hash = {}) {
+    return this.n(msgid, msgidPlural, count, hash, msgctxt);
   },
 
   /**
@@ -431,17 +463,17 @@ export default Service.extend({
    *
    * @method _getMessages
    * @param {String} key
-   * @param {String} context
+   * @param {String} ctxt
    * @return {Array}
    * @private
    */
-  _getMessages(key, context = '') {
-    let json = this._readKey(key, context);
+  _getMessages(key, ctxt = '') {
+    let json = this._readKey(key, ctxt);
     if (json === null) {
       return [];
     }
 
-    return json.msgstr;
+    return json.msgstr || [];
   },
 
   /**
@@ -449,17 +481,17 @@ export default Service.extend({
    *
    * @method _readKey
    * @param {String} key
-   * @param {String} context
+   * @param {String} ctxt
    * @return {Object|null}
    * @private
    */
-  _readKey(key, context = '') {
+  _readKey(key, ctxt = '') {
     let locale = get(this, 'locale');
     let _data = get(this, '_data');
     let json = _data[locale] || {};
 
     json = json.translations || {};
-    json = json[context] || json[''] || {};
+    json = json[ctxt] || json[''] || {};
 
     return json[key] || null;
   },

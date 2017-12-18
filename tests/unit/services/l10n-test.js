@@ -43,6 +43,20 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
                     'active'
                   ]
                 }
+              },
+              'menu': {
+                'user': {
+                  'msgstr': [
+                    'subscription',
+                    'subscriptions'
+                  ]
+                },
+                'You have {{count}} subscription': {
+                  'msgstr': [
+                    'You have {{count}} subscription',
+                    'You have {{count}} subscriptions'
+                  ]
+                }
               }
             }
           };
@@ -67,9 +81,28 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
             },
             'translations': {
               '': {
+                'en': {
+                  'msgstr': [
+                    'Englisch'
+                  ]
+                },
                 'testing': {
                   'msgstr': [
                     'Test'
+                  ]
+                }
+              },
+              'menu': {
+                'user': {
+                  'msgstr': [
+                    'Abonnement',
+                    'Abonnements'
+                  ]
+                },
+                'You have {{count}} subscription': {
+                  'msgstr': [
+                    'Sie haben {{count}} Abonnement',
+                    'Sie haben {{count}} Abonnements'
                   ]
                 }
               }
@@ -185,6 +218,34 @@ test('it works', async function(assert) {
     ),
     'You have 5 units in your cart.',
     'Plural translations work correctly with plural form.'
+  );
+
+  await service.setLocale('de');
+
+  assert.strictEqual(
+    service.pt('user', 'menu'),
+    'Abonnement',
+    'Contextual singular method works as expected.'
+  );
+
+  assert.strictEqual(
+    service.pn('user', 'users', 3, 'menu'),
+    'Abonnements',
+    'Contextual plural method works as expected.'
+  );
+
+  assert.strictEqual(
+    service.pn(
+      'You have {{count}} subscription',
+      'You have {{count}} subscriptions',
+      3,
+      'menu',
+      {
+        count: 3
+      }
+    ),
+    'Sie haben 3 Abonnements',
+    'Contextual method works with placeholders as expected.'
   );
 
   assert.strictEqual(service.exists('en'), true, 'exists() delivers correct state for existing keys.');
