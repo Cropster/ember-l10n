@@ -4,7 +4,6 @@ export function initialize(application) {
   application.inject('route', 'l10n', 'service:l10n');
   application.inject('controller', 'l10n', 'service:l10n');
   application.inject('component', 'l10n', 'service:l10n');
-
 }
 
 export default {

@@ -1,39 +1,18 @@
-import Ember from 'ember';
-
-function _strfmt(string, hash) {
-  // don't process empty hashes
-  if (Ember.isNone(hash)) {
-    return string;
-  }
-
-  // find and replace all {{placeholder}}
-  let pattern = /{{\s*([\w]+)\s*}}/g;
-  let replace = (idx, match) => {
-    let value = hash[match];
-    if (Ember.isNone(value)) {
-      return `{{${match}}}`;
-    }
-
-    if (Ember.typeOf(value) === 'string') {
-      value = this.get('_gettext').gettext(value);
-    }
-
-    return value;
-  };
-
-  return string.replace(pattern, replace);
-}
+import { helper } from '@ember/component/helper';
+import { strfmt } from './services/l10n';
 
 export default function(context) {
-  let tHelper = Ember.Helper.helper(function([str]) {
-    return _strfmt(str);
+  let tHelper = helper(([str]) => strfmt(str));
+  let ptHelper = helper(([str/*, ctxt*/]) => strfmt(str));
+  let nHelper = helper(([strSingular, strPlural, count]) => {
+    return strfmt(count !== 1 ? strPlural : strSingular);
   });
-
-  let nHelper = Ember.Helper.helper(function([strSingular, strPlural, count]) {
-    let str = count > 1 ? strPlural : strSingular;
-    return _strfmt(str);
+  let pnHelper = helper(([strSingular, strPlural, count/*, ctxt*/]) => {
+    return strfmt(count !== 1 ? strPlural : strSingular);
   });
 
   context.register('helper:t', tHelper);
   context.register('helper:n', nHelper);
+  context.register('helper:pt', ptHelper);
+  context.register('helper:pn', pnHelper);
 }

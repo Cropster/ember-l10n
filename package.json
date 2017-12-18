@@ -1,6 +1,6 @@
 {
   "name": "ember-l10n",
-  "version": "0.4.5",
+  "version": "1.0.0",
   "description": "A generic localization solution for ember projects using gettext.",
   "directories": {
     "doc": "doc",
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
-    "start": "ember server",
+    "start": "ember serve",
     "test": "ember try:each"
   },
   "repository": "https://github.com/Cropster/ember-l10n",
@@ -18,31 +18,31 @@
   "author": "Cropster",
   "license": "MIT",
   "devDependencies": {
-    "broccoli-asset-rev": "~2.6.0",
-    "ember-ajax": "~3.0.0",
-    "ember-cli": "~2.16.0",
-    "ember-cli-app-version": "~3.1.0",
-    "ember-cli-dependency-checker": "~2.0.1",
-    "ember-cli-eslint": "~4.2.1",
-    "ember-cli-htmlbars-inline-precompile": "~1.0.2",
-    "ember-cli-inject-live-reload": "~1.4.1",
-    "ember-cli-pretender": "~1.0.1",
-    "ember-cli-qunit": "~4.0.0",
-    "ember-cli-release": "~0.2.9",
-    "ember-cli-shims": "~1.1.0",
-    "ember-cli-sri": "~2.1.0",
-    "ember-cli-template-lint": "~0.7.5",
-    "ember-cli-test-loader": "~2.2.0",
-    "ember-cli-uglify": "~2.0.0",
-    "ember-disable-prototype-extensions": "~1.1.2",
-    "ember-export-application-global": "~2.0.0",
-    "ember-load-initializers": "~1.0.0",
-    "ember-resolver": "~4.5.0",
-    "ember-source": "~2.15.3",
-    "ember-truth-helpers": "~1.3.0",
-    "gettext.js": "~0.5.2",
-    "loader.js": "~4.0.10",
-    "xgettext-template": "~3.3.0"
+    "broccoli-asset-rev": "^2.4.5",
+    "ember-ajax": "3.0.0",
+    "ember-cli": "^2.17.1",
+    "ember-cli-app-version": "^1.0.0",
+    "ember-cli-dependency-checker": "^2.0.0",
+    "ember-cli-eslint": "^4.2.1",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
+    "ember-cli-inject-live-reload": "^1.4.1",
+    "ember-cli-pretender": "^1.0.1",
+    "ember-cli-qunit": "^4.1.1",
+    "ember-cli-release": "0.2.9",
+    "ember-cli-shims": "^1.2.0",
+    "ember-cli-sri": "^2.1.0",
+    "ember-cli-template-lint": "^0.7.5",
+    "ember-cli-test-loader": "1.1.0",
+    "ember-cli-uglify": "^2.0.0",
+    "ember-disable-prototype-extensions": "^1.1.2",
+    "ember-export-application-global": "^2.0.0",
+    "ember-load-initializers": "^1.0.0",
+    "ember-resolver": "^4.0.0",
+    "ember-source": "~2.17.0",
+    "ember-truth-helpers": "1.2.0",
+    "gettext-parser": "^1.3.0",
+    "loader.js": "^4.2.3",
+    "xgettext-template": "^3.4.0"
   },
   "keywords": [
     "ember-addon",
@@ -55,14 +55,10 @@
     "po"
   ],
   "dependencies": {
-    "chalk": "^2.1.0",
-    "ember-cli-babel": "^6.8.2",
-    "ember-cli-htmlbars": "^2.0.3",
-    "inquirer": "^1.1.2",
-    "make-array": "^1.0.1",
-    "merge": "^1.2.0",
-    "nopt": "^3.0.6",
-    "shelljs": "^0.7.6"
+    "chalk": "^1.1.3",
+    "ember-cli-babel": "^6.6.0",
+    "ember-cli-htmlbars": "^2.0.1",
+    "shelljs": "^0.7.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

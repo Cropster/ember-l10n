@@ -16,20 +16,5 @@ module.exports = {
       'l10n:convert': require('./lib/commands/convert'),
       'l10n:sync': require('./lib/commands/sync')
     };
-  },
-
-  included: function(app) {
-    this._super.included(app);
-
-    // In ember-cli < 2.7, this.import is not available, so fall back to use app.import
-    var importShim = typeof this.import !== 'undefined' ? this : app;
-
-    importShim.import('vendor/gettext.js', {
-      exports: {
-        'i18n': [
-          'default'
-        ]
-      }
-    });
   }
 };

@@ -1,0 +1,17 @@
+{
+  "charset": "utf-8",
+  "headers": {
+    "language": "en",
+    "plural-forms": "nplurals=2; plural=(n != 1);"
+  },
+  "translations": {
+    "": {
+      "en": {
+        "msgid": "en",
+        "msgstr": [
+          "English"
+        ]
+      }
+    }
+  }
+}

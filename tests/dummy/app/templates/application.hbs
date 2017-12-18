@@ -1,3 +1,274 @@
+{{! template-lint-disable }}
+
 <h1>Ember l10n</h1>
 
-<p>See <code>README.md</code> for usage instructions.</p>
+<p>To get more information about how to use the CLI please refer to README.md</p>
+
+<label>Language: </label>
+<select onchange={{action 'select' value='target.value'}}>
+  {{#each-in languages as |locale label|}}
+    <option
+      value={{locale}}
+      selected={{equal locale selection}}>
+      {{label}}
+    </option>
+  {{/each-in}}
+</select>
+
+<h2>Singular messages</h2>
+
+<h3>Input</h3>
+<pre><code>&#123;&#123;t 'Hello world!'&#125;&#125;</code></pre>
+
+<h3>Output</h3>
+{{t 'Hello world!'}}
+
+<h2>Plural messages</h2>
+
+<h3>Input</h3>
+<pre><code>&#123;&#123;n
+    'You have &#123;&#123;count&#125;&#125; unit in your cart.'
+    'You have &#123;&#123;count&#125;&#125; units in your cart.'
+    3
+&#125;&#125;</code></pre>
+
+<h3>Output</h3>
+
+<strong>n = 1: </strong>
+<span>
+  {{n
+      'You have {{count}} unit in your cart.'
+      'You have {{count}} units in your cart.'
+      1
+  }}
+</span>
+
+<br>
+
+<strong>n = 3: </strong>
+<span>
+  {{n
+      'You have {{count}} unit in your cart.'
+      'You have {{count}} units in your cart.'
+      3
+  }}
+</span>
+
+<h2>Placeholder messages</h2>
+
+<h3>Input</h3>
+<pre><code>&#123;&#123;t 'My name is &#123;&#123;name&#125;&#125;.' name='John Doe' &#125;&#125;</code></pre>
+
+<h3>Output</h3>
+{{t 'My name is {{name}}.' name='John Doe'}}
+
+<h2>Contextual messages</h2>
+
+<h3>Input</h3>
+<pre><code>&#123;&#123;pt 'User' 'menu'&#125;&#125;</code></pre>
+
+<h3>Output</h3>
+{{pt 'User' 'menu'}}
+
+<h2>Complex messages</h2>
+
+<h3>Input</h3>
+<pre><code>&#123;&#123;#get-text
+    message=(t "Read more in our &#123;&#123;linkToGuide 'guide'&#125;&#125; or &#123;&#123;linkToHelp 'help'&#125;&#125;.") as |text placeholder|&#125;&#125;
+
+    &#123;&#123;#if (eq placeholder 'linkToGuide')&#125;&#125;
+      &#60;a href="http://company.com/guidlines"&#62;&#123;&#123;text&#125;&#125;&#60;/a&#62;
+    &#123;&#123;else&#125;&#125;
+      &#60;a href="http://company.com/help"&#62;&#123;&#123;text&#125;&#125;&#60;/a&#62;
+    &#123;&#123;/if&#125;&#125;
+
+&#123;&#123;/get-text&#125;&#125;
+</code></pre>
+
+<h3>Output</h3>
+{{#get-text message=(t "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}.") as |text placeholder|~}}
+  {{#if (equal placeholder 'linkToGuide')}}
+    <a href="http://www.company.com/guidlines">{{text}}</a>
+  {{else}}
+    <a href="http://www.company.com/test">{{text}}</a>{{/if}}
+{{~/get-text}}
+
+<h2>Gettext</h2>
+<p>The corresponding POT file looks as follows (and creates <code>${language}.po</code> implicitly):</p>
+<pre><code>ember l10n:extract</code></pre>
+<pre><code># English translations for YOUR PROJECT
+# Copyright (C) 2017 YOUR COMPANY
+# This file is distributed under the same license as the YOUR PROJECT.
+# Automatically generated, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: My project\n"
+"Report-Msgid-Bugs-To: support@company.com\n"
+"POT-Creation-Date: 2017-01-01 00:00+0100\n"
+"POT-Creation-Date: 2017-01-01 00:00+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: path/to/source/file:XXX
+msgid "en"
+msgstr ""
+
+#: path/to/source/file:XXX
+msgid "de"
+msgstr ""
+
+#: path/to/source/file:XXX
+msgid "ko"
+msgstr ""
+
+#: path/to/source/file:XXX
+msgid "Hello world!"
+msgstr ""
+
+#: path/to/source/file:XXX
+msgid "Empy translation"
+msgstr ""
+
+#: path/to/source/file:XXX
+msgid "My name is &#123;&#123;name&#125;&#125;."
+msgstr ""
+
+#: path/to/source/file:XXX
+msgid "You have &#123;&#123;count&#125;&#125; unit in your cart."
+msgid_plural "You have &#123;&#123;count&#125;&#125; units in your cart."
+msgstr[0] ""
+msgstr[1] ""
+
+#: path/to/source/file:XXX
+msgid "Read more in our &#123;&#123;linkToGuide 'guide'&#125;&#125; or &#123;&#123;linkToHelp 'help'&#125;&#125;."
+msgstr ""
+
+#: path/to/source/file:XXX
+msgctxt "menu"
+msgid "User"
+msgstr ""</code></pre>
+
+<h2>JSON</h2>
+<p>The corresponding JSON file looks as follows:</p>
+<pre><code>ember l10n:convert</code></pre>
+<pre><code>{
+  "charset": "utf-8",
+  "headers": {
+    "project-id-version": "My project",
+    "report-msgid-bugs-to": "support@company.com",
+    "pot-creation-date": "2017-01-01 00:00+0100",
+    "last-translator": "Automatically generated",
+    "language-team": "none",
+    "language": "en",
+    "mime-version": "1.0",
+    "content-type": "text/plain; charset=UTF-8",
+    "content-transfer-encoding": "8bit",
+    "plural-forms": "nplurals=2; plural=(n != 1);",
+    "po-revision-date": "2017-01-01 00:00+0100"
+  },
+  "translations": {
+    "": {
+      "": {
+        "msgid": "",
+        "comments": {
+          "translator": "English translations for cropster-csar-frontend package.\nCopyright (C) 2017 Cropster\nThis file is distributed under the same license as the cropster-csar-frontend package.\nAutomatically generated, 2017.\n"
+        },
+        "msgstr": [
+          "Project-Id-Version: My project\nReport-Msgid-Bugs-To: support@company.com\nPOT-Creation-Date: 2017-01-01 00:00+0100\nPOT-Creation-Date: 2017-01-01 00:00+0100\nLast-Translator: Automatically generated\nLanguage-Team: none\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\nPO-Revision-Date: 2017-01-01 00:00+0100\n"
+        ]
+      },
+      "en": {
+        "msgid": "en",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgstr": [
+          "English"
+        ]
+      },
+      "de": {
+        "msgid": "de",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgstr": [
+          "German"
+        ]
+      },
+      "ko": {
+        "msgid": "ko",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgstr": [
+          "Korean"
+        ]
+      },
+      "Hello world!": {
+        "msgid": "Hello world!",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgstr": [
+          "Hello world!"
+        ]
+      },
+      "Empy translation": {
+        "msgid": "Empy translation",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgstr": [
+          ""
+        ]
+      },
+      "My name is &#123;&#123;name&#125;&#125;.": {
+        "msgid": "My name is &#123;&#123;name&#125;&#125;.",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgstr": [
+          "My name is &#123;&#123;name&#125;&#125;."
+        ]
+      },
+      "You have &#123;&#123;count&#125;&#125; unit in your cart.": {
+        "msgid": "You have &#123;&#123;count&#125;&#125; unit in your cart.",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgid_plural": "You have &#123;&#123;count&#125;&#125; units in your cart.",
+        "msgstr": [
+          "You have &#123;&#123;count&#125;&#125; unit in your cart.",
+          "You have &#123;&#123;count&#125;&#125; units in your cart."
+        ]
+      },
+      "Read more in our &#123;&#123;linkToGuide 'guide'&#125;&#125; or &#123;&#123;linkToHelp 'help'&#125;&#125;.": {
+        "msgid": "Read more in our &#123;&#123;linkToGuide 'guide'&#125;&#125; or &#123;&#123;linkToHelp 'help'&#125;&#125;.",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgstr": [
+          "Read more in our &#123;&#123;linkToGuide 'guide'&#125;&#125; or &#123;&#123;linkToHelp 'help'&#125;&#125;."
+        ]
+      }
+    },
+    "menu": {
+      "User": {
+        "msgid": "User",
+        "msgctxt": "menu",
+        "comments": {
+          "reference": "path/to/source/file:XXX"
+        },
+        "msgstr": [
+          "User"
+        ]
+      }
+    }
+  }
+}</code></pre>
