@@ -1,4 +1,5 @@
 import {
+  isNone,
   typeOf
 } from '@ember/utils';
 import {
@@ -675,9 +676,9 @@ export const strfmt = function(string, hash) {
   let replace = (idx, match) => {
     let value = hash[match];
 
-    return value
-      ? value
-      : `{{${match}}}`
+    return isNone(value)
+      ? `{{${match}}}`
+      : value;
   };
 
   return string.replace(pattern, replace);

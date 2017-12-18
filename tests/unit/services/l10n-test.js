@@ -220,6 +220,17 @@ test('it works', async function(assert) {
     'Plural translations work correctly with plural form.'
   );
 
+  assert.strictEqual(
+    service.n(
+      'You have {{count}} unit in your cart.',
+      'You have {{count}} units in your cart.',
+      0,
+      { count: 0 }
+    ),
+    'You have 0 units in your cart.',
+    'Plural translations work correctly with falsy count property.'
+  );
+
   await service.setLocale('de');
 
   assert.strictEqual(
