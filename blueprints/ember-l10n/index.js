@@ -1,33 +1,25 @@
-/* global module */
+/* eslint-env node */
+'use strict';
+
 module.exports = {
   description: 'Adds addons, packages and bower packages for ember-l10n',
-  normalizeEntityName: function() {
-    // allows us to run ember install ember-l10n and not blow up
-    // because ember cli normally expects the format
-    // ember generate <entitiyName> <blueprint>
+  normalizeEntityName() {
+    // leave empty for main blueprint run by `ember install ember-l10n`
   },
-  afterInstall: function() {
+  afterInstall() {
     return this.addPackagesToProject([
       {
         name: 'xgettext-template',
-        target: '^2.6.0'
+        target: '^3.4.0'
       },
       {
-        name: 'gettext.js',
-        target: '^0.5.2'
+        name: 'gettext-parser',
+        target: '^1.3.0'
       },
       {
         name: 'ember-ajax',
-        target: '^2.4.1'
+        target: '^3.0.0'
       }
-    ]).then(() => {
-      return this.addBowerPackagesToProject([
-        {
-          source: 'git://github.com/Cropster/gettext.js#master',
-          name: 'gettext.js',
-          target: ''
-        }
-      ]);
-    });
+    ]);
   }
 };

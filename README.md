@@ -268,8 +268,6 @@ ember l10n:extract <options...>
     aliases: -f <value>
   --generate-to (String) (Default: null) Target PO-file to be used in conjunction with `-g` flag - CAUTION: uses `${language}.po` as default
     aliases: -t <value>
-  --xgettext-template-path (String) (Default: './node_modules/xgettext-template/bin/xgettext-template') The path where xgettext-template is available
-  --gettextjs-path (String) (Default: './node_modules/gettext.js/bin/po2json') The path where gettext.js is available
 ```
 
 ###### Usage hints:
@@ -307,7 +305,6 @@ ember l10n:convert <options...>
     aliases: -f <value>
   --language (String) (Default: 'en') Target language for PO to JSON conversion
     aliases: -l <value>
-  --gettextjs-path (String) (Default: './node_modules/gettext.js/bin/po2json') The path where gettext.js is available
 ```
 
 Note that by default, this will create a fingerprinted json file & update the `app/utils/l10n-fingerprint-map.js` accordingly. If you do not wish to use fingerprinting, use  `--fingerprint-map=false`.
