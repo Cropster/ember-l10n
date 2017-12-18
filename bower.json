@@ -1,7 +1,0 @@
-{
-  "name": "ember-l10n",
-  "dependencies": {
-    "pretender": "^0.12.0",
-    "gettext.js": "Cropster/gettext.js#master"
-  }
-}
