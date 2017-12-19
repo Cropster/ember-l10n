@@ -626,13 +626,13 @@ export default Service.extend({
   _pluralFactory(pluralForm) {
     let defaultPluralForm = get(this, 'defaultPluralForm');
 
-    if (!pluralForm.match(/^\\s*nplurals\\s*=\\s*[\\d]+\\s*;\\s*plural\\s*=\\s*(?:[-+*/%?!&|=<>():;n\\d\\s]+);$/)) {
-      this._log(`Plural form "${pluralForm}" is invalid: Falling back to default version "${defaultPluralForm}"!`);
+    if (!pluralForm.match(/^\s*nplurals\\s*=\s*[\d]+\s*;\s*plural\s*=\s*(?:[-+*/%?!&|=<>():;n\d\s]+);$/)) {
+      this._log(`Plural form "${pluralForm}" is invalid: 'nplurals=NUMBER; plural=EXPRESSION;' - falling back to ${defaultPluralForm}!`);
       pluralForm = defaultPluralForm;
     }
 
     return new Function('n', `
-      var nplurals, plural; ${pluralForm};
+      var nplurals, plural; ${pluralForm}
 
       switch (typeof plural) {
         case 'boolean':
