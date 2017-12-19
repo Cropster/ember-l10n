@@ -88,7 +88,8 @@ export default Service.extend({
   forceLocale: null,
 
   /**
-   * Fallback locale for unavailable locales.
+   * Fallback locale for unavailable locales or
+   * the language which is used for message ids.
    *
    * @property defaultLocale
    * @type {String}
@@ -96,6 +97,17 @@ export default Service.extend({
    * @public
    */
   defaultLocale: 'en',
+
+  /**
+   * Fallback plural form for unavaiable locales or
+   * the language which is used for message ids.
+   *
+   * @property defaultPluralForm
+   * @type {String}
+   * @default 'nplurals=2; plural=(n != 1)'
+   * @public
+   */
+  defaultPluralForm: 'nplurals=2; plural=(n != 1);',
 
   /**
    * Will invoke a language detection or loads
@@ -167,7 +179,13 @@ export default Service.extend({
    * @private
    */
   _plurals: computed(function() {
-    return {};
+    let pluralForm = get(this, 'defaultPluralForm');
+    let locale = get(this, 'defaultLocale');
+    let _plurals = {};
+
+    _plurals[locale] = this._pluralFactory(pluralForm);
+
+    return _plurals;
   }),
 
   /**
@@ -576,9 +594,8 @@ export default Service.extend({
   },
 
   /**
-   * Extracts `plural-forms` key from meta data stored in data's `''` key.
-   * Transforms and stores it into a callable function for usage in `n()`.
-   * Besides, it saves whole response containing translations in hash map.
+   * Saves locale's translation data in internal hash and extracts plural
+   * form from `headers` to convert it to a callable for plural methods.
    *
    * @method _saveJSON
    * @param {Object} response
@@ -586,9 +603,6 @@ export default Service.extend({
    * @private
    */
   _saveJSON(response) {
-    let regex = new RegExp('^\\s*nplurals\\s*=\\s*[\\d]+\\s*;\\s*plural\\s*=\\s*(?:[-+*/%?!&|=<>():;n\\d\\s]+);$');
-    let fallback = 'nplurals=2; plural=(n != 1)';
-
     let {
       headers: {
         language: locale,
@@ -596,12 +610,28 @@ export default Service.extend({
       }
     } = response;
 
-    if (!pluralForm.match(regex)) {
-      this._log(`Plural form "${pluralForm}" is invalid: Falling back to english version "${fallback}"!`);
-      pluralForm = fallback;
+    set(this, `_data.${locale}`, response);
+    set(this, `_plurals.${locale}`, this._pluralFactory(pluralForm, locale));
+  },
+
+  /**
+   * Transforms and stores plural form it into a callable function.
+   *
+   * @method _pluralFactory
+   * @param {String} pluralForm
+   * @param {String} locale
+   * @return {Void}
+   * @private
+   */
+  _pluralFactory(pluralForm) {
+    let defaultPluralForm = get(this, 'defaultPluralForm');
+
+    if (!pluralForm.match(/^\\s*nplurals\\s*=\\s*[\\d]+\\s*;\\s*plural\\s*=\\s*(?:[-+*/%?!&|=<>():;n\\d\\s]+);$/)) {
+      this._log(`Plural form "${pluralForm}" is invalid: Falling back to default version "${defaultPluralForm}"!`);
+      pluralForm = defaultPluralForm;
     }
 
-    let func = new Function('n', `
+    return new Function('n', `
       var nplurals, plural; ${pluralForm};
 
       switch (typeof plural) {
@@ -625,9 +655,6 @@ export default Service.extend({
         nplurals: nplurals
       };
     `);
-
-    set(this, `_plurals.${locale}`, func);
-    set(this, `_data.${locale}`, response);
   },
 
   /**
