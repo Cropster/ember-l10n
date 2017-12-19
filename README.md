@@ -286,7 +286,7 @@ ember l10n:extract <options...>
     aliases: -sad  
   --extract-to (String) (Default: './translations') Output directory of the PO-file
     aliases: -o <value>
-  --keys (Array) (Default: ['t','n:1,2']) Function/Helper Keys to be used for lookup
+  --keys (Array) (Default: ['t', 'pt:1,2c', 'n:1,2', 'pn:1,2,4c']) Function/Helper Keys to be used for lookup
     aliases: -k <value>
   --language (String) (Default: 'en') Target language of the PO-file
     aliases: -l <value>
@@ -364,7 +364,7 @@ ember l10n:sync <options...>
     aliases: -o <value>
   --language (String) (Default: 'en') Language of PO file being used as base
     aliases: -l <value>
-  --keys (Array) (Default: ['t','n:1,2']) Function/Helper Keys to be used for lookup
+  --keys (Array) (Default: ['t', 'pt:1,2c', 'n:1,2', 'pn:1,2,4c']) Function/Helper Keys to be used for lookup
     aliases: -k <value>
 ```
 
