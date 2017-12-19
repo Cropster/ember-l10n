@@ -1,14 +1,19 @@
 import { helper } from '@ember/component/helper';
+import { assign } from '@ember/polyfills';
 import { strfmt } from './services/l10n';
 
 export default function(context) {
-  let tHelper = helper(([str]) => strfmt(str));
-  let ptHelper = helper(([str/*, ctxt*/]) => strfmt(str));
-  let nHelper = helper(([strSingular, strPlural, count]) => {
-    return strfmt(count !== 1 ? strPlural : strSingular);
+  let tHelper = helper(([str], hash) => {
+    return strfmt(str, assign({}, hash));
   });
-  let pnHelper = helper(([strSingular, strPlural, count/*, ctxt*/]) => {
-    return strfmt(count !== 1 ? strPlural : strSingular);
+  let ptHelper = helper(([str/*, ctxt*/], hash) => {
+    return strfmt(str, assign({}, hash));
+  });
+  let nHelper = helper(([strSingular, strPlural, count], hash) => {
+    return strfmt(count !== 1 ? strPlural : strSingular, assign({ count }, hash));
+  });
+  let pnHelper = helper(([strSingular, strPlural, count/*, ctxt*/], hash) => {
+    return strfmt(count !== 1 ? strPlural : strSingular, assign({ count }, hash));
   });
 
   context.register('helper:t', tHelper);

@@ -128,6 +128,7 @@ moduleFor('service:l10n', 'Unit | Service | l10n', {
 
 test('it works', async function(assert) {
   let service = this.subject({
+    autoInitialize: false,
     _window: {
       navigator: {
         language: 'en'
@@ -135,12 +136,21 @@ test('it works', async function(assert) {
     }
   });
 
-  assert.ok(service);
-
   assert.strictEqual(
     get(service, 'defaultLocale'),
     'en',
     'English is default locale.'
+  );
+
+    assert.strictEqual(
+    service.n(
+      'You have {{count}} unit in your cart.',
+      'You have {{count}} units in your cart.',
+      3,
+      { count: 3 }
+    ),
+    'You have 3 units in your cart.',
+    'Default plural form applies if no locale has been loaded.'
   );
 
   try {
@@ -148,6 +158,8 @@ test('it works', async function(assert) {
   } catch(e) {
     // noop
   }
+
+  await service.setLocale('en');
 
   assert.strictEqual(
     service.getLocale(),
