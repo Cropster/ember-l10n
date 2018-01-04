@@ -4,12 +4,20 @@
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
+  let env = process.env.EMBER_ENV || 'development';
+
   let app = new EmberAddon(defaults, {
     'ember-cli-babel': {
       includePolyfill: true
     },
     pretender: {
       enabled: true
+    },
+    fingerprint: {
+      enabled: env === 'production',
+      generateAssetMap: true,
+      fingerprintAssetMap: true,
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'json']
     }
   });
 
