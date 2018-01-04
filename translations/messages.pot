@@ -1,0 +1,69 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR My Company
+# This file is distributed under the same license as the My App package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: My App 1.0\n"
+"Report-Msgid-Bugs-To: support@mycompany.com\n"
+"POT-Creation-Date: 2018-01-04 08:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: tests/dummy/app/services/l10n.js:7 tests/unit/services/l10n-test.js:172
+msgid "en"
+msgstr ""
+
+#: tests/dummy/app/services/l10n.js:8
+msgid "de"
+msgstr ""
+
+#: tests/dummy/app/services/l10n.js:9
+msgid "ko"
+msgstr ""
+
+#: tests/unit/services/l10n-test.js:148 tests/unit/services/l10n-test.js:206
+#: tests/unit/services/l10n-test.js:217 tests/unit/services/l10n-test.js:227
+#: tests/unit/services/l10n-test.js:238
+msgid "You have {{count}} unit in your cart."
+msgid_plural "You have {{count}} units in your cart."
+msgstr[0] ""
+msgstr[1] ""
+
+#: tests/unit/services/l10n-test.js:179
+msgid "I'm a {{placeholder}}."
+msgstr ""
+
+#: tests/unit/services/l10n-test.js:189
+msgid "STATUS_ACTIVE"
+msgstr ""
+
+#: tests/unit/services/l10n-test.js:188
+msgid "Current status: {{status}}"
+msgstr ""
+
+#: tests/unit/services/l10n-test.js:250 tests/unit/services/l10n-test.js:256
+msgctxt "menu"
+msgid "user"
+msgid_plural "users"
+msgstr[0] ""
+msgstr[1] ""
+
+#: tests/unit/services/l10n-test.js:263
+msgctxt "menu"
+msgid "You have {{count}} subscription"
+msgid_plural "You have {{count}} subscriptions"
+msgstr[0] ""
+msgstr[1] ""
+
+#: tests/unit/services/l10n-test.js:317
+msgid "testing"
+msgstr ""
