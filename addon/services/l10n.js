@@ -641,7 +641,7 @@ export default Service.extend({
   _pluralFactory(pluralForm) {
     let defaultPluralForm = get(this, 'defaultPluralForm');
 
-    if (!pluralForm.match(/^\s*nplurals\\s*=\s*[\d]+\s*;\s*plural\s*=\s*(?:[-+*/%?!&|=<>():;n\d\s]+);$/)) {
+    if (!pluralForm.match(/^\s*nplurals=\s*[\d]+\s*;\s*plural\s*=\s*(?:[-+*/%?!&|=<>():;n\d\s]+);$/)) {
       this._log(`Plural form "${pluralForm}" is invalid: 'nplurals=NUMBER; plural=EXPRESSION;' - falling back to ${defaultPluralForm}!`);
       pluralForm = defaultPluralForm;
     }
