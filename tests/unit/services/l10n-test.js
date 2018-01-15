@@ -6,7 +6,8 @@ let server;
 
 moduleFor('service:l10n', 'Unit | Service | l10n', {
   needs: [
-    'service:l10n-ajax'
+    'service:l10n-ajax',
+    'service:asset-map'
   ],
 
   beforeEach() {
