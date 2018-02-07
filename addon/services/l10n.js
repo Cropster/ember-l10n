@@ -580,7 +580,7 @@ export default Service.extend({
           return;
         }
 
-        this._saveJSON(response);
+        this._saveJSON(response, locale);
         resolve();
       };
 
@@ -612,15 +612,18 @@ export default Service.extend({
    * Saves locale's translation data in internal hash and extracts plural
    * form from `headers` to convert it to a callable for plural methods.
    *
+   * We ignore the `language` in the JSON here, as we don't really care about that.
+   * Instead, we just use the locale used for loading the JSON.
+   *
    * @method _saveJSON
    * @param {Object} response
+   * @param {String} locale
    * @return {Void}
    * @private
    */
-  _saveJSON(response) {
+  _saveJSON(response, locale) {
     let {
       headers: {
-        language: locale,
         'plural-forms': pluralForm
       }
     } = response;
