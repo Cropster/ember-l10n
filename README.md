@@ -72,6 +72,7 @@ This means that we can now use the in-built fingerprinting for our locale files!
 
 If you are migrating from < 2, please follow these steps:
 
+* Install ember-cli-ifa: `ember install ember-cli-ifa`
 * Move all your generated locale files out of their fingerprinted folders. E.g. `/public/assets/locales/12345/en.json` --> `/public/assets/locales/en.json`
 * Remove the file `utils/l10n-fingerprint-map.js`
 * Ensure the fingerprinting config in your `ember-cli-build.js` is correct (see [Fingerprinting](#fingerprinting) section)

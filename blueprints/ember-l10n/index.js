@@ -17,8 +17,10 @@ module.exports = {
         target: '^1.3.0'
       },
       {
-        name: 'ember-ajax',
-        target: '^3.0.0'
+        name: 'ember-ajax'
+      },
+      {
+        name: 'ember-cli-ifa'
       }
     ]);
   }
