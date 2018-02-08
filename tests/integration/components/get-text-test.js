@@ -24,10 +24,14 @@ test('it works', function(assert) {
 
   assert.equal(this.$('a:eq(0)').text().trim(), 'STATIC REPLACEMENT');
   assert.equal(this.$('a:eq(1)').text().trim(), 'DYNAMIC REPLACEMENT');
+});
 
+test('it works with a given message', function(assert) {
   this.render(hbs`{{get-text message=(t '<b>I am bold.</b>')}}`);
   assert.equal(this.$().html(), '&lt;b&gt;I am bold.&lt;/b&gt;', 'It escapes text per default.');
+});
 
+test('it works with unescapeText=true set', function(assert) {
   this.render(hbs`{{get-text unescapeText=true message=(t '<b>I am bold.</b>')}}`);
   assert.equal(this.$().html(), '<b>I am bold.</b>', 'It unescapes text with `unescapeText` option.');
 });

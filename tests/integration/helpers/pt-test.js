@@ -1,3 +1,4 @@
+/* eslint-disable ember/avoid-leaking-state-in-ember-objects */
 import { moduleForComponent, test } from 'ember-qunit';
 import L10n from 'ember-l10n/services/l10n';
 import hbs from 'htmlbars-inline-precompile';
@@ -30,7 +31,7 @@ const mockAjax = Service.extend({
               }
             }
           }
-        }
+        };
 
         func(json[url]);
       }
