@@ -35,6 +35,7 @@ let app = new EmberAddon(defaults, {
     enabled: env === 'production',
     generateAssetMap: true,
     fingerprintAssetMap: true,
+    // We need to add json to the fingerprinted extentions
     extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'json']
   }
 });
@@ -192,6 +193,7 @@ let app = new EmberAddon(defaults, {
     enabled: env === 'production',
     generateAssetMap: true,
     fingerprintAssetMap: true,
+    // We need to add json to the fingerprinted extentions
     extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'json']
   }
 });
@@ -202,6 +204,10 @@ This one is required to work! There are multiple important parts here.
 * First, you need to add `json` to the list of extensions to fingerprint
 * Then, you need to ensure generateAssetMap & fingerprintAssetMap are true
 * Then, you need to enable this for all environments where you want to have fingerprinting. Usually, this is production, but it could also apply e.g. in staging.
+
+__Note:__ If you experience issues with multiple `assetMap.json` files being generated, this might be related to 
+[this bug in broccoli-asset-rev](https://github.com/rickharrison/broccoli-asset-rev/issues/122), 
+which can be fixed by downgrading to broccoli-asset-rev@2.5.0.
 
 Then, you might also need to configure your `config/environment.js`. 
 The following is the default config, which will be used if not otherwise overwritten:

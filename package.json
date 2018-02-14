@@ -18,7 +18,7 @@
   "author": "Cropster",
   "license": "MIT",
   "devDependencies": {
-    "broccoli-asset-rev": "^2.4.5",
+    "broccoli-asset-rev": "~2.5.0",
     "ember-ajax": "3.0.0",
     "ember-cli": "^2.18.2",
     "ember-cli-app-version": "^3.1.3",
