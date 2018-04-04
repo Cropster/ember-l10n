@@ -275,7 +275,7 @@ export default Service.extend({
    */
   setLocale(locale) {
     return new Promise((resolve, reject) => {
-      if (!this.hasLocale(locale)) {
+      if (!this.hasLocale(locale, true)) {
         reject();
         return;
       }
@@ -301,13 +301,14 @@ export default Service.extend({
    *
    * @method setLocale
    * @param {String} locale
+   * @param {Boolean} warnIfUnavailable
    * @return {Boolean}
    * @public
    */
-  hasLocale(locale) {
+  hasLocale(locale, warnIfUnavailable = false) {
     let availableLocales = get(this, 'availableLocales');
     let hasLocale = !!availableLocales[locale];
-    if (!hasLocale) {
+    if (!hasLocale && warnIfUnavailable) {
       this._log(`Locale "${locale}" is not available!`, 'warn');
     }
 
@@ -592,7 +593,7 @@ export default Service.extend({
         }
 
         this._log(`An error occurred loading locale "${locale}": ${reason}`, 'error');
-        reject();
+        reject(reason);
       };
 
       // used cached translation from hash map
