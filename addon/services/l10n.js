@@ -285,13 +285,9 @@ export default Service.extend({
         resolve();
       };
 
-      let failureCallback = () => {
-        reject();
-      };
-
       this._loadJSON(locale).then(
         successCallback,
-        failureCallback
+        reject
       );
     });
   },
