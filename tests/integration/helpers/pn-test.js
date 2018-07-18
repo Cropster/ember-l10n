@@ -1,5 +1,7 @@
 /* eslint-disable ember/avoid-leaking-state-in-ember-objects */
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import L10n from 'ember-l10n/services/l10n';
 import hbs from 'htmlbars-inline-precompile';
 import Service from '@ember/service';
@@ -33,7 +35,7 @@ const mockAjax = Service.extend({
               }
             }
           }
-        }
+        };
 
         func(json[url]);
       }
@@ -52,25 +54,26 @@ const mockL10nService = L10n.extend({
 
 let l10nService;
 
-moduleForComponent('pn', 'Integration | Helper | pn', {
-  integration: true,
-  beforeEach() {
-    this.register('service:l10n', mockL10nService);
-    this.inject.service('l10n', { as: 'l10n' });
+module('Integration | Helper | pn', function(hooks) {
+  setupRenderingTest(hooks);
 
-    l10nService = this.container.lookup('service:l10n');
-  }
-});
+  hooks.beforeEach(function() {
+    this.owner.register('service:l10n', mockL10nService);
+    this.l10n = this.owner.lookup('service:l10n');
 
-test('it works', async function(assert) {
-  await l10nService.setLocale('en');
+    l10nService = this.owner.lookup('service:l10n');
+  });
 
-  this.render(hbs`{{pn 'user' 'users' 1 'menu'}}`);
-  assert.equal(this.$().text().trim(), 'subscription', 'Contextual translations are working correctly for singular.');
+  test('it works', async function(assert) {
+    await l10nService.setLocale('en');
 
-  this.render(hbs`{{pn 'user' 'users' 3 'menu'}}`);
-  assert.equal(this.$().text().trim(), 'subscriptions', 'Contextual translations are working correctly for plural.');
+    await render(hbs`{{pn 'user' 'users' 1 'menu'}}`);
+    assert.dom(this.element).hasText('subscription', 'Contextual translations are working correctly for singular.');
 
-  this.render(hbs`{{pn 'user' 'users' 3}}`);
-  assert.equal(this.$().text().trim(), 'users', 'Omitting context falls back to message without context.');
+    await render(hbs`{{pn 'user' 'users' 3 'menu'}}`);
+    assert.dom(this.element).hasText('subscriptions', 'Contextual translations are working correctly for plural.');
+
+    await render(hbs`{{pn 'user' 'users' 3}}`);
+    assert.dom(this.element).hasText('users', 'Omitting context falls back to message without context.');
+  });
 });

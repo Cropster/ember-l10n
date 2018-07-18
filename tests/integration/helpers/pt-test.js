@@ -1,5 +1,7 @@
 /* eslint-disable ember/avoid-leaking-state-in-ember-objects */
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import L10n from 'ember-l10n/services/l10n';
 import hbs from 'htmlbars-inline-precompile';
 import Service from '@ember/service';
@@ -27,7 +29,7 @@ const mockAjax = Service.extend({
                   'msgstr': [
                     'Kyrgyzstan'
                   ]
-                },
+                }
               }
             }
           }
@@ -50,22 +52,23 @@ const mockL10nService = L10n.extend({
 
 let l10nService;
 
-moduleForComponent('pt', 'Integration | Helper | pt', {
-  integration: true,
-  beforeEach() {
-    this.register('service:l10n', mockL10nService);
-    this.inject.service('l10n', { as: 'l10n' });
+module('Integration | Helper | pt', function(hooks) {
+  setupRenderingTest(hooks);
 
-    l10nService = this.container.lookup('service:l10n');
-  }
-});
+  hooks.beforeEach(function() {
+    this.owner.register('service:l10n', mockL10nService);
+    this.l10n = this.owner.lookup('service:l10n');
 
-test('it works', async function(assert) {
-  await l10nService.setLocale('en');
+    l10nService = this.owner.lookup('service:l10n');
+  });
 
-  this.render(hbs`{{pt 'KG' 'countries'}}`);
-  assert.equal(this.$().text().trim(), 'Kyrgyzstan', 'Contextual translations are working correctly.');
+  test('it works', async function(assert) {
+    await l10nService.setLocale('en');
 
-  this.render(hbs`{{pt 'KG'}}`);
-  assert.equal(this.$().text().trim(), 'kg', 'Omitting context falls back to message without context.');
+    await render(hbs`{{pt 'KG' 'countries'}}`);
+    assert.dom(this.element).hasText('Kyrgyzstan', 'Contextual translations are working correctly.');
+
+    await render(hbs`{{pt 'KG'}}`);
+    assert.dom(this.element).hasText('kg', 'Omitting context falls back to message without context.');
+  });
 });
