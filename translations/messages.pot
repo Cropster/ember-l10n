@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: My App 1.0\n"
 "Report-Msgid-Bugs-To: support@mycompany.com\n"
-"POT-Creation-Date: 2018-01-04 08:41+0100\n"
+"POT-Creation-Date: 2018-07-18 13:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,4 +66,21 @@ msgstr[1] ""
 
 #: tests/unit/services/l10n-test.js:317
 msgid "testing"
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:24
+msgid "Hello world!"
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:63
+msgid "My name is {{name}}."
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:89
+msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:71
+msgctxt "menu"
+msgid "User"
 msgstr ""
