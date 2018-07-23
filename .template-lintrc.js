@@ -1,6 +1,6 @@
 module.exports = {
   extends: 'recommended',
   rules: {
-    'triple-curlies': false
+    'no-triple-curlies': false
   }
 };

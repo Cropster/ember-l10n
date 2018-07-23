@@ -6,9 +6,6 @@ module.exports = function(defaults) {
   let env = process.env.EMBER_ENV || 'development';
 
   let app = new EmberAddon(defaults, {
-    'ember-cli-babel': {
-      includePolyfill: true
-    },
     pretender: {
       enabled: true
     },

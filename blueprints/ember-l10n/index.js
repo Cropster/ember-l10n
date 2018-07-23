@@ -9,14 +9,6 @@ module.exports = {
   afterInstall() {
     return this.addPackagesToProject([
       {
-        name: 'xgettext-template',
-        target: '^3.4.0'
-      },
-      {
-        name: 'gettext-parser',
-        target: '^1.3.0'
-      },
-      {
         name: 'ember-ajax'
       },
       {

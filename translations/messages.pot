@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: My App 1.0\n"
 "Report-Msgid-Bugs-To: support@mycompany.com\n"
-"POT-Creation-Date: 2018-01-04 08:41+0100\n"
+"POT-Creation-Date: 2018-07-20 08:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: tests/dummy/app/services/l10n.js:7 tests/unit/services/l10n-test.js:172
+#: tests/dummy/app/services/l10n.js:7 tests/unit/services/l10n-test.js:169
 msgid "en"
 msgstr ""
 
@@ -30,40 +30,57 @@ msgstr ""
 msgid "ko"
 msgstr ""
 
-#: tests/unit/services/l10n-test.js:148 tests/unit/services/l10n-test.js:206
-#: tests/unit/services/l10n-test.js:217 tests/unit/services/l10n-test.js:227
-#: tests/unit/services/l10n-test.js:238
+#: tests/unit/services/l10n-test.js:145 tests/unit/services/l10n-test.js:203
+#: tests/unit/services/l10n-test.js:214 tests/unit/services/l10n-test.js:224
+#: tests/unit/services/l10n-test.js:235
 msgid "You have {{count}} unit in your cart."
 msgid_plural "You have {{count}} units in your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/unit/services/l10n-test.js:179
+#: tests/unit/services/l10n-test.js:176
 msgid "I'm a {{placeholder}}."
 msgstr ""
 
-#: tests/unit/services/l10n-test.js:189
+#: tests/unit/services/l10n-test.js:186
 msgid "STATUS_ACTIVE"
 msgstr ""
 
-#: tests/unit/services/l10n-test.js:188
+#: tests/unit/services/l10n-test.js:185
 msgid "Current status: {{status}}"
 msgstr ""
 
-#: tests/unit/services/l10n-test.js:250 tests/unit/services/l10n-test.js:256
+#: tests/unit/services/l10n-test.js:247 tests/unit/services/l10n-test.js:253
 msgctxt "menu"
 msgid "user"
 msgid_plural "users"
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/unit/services/l10n-test.js:263
+#: tests/unit/services/l10n-test.js:260
 msgctxt "menu"
 msgid "You have {{count}} subscription"
 msgid_plural "You have {{count}} subscriptions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/unit/services/l10n-test.js:317
+#: tests/unit/services/l10n-test.js:314
 msgid "testing"
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:24
+msgid "Hello world!"
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:63
+msgid "My name is {{name}}."
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:89
+msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:71
+msgctxt "menu"
+msgid "User"
 msgstr ""
