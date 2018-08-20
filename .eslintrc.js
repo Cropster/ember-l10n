@@ -45,6 +45,25 @@ module.exports = {
       })
     },
 
+    // node tests
+    {
+      files: [
+        'node-tests/**/*.js'
+      ],
+      parserOptions: {
+        sourceType: 'script',
+        ecmaVersion: 2017
+      },
+      env: {
+        browser: false,
+        node: true
+      },
+      plugins: ['node'],
+      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
+        // add your custom rules and overrides for node files here
+      })
+    },
+
     // test files
     {
       files: ['tests/**/*.js'],
