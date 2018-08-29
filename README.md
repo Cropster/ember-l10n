@@ -404,14 +404,21 @@ To see all available command line options for the converter script please run:
 ```
 ember l10n:convert <options...>
   Convert PO files to JSON
-  --convert-from (String) (Default: './translations') Directory of PO file to convert
-    aliases: -i <value>
-  --convert-to (String) (Default: './public/assets/locales') Directory to write JSON files to
-    aliases: -o <value>
-    aliases: -f <value>
-  --language (String) (Default: 'en') Target language for PO to JSON conversion
-    aliases: -l <value>
+    --convert-from (String) (Default: ./translations) Directory of PO file to convert
+      aliases: -i <value>
+    --convert-to (String) (Default: ./public/assets/locales) Directory to write JSON files to
+      aliases: -o <value>
+    --language (String) (Default: en) Target language for PO to JSON conversion
+      aliases: -l <value>
+    --validate-throw (String) (Default: null) For which validation level the script should abort. Can be: ERROR, WARNING, null
+      aliases: -vt <value>
+    --dry-run (Boolean) (Default: false) If true, only generate but do not actually write to a file
+      aliases: -dr
+
 ```
+
+Note that this will also validate the generated JSON file for common syntax errors. 
+For example, it will check if e.g. `This is {{description}}` is wrongly translated to `Das ist die {{Beschreibung}}`. It will print out any found issues to the console. Alternatively, you can specify `validate-throw=ERROR` to force the script to abort if an error is found. 
 
 ### Synchronizer
 
