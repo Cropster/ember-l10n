@@ -3,11 +3,6 @@
 module.exports = {
   name: 'ember-l10n',
 
-  isDevelopingAddon: function() {
-    // @see: https://ember-cli.com/extending/#link-to-addon-while-developing
-    return false; // Set this to true for local development
-  },
-
   includedCommands: function() {
     return {
       'l10n:install': require('./lib/commands/install'),
