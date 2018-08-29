@@ -35,7 +35,7 @@ module('Unit | Service | l10n', function(hooks) {
                   'msgstr': [
                     'You have {{count}} unit in your cart.',
                     'You have {{count}} units in your cart.'
-                  ],
+                  ]
                 },
                 'STATUS_ACTIVE': {
                   'msgstr': [
@@ -129,7 +129,7 @@ module('Unit | Service | l10n', function(hooks) {
       autoInitialize: false,
       _window: {
         navigator: {
-          language: 'en'
+          languages: ['en']
         }
       }
     });
@@ -140,7 +140,7 @@ module('Unit | Service | l10n', function(hooks) {
       'English is default locale.'
     );
 
-      assert.strictEqual(
+    assert.strictEqual(
       service.n(
         'You have {{count}} unit in your cart.',
         'You have {{count}} units in your cart.',
@@ -276,7 +276,7 @@ module('Unit | Service | l10n', function(hooks) {
   test('detect and swap locale test', async function(assert) {
     let _window = {
       navigator: {
-        language: null
+        languages: []
       }
     };
     let service = this.owner.factoryFor('service:l10n').create({
@@ -292,7 +292,7 @@ module('Unit | Service | l10n', function(hooks) {
 
     assert.strictEqual(service.detectLocale(), 'de', '`defaultLocale` is used on failed detection.');
 
-    set(_window, 'navigator.language', 'it');
+    set(_window, 'navigator.languages', ['it']);
 
     assert.strictEqual(service.detectLocale(), 'it', 'Detected locale is used if listed in `availableLocales`.');
 
@@ -313,4 +313,36 @@ module('Unit | Service | l10n', function(hooks) {
     assert.strictEqual(service.getLocale(), 'de', 'Changing locales via `setLocale()` changes for supported locales.');
     assert.strictEqual(service.t('testing'), 'Test', 'Changing locales via `setLocale()` loads corresponding translations.');
   });
+
+  test('_getBrowserLocales works', function(assert) {
+    let _window = {
+      navigator: {
+        languages: []
+      }
+    };
+    let service = this.owner.factoryFor('service:l10n').create({
+      autoInitialize: false,
+      defaultLocale: 'de',
+      _window
+    });
+    assert.deepEqual(service._getBrowserLocales(), ['de'], 'it returns the default locale if empty languages is found');
+
+    set(service, '_window', {
+      navigator: {
+        languages: undefined,
+        browserLanguage: 'en'
+      }
+    });
+    assert.deepEqual(service._getBrowserLocales(), ['en'], 'it uses the browserLanguage if languages is not found');
+
+
+    set(service, '_window', {
+      navigator: {
+        languages: ['de-AT', 'de', 'en-US', 'en']
+      }
+    });
+    assert.deepEqual(service._getBrowserLocales(), ['de-AT', 'de', 'en-US', 'en'], 'it uses the languages if found');
+
+  });
+
 });

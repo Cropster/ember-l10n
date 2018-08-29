@@ -7,14 +7,15 @@ import {
   set,
   computed
 } from '@ember/object';
-import RSVP from 'rsvp';
+import { Promise } from 'rsvp';
 import Ember from 'ember';
 import Service from '@ember/service';
 import { assign } from '@ember/polyfills';
 import { inject as service } from '@ember/service';
 import config from 'ember-get-config';
-
-const { Promise } = RSVP;
+import { guessLocale } from '../utils/guess-locale';
+import { A as array } from '@ember/array';
+import { assert } from '@ember/debug';
 
 /**
  * This service translates through gettext.js.
@@ -320,39 +321,11 @@ export default Service.extend({
    * @public
    */
   detectLocale() {
-    let navigator = get(this, '_window.navigator');
     let defaultLocale = get(this, 'defaultLocale');
     let forceLocale = get(this, 'forceLocale');
-    let locale;
 
     // auto detect locale if no force locale
-    if (!forceLocale) {
-      if (navigator) {
-        if (navigator.language) {
-          locale = navigator.language;
-        } else if (navigator.browserLanguage) {
-          locale = navigator.browserLanguage;
-        } else if (navigator.systemLanguage) {
-          locale = navigator.systemLanguage;
-        } else if (navigator.userLanguage) {
-          locale = navigator.userLanguage;
-        } else if (navigator.languages) {
-          locale = navigator.languages[0];
-        }
-      }
-
-      if (locale) {
-        locale = locale.substr(0, 2);
-      } else {
-        locale = defaultLocale
-          ? defaultLocale
-          : "en";
-      }
-
-      locale = locale.substr(0, 2);
-    } else {
-      locale = forceLocale;
-    }
+    let locale = forceLocale || this.guessBrowserLocale();
 
     // provide default locale if not available
     if (!this.hasLocale(locale)) {
@@ -368,6 +341,46 @@ export default Service.extend({
     }
 
     return locale;
+  },
+
+  /**
+   * Get a list of desireable locales for the browser.
+   * This will use navigator.languages if possible, and fall back to navigator.browserLanguage for IE11.
+   *
+   * @method _getBrowserLocales
+   * @returns {Array<String>}
+   * @private
+   */
+  _getBrowserLocales() {
+    let navigator = get(this, '_window.navigator');
+    let defaultLocale = get(this, 'defaultLocale') || 'en';
+
+    if (!navigator) {
+      return array([defaultLocale]);
+    }
+
+    let desiredLocales = navigator.languages || [navigator.browserLanguage];
+    desiredLocales = array(desiredLocales.slice()).compact();
+    if (!get(desiredLocales, 'length')) {
+      return array([defaultLocale]);
+    }
+
+    return desiredLocales;
+  },
+
+  /**
+   * Guess the best locale to use based on the browser locales & available locales.
+   *
+   * @method guessBrowserLocale
+   * @return {String}
+   * @public
+   */
+  guessBrowserLocale(allowSubLocales = false) {
+    let defaultLocale = get(this, 'defaultLocale') || 'en';
+    let availableLocales = Object.keys(get(this, 'availableLocales'));
+    let desiredLocales = this._getBrowserLocales();
+
+    return guessLocale(availableLocales, desiredLocales, { defaultLocale, allowSubLocales });
   },
 
   /**
@@ -719,6 +732,7 @@ export default Service.extend({
 
     let localeMap = {};
     Object.keys(locales).forEach((locale) => {
+      assert('Do not use the locale zh, as it is not a valid locale. Instead, use dedicated locales for traditional & simplified Chinese.', locale !== 'zh');
       localeMap[locale] = this._getPathForLocale(locale);
     });
 
@@ -781,7 +795,7 @@ export default Service.extend({
       return
     }
 
-    if (!['log', 'warn', 'error'].includes(type)) {
+    if (!['log', 'warn', 'error'].indexOf(type) === -1) {
       type = 'log';
     }
 
