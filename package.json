@@ -10,7 +10,8 @@
     "build": "ember build",
     "start": "ember serve",
     "test": "ember try:each",
-    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests"
+    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "node-tests": "node node-tests/index.js"
   },
   "repository": "https://github.com/Cropster/ember-l10n",
   "engines": {
@@ -20,6 +21,7 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.7.0",
+    "chai": "^4.1.2",
     "ember-ajax": "^3.1.0",
     "ember-cli": "^3.3.0",
     "ember-cli-app-version": "^3.2.0",
@@ -47,8 +49,11 @@
     "ember-try": "^0.2.23",
     "eslint-plugin-ember": "^5.2.0",
     "eslint-plugin-node": "^7.0.1",
+    "glob": "^7.1.2",
     "loader.js": "^4.7.0",
-    "qunit-dom": "^0.7.1"
+    "mocha": "^5.2.0",
+    "qunit-dom": "^0.7.1",
+    "rimraf": "^2.6.2"
   },
   "keywords": [
     "ember-addon",

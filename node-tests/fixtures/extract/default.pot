@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Test Company
+# This file is distributed under the same license as the Test App package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Test App 1.0\n"
+"Report-Msgid-Bugs-To: test-email@email.com\n"
+"POT-Creation-Date: 2018-08-20 14:57+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: tests/dummy/app/services/l10n.js:7
+msgid "en"
+msgstr ""
+
+#: tests/dummy/app/services/l10n.js:8
+msgid "de"
+msgstr ""
+
+#: tests/dummy/app/services/l10n.js:9
+msgid "ko"
+msgstr ""
+
+#: tests/dummy/app/templates/application.l10n.hbs:24
+msgid "Hello world!"
+msgstr ""
+
+#: tests/dummy/app/templates/application.l10n.hbs:39
+#: tests/dummy/app/templates/application.l10n.hbs:50
+msgid "You have {{count}} unit in your cart."
+msgid_plural "You have {{count}} units in your cart."
+msgstr[0] ""
+msgstr[1] ""
+
+#: tests/dummy/app/templates/application.l10n.hbs:63
+msgid "My name is {{name}}."
+msgstr ""
+
+#: tests/dummy/app/templates/application.l10n.hbs:89
+msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
+msgstr ""
+
+#: tests/dummy/app/templates/application.l10n.hbs:71
+msgctxt "menu"
+msgid "User"
+msgstr ""
+
+#: tests/dummy/app/templates/test-page.l10n.hbs:2
+msgid "This page only contains text for tests"
+msgstr ""
+
+#: tests/dummy/app/templates/test-page.l10n.hbs:6
+msgid ""
+"Multi-line translations\n"
+"work!"
+msgstr ""
+
+#: tests/dummy/app/templates/test-page.l10n.hbs:13
+msgid ""
+"Translations with\n"
+"<strong>tags</strong> and weird indentation\n"
+"works"
+msgstr ""
