@@ -334,7 +334,7 @@ export default Service.extend({
     }
 
     // otherwise return detected locale
-    if (forceLocale) {
+    if (!forceLocale) {
       this._log(`Automatically detected user language: "${locale}"`);
     } else {
       this._log(`Using forced locale: "${locale}"`);
