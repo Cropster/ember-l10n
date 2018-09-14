@@ -621,14 +621,48 @@ export default Service.extend({
    * @private
    */
   _saveJSON(response, locale) {
+    let json = this._sanitizeJSON(response);
+
     let {
       headers: {
         'plural-forms': pluralForm
       }
-    } = response;
+    } = json;
 
-    set(this, `_data.${locale}`, response);
+    set(this, `_data.${locale}`, json);
     set(this, `_plurals.${locale}`, this._pluralFactory(pluralForm, locale));
+  },
+
+  /**
+   * Normalize the message ids in the JSON response
+   * Otherwise, the lookup in this._getMessages() can sometimes fail.
+   * The new extraction functionality leaves (some) whitespace intact, making message ids with e.g. newlines possible.
+   * This breaks when looking up message keys.
+   * To fix this, we normalize all message ids to plain whitespace.
+   * Newlines and other whitespace in the message content remains intact.
+   * This also ensures that with changing whitespace, messages will still be found later.
+   *
+   * @method _sanitizeJSON
+   * @param {Object} json
+   * @return {Object}
+   * @private
+   */
+  _sanitizeJSON(json) {
+    let { translations } = json;
+    let sanitizedTranslations = {};
+
+    Object.keys(translations).forEach((context) => {
+      let items = translations[context];
+      sanitizedTranslations[context] = {};
+
+      Object.keys(items).forEach((messageId) => {
+        let item = items[messageId];
+        let sanitizedMessageId = messageId.replace(/\s+/g, ' ');
+        sanitizedTranslations[context][sanitizedMessageId] = assign({}, item, { msgid: sanitizedMessageId });
+      });
+    });
+
+    return assign({}, json, { translations: sanitizedTranslations });
   },
 
   /**
