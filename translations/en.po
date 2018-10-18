@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: My App 1.0\n"
 "Report-Msgid-Bugs-To: support@mycompany.com\n"
-"POT-Creation-Date: 2018-07-20 08:39+0200\n"
-"PO-Revision-Date: 2018-07-20 08:39+0200\n"
+"POT-Creation-Date: 2018-10-18 17:15+0200\n"
+"PO-Revision-Date: 2018-10-18 17:15+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -67,22 +67,90 @@ msgstr[1] "You have {{count}} subscriptions"
 msgid "testing"
 msgstr "testing"
 
-#: tests/dummy/app/templates/application.hbs:24
+#: tests/dummy/app/templates/application.hbs:24:0
 msgid "Hello world!"
 msgstr "Hello world!"
 
-#: tests/dummy/app/templates/application.hbs:63
+#: tests/dummy/app/templates/application.hbs:63:0
 msgid "My name is {{name}}."
 msgstr "My name is {{name}}."
 
-#: tests/dummy/app/templates/application.hbs:89
-msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
-msgstr "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
-
-#: tests/dummy/app/templates/application.hbs:71
+#: tests/dummy/app/templates/application.hbs:71:0
 msgctxt "menu"
 msgid "User"
 msgstr "User"
+
+#: tests/dummy/app/templates/application.hbs:89:20
+msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
+msgstr "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
+
+#: tests/dummy/app/templates/test-page.hbs:2:2
+msgid "This page only contains text for tests"
+msgstr "This page only contains text for tests"
+
+#: tests/dummy/app/templates/test-page.hbs:6:2
+msgid ""
+"Multi-line translations\n"
+"work!"
+msgstr ""
+"Multi-line translations\n"
+"work!"
+
+#: tests/dummy/app/templates/test-page.hbs:13:2
+msgid ""
+"Translations with\n"
+"<strong>tags</strong> and weird indentation\n"
+"works"
+msgstr ""
+"Translations with\n"
+"<strong>tags</strong> and weird indentation\n"
+"works"
+
+#~ msgid "This page only \"contains\" text for tests"
+#~ msgstr "This page only \"contains\" text for tests"
+
+#~ msgid "special chars work: \", ', ` and others!"
+#~ msgstr "special chars work: \", ', ` and others!"
+
+#~ msgid "sub test"
+#~ msgstr "sub test"
+
+#~ msgid "sub one"
+#~ msgstr "sub one"
+
+#~ msgid "cobbling plural"
+#~ msgid_plural "cobbling plural MULTI"
+#~ msgstr[0] "cobbling plural"
+#~ msgstr[1] "cobbling plural MULTI"
+
+#~ msgctxt "context"
+#~ msgid "test"
+#~ msgstr "test"
+
+#~ msgctxt ""
+#~ "multi-line\n"
+#~ "context"
+#~ msgid "message with"
+#~ msgstr "message with"
+
+#~ msgid ""
+#~ "multi line singular\n"
+#~ "is here"
+#~ msgid_plural ""
+#~ "multi line plural\n"
+#~ "is here"
+#~ msgstr[0] ""
+#~ "multi line singular\n"
+#~ "is here"
+#~ msgstr[1] ""
+#~ "multi line plural\n"
+#~ "is here"
+
+#~ msgctxt "context"
+#~ msgid "singular"
+#~ msgid_plural "plural"
+#~ msgstr[0] "singular"
+#~ msgstr[1] "plural"
 
 #~ msgid "asdasd"
 #~ msgstr "asdasd"

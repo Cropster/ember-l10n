@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: My App 1.0\n"
 "Report-Msgid-Bugs-To: support@mycompany.com\n"
-"POT-Creation-Date: 2018-07-20 08:39+0200\n"
+"POT-Creation-Date: 2018-10-18 17:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,19 +68,36 @@ msgstr[1] ""
 msgid "testing"
 msgstr ""
 
-#: tests/dummy/app/templates/application.hbs:24
+#: tests/dummy/app/templates/application.hbs:24:0
 msgid "Hello world!"
 msgstr ""
 
-#: tests/dummy/app/templates/application.hbs:63
+#: tests/dummy/app/templates/application.hbs:63:0
 msgid "My name is {{name}}."
 msgstr ""
 
-#: tests/dummy/app/templates/application.hbs:89
+#: tests/dummy/app/templates/application.hbs:71:0
+msgctxt "menu"
+msgid "User"
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:89:20
 msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
 msgstr ""
 
-#: tests/dummy/app/templates/application.hbs:71
-msgctxt "menu"
-msgid "User"
+#: tests/dummy/app/templates/test-page.hbs:2:2
+msgid "This page only contains text for tests"
+msgstr ""
+
+#: tests/dummy/app/templates/test-page.hbs:6:2
+msgid ""
+"Multi-line translations\n"
+"work!"
+msgstr ""
+
+#: tests/dummy/app/templates/test-page.hbs:13:2
+msgid ""
+"Translations with\n"
+"<strong>tags</strong> and weird indentation\n"
+"works"
 msgstr ""

@@ -71,8 +71,7 @@
     "ember-cli-htmlbars": "^3.0.0",
     "ember-get-config": "^0.2.4",
     "gettext-parser": "^3.0.0",
-    "shelljs": "^0.8.2",
-    "xgettext-template": "^3.4.2"
+    "shelljs": "^0.8.2"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
