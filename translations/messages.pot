@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: My App 1.0\n"
 "Report-Msgid-Bugs-To: support@mycompany.com\n"
-"POT-Creation-Date: 2018-10-18 17:15+0200\n"
+"POT-Creation-Date: 2018-10-19 10:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,86 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: tests/dummy/app/services/l10n.js:7 tests/unit/services/l10n-test.js:169
-msgid "en"
-msgstr ""
-
-#: tests/dummy/app/services/l10n.js:8
-msgid "de"
-msgstr ""
-
-#: tests/dummy/app/services/l10n.js:9
-msgid "ko"
-msgstr ""
-
-#: tests/unit/services/l10n-test.js:145 tests/unit/services/l10n-test.js:203
-#: tests/unit/services/l10n-test.js:214 tests/unit/services/l10n-test.js:224
-#: tests/unit/services/l10n-test.js:235
-msgid "You have {{count}} unit in your cart."
-msgid_plural "You have {{count}} units in your cart."
-msgstr[0] ""
-msgstr[1] ""
-
-#: tests/unit/services/l10n-test.js:176
-msgid "I'm a {{placeholder}}."
-msgstr ""
-
-#: tests/unit/services/l10n-test.js:186
-msgid "STATUS_ACTIVE"
-msgstr ""
-
-#: tests/unit/services/l10n-test.js:185
-msgid "Current status: {{status}}"
-msgstr ""
-
-#: tests/unit/services/l10n-test.js:247 tests/unit/services/l10n-test.js:253
-msgctxt "menu"
-msgid "user"
-msgid_plural "users"
-msgstr[0] ""
-msgstr[1] ""
-
-#: tests/unit/services/l10n-test.js:260
-msgctxt "menu"
-msgid "You have {{count}} subscription"
-msgid_plural "You have {{count}} subscriptions"
-msgstr[0] ""
-msgstr[1] ""
-
-#: tests/unit/services/l10n-test.js:314
-msgid "testing"
-msgstr ""
-
-#: tests/dummy/app/templates/application.hbs:24:0
-msgid "Hello world!"
-msgstr ""
-
-#: tests/dummy/app/templates/application.hbs:63:0
-msgid "My name is {{name}}."
-msgstr ""
-
-#: tests/dummy/app/templates/application.hbs:71:0
-msgctxt "menu"
-msgid "User"
-msgstr ""
-
-#: tests/dummy/app/templates/application.hbs:89:20
-msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
-msgstr ""
-
-#: tests/dummy/app/templates/test-page.hbs:2:2
-msgid "This page only contains text for tests"
-msgstr ""
-
-#: tests/dummy/app/templates/test-page.hbs:6:2
+#: node-tests/fixtures/parse-js/example.js:3:4
 msgid ""
-"Multi-line translations\n"
-"work!"
-msgstr ""
-
-#: tests/dummy/app/templates/test-page.hbs:13:2
-msgid ""
-"Translations with\n"
-"<strong>tags</strong> and weird indentation\n"
-"works"
+"Your orders have been converted to schedules,\n"
+"please review them in scheduling across all your locations."
 msgstr ""
