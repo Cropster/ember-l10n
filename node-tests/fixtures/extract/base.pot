@@ -52,3 +52,7 @@ msgstr ""
 msgctxt "menu"
 msgid "User"
 msgstr ""
+
+#: tests/dummy/app/services/l10n.js:7
+msgid "does not exist anymore"
+msgstr ""
