@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: tests/dummy/app/services/l10n.js:7:12
+#: tests/dummy/app/templates/test-page.hbs:19:0
 msgid "en"
 msgstr ""
 
