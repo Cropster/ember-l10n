@@ -1,16 +1,22 @@
-/bower_components
+/node_modules
 /config/ember-try.js
 /dist
 /tests
 /tmp
+/translations
+/node-tests
+/.idea
 **/.gitkeep
 .bowerrc
 .editorconfig
 .ember-cli
 .eslintrc.js
+.template-lintrc.js
 .gitignore
 .watchmanconfig
 .travis.yml
+.yarnrc
+.npmrc
 bower.json
 ember-cli-build.js
 testem.js
@@ -25,5 +31,4 @@ yarn-error.log
 
 # ember-try
 .node_modules.ember-try/
-bower.json.ember-try
 package.json.ember-try
