@@ -17,45 +17,30 @@
     "": {
       "": {
         "msgid": "",
-        "comments": {
-          "translator": "English translations for My App package.\nCopyright (C) 2018 My Company\nThis file is distributed under the same license as the My App package.\nAutomatically generated, 2018.\n"
-        },
         "msgstr": [
           "Project-Id-Version: My App 1.0\nReport-Msgid-Bugs-To: support@mycompany.com\nPOT-Creation-Date: 2018-07-20 08:39+0200\nPO-Revision-Date: 2018-07-20 08:39+0200\nLast-Translator: Automatically generated\nLanguage-Team: none\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
         ]
       },
       "en": {
         "msgid": "en",
-        "comments": {
-          "reference": "tests/dummy/app/services/l10n.js:7 tests/unit/services/l10n-test.js:169"
-        },
         "msgstr": [
           "en"
         ]
       },
       "de": {
         "msgid": "de",
-        "comments": {
-          "reference": "tests/dummy/app/services/l10n.js:8"
-        },
         "msgstr": [
           "de"
         ]
       },
       "ko": {
         "msgid": "ko",
-        "comments": {
-          "reference": "tests/dummy/app/services/l10n.js:9"
-        },
         "msgstr": [
           "ko"
         ]
       },
       "You have {{count}} unit in your cart.": {
         "msgid": "You have {{count}} unit in your cart.",
-        "comments": {
-          "reference": "tests/unit/services/l10n-test.js:145 tests/unit/services/l10n-test.js:203\ntests/unit/services/l10n-test.js:214 tests/unit/services/l10n-test.js:224\ntests/unit/services/l10n-test.js:235"
-        },
         "msgid_plural": "You have {{count}} units in your cart.",
         "msgstr": [
           "You have {{count}} unit in your cart.",
@@ -64,63 +49,42 @@
       },
       "I'm a {{placeholder}}.": {
         "msgid": "I'm a {{placeholder}}.",
-        "comments": {
-          "reference": "tests/unit/services/l10n-test.js:176"
-        },
         "msgstr": [
           "I'm a {{placeholder}}."
         ]
       },
       "STATUS_ACTIVE": {
         "msgid": "STATUS_ACTIVE",
-        "comments": {
-          "reference": "tests/unit/services/l10n-test.js:186"
-        },
         "msgstr": [
           "STATUS_ACTIVE"
         ]
       },
       "Current status: {{status}}": {
         "msgid": "Current status: {{status}}",
-        "comments": {
-          "reference": "tests/unit/services/l10n-test.js:185"
-        },
         "msgstr": [
           "Current status: {{status}}"
         ]
       },
       "testing": {
         "msgid": "testing",
-        "comments": {
-          "reference": "tests/unit/services/l10n-test.js:314"
-        },
         "msgstr": [
           "testing"
         ]
       },
       "Hello world!": {
         "msgid": "Hello world!",
-        "comments": {
-          "reference": "tests/dummy/app/templates/application.hbs:24"
-        },
         "msgstr": [
           "Hello world!"
         ]
       },
       "My name is {{name}}.": {
         "msgid": "My name is {{name}}.",
-        "comments": {
-          "reference": "tests/dummy/app/templates/application.hbs:63"
-        },
         "msgstr": [
           "My name is {{name}}."
         ]
       },
       "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}.": {
         "msgid": "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}.",
-        "comments": {
-          "reference": "tests/dummy/app/templates/application.hbs:89"
-        },
         "msgstr": [
           "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
         ]
@@ -130,9 +94,6 @@
       "user": {
         "msgid": "user",
         "msgctxt": "menu",
-        "comments": {
-          "reference": "tests/unit/services/l10n-test.js:247 tests/unit/services/l10n-test.js:253"
-        },
         "msgid_plural": "users",
         "msgstr": [
           "user",
@@ -142,9 +103,6 @@
       "You have {{count}} subscription": {
         "msgid": "You have {{count}} subscription",
         "msgctxt": "menu",
-        "comments": {
-          "reference": "tests/unit/services/l10n-test.js:260"
-        },
         "msgid_plural": "You have {{count}} subscriptions",
         "msgstr": [
           "You have {{count}} subscription",
@@ -154,9 +112,6 @@
       "User": {
         "msgid": "User",
         "msgctxt": "menu",
-        "comments": {
-          "reference": "tests/dummy/app/templates/application.hbs:71"
-        },
         "msgstr": [
           "User"
         ]
