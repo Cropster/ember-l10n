@@ -59,6 +59,12 @@
           "STATUS_ACTIVE"
         ]
       },
+      "\"double quotes\" and 'single quotes'": {
+        "msgid": "\"double quotes\" and 'single quotes'",
+        "msgstr": [
+          "\"double quotes\" and 'single quotes'"
+        ]
+      },
       "Current status: {{status}}": {
         "msgid": "Current status: {{status}}",
         "msgstr": [
