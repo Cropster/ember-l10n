@@ -345,4 +345,74 @@ module('Unit | Service | l10n', function(hooks) {
 
   });
 
+  module('_saveJSON', function() {
+    test('it works with a missing plural-form header', function(assert) {
+      let service = this.owner.factoryFor('service:l10n').create({
+        autoInitialize: false
+      });
+
+      let payload = {
+        headers: {},
+        translations: {}
+      };
+
+      service._saveJSON(payload, 'de');
+
+      assert.deepEqual(get(service, '_plurals').de(), {
+        plural: 1,
+        nplurals: 2
+      }, 'plural is correctly set to default');
+      assert.deepEqual(get(service, '_data'), {
+        de: {
+          headers: {},
+          translations: {}
+        }
+      }, 'data is correctly set');
+    });
+
+    test('it works with a plural-form header', function(assert) {
+      let service = this.owner.factoryFor('service:l10n').create({
+        autoInitialize: false
+      });
+
+      let payload = {
+        headers: {},
+        translations: {}
+      };
+
+      service._saveJSON(payload, 'de');
+
+      assert.deepEqual(get(service, '_plurals').de(), {
+        plural: 1,
+        nplurals: 2
+      }, 'plural is correctly set to default');
+      assert.deepEqual(get(service, '_data'), {
+        de: {
+          headers: {},
+          translations: {}
+        }
+      }, 'data is correctly set');
+    });
+
+    test('it works with a plural-form header for no plural', function(assert) {
+      let service = this.owner.factoryFor('service:l10n').create({
+        autoInitialize: false
+      });
+
+      let payload = {
+        headers: {
+          'plural-forms': 'nplurals=2; plural=(n != 1);'
+        },
+        translations: {}
+      };
+
+      service._saveJSON(payload, 'de');
+
+      assert.deepEqual(get(service, '_plurals').de(), {
+        plural: 1,
+        nplurals: 2
+      }, 'plural is correctly set');
+    });
+  });
+
 });
