@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-l10n',
+   name: require('./package').name,
 
   includedCommands: function() {
     return {
