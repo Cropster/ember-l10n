@@ -4,53 +4,15 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import L10n from 'ember-l10n/services/l10n';
 import hbs from 'htmlbars-inline-precompile';
-import Service from '@ember/service';
-
-const mockAjax = Service.extend({
-  request(url) {
-    return {
-      then(func) {
-        let json = {
-          '/assets/locales/en.json': {
-            'headers': {
-              'language': 'en',
-              'plural-forms': 'nplurals=2; plural=(n != 1);'
-            },
-            'translations': {
-              '': {
-                'KG': {
-                  'msgstr': [
-                    'kg'
-                  ]
-                }
-              },
-              'countries': {
-                'KG': {
-                  'msgstr': [
-                    'Kyrgyzstan'
-                  ]
-                }
-              }
-            }
-          }
-        };
-
-        func(json[url]);
-      }
-    };
-  }
-});
+import Pretender from 'pretender';
 
 const mockL10nService = L10n.extend({
-  ajax: mockAjax.create(),
   autoInitialize: false,
   availableLocales: {
     en: 'en',
     de: 'de'
   }
 });
-
-let l10nService;
 
 module('Integration | Helper | pt', function(hooks) {
   setupRenderingTest(hooks);
@@ -59,11 +21,46 @@ module('Integration | Helper | pt', function(hooks) {
     this.owner.register('service:l10n', mockL10nService);
     this.l10n = this.owner.lookup('service:l10n');
 
-    l10nService = this.owner.lookup('service:l10n');
+    this.server = new Pretender(function() {
+      let json = {
+        'en.json': {
+          'headers': {
+            'language': 'en',
+            'plural-forms': 'nplurals=2; plural=(n != 1);'
+          },
+          'translations': {
+            '': {
+              'KG': {
+                'msgstr': [
+                  'kg'
+                ]
+              }
+            },
+            'countries': {
+              'KG': {
+                'msgstr': [
+                  'Kyrgyzstan'
+                ]
+              }
+            }
+          }
+        }
+      };
+
+      this.get('/assets/locales/:locale', (request)=> {
+        let response = json[request.params.locale];
+        return [200, {}, JSON.stringify(response)];
+      })
+    });
+  });
+
+  hooks.afterEach(function() {
+    this.server.shutdown();
   });
 
   test('it works', async function(assert) {
-    await l10nService.setLocale('en');
+    let { l10n } = this;
+    await l10n.setLocale('en');
 
     await render(hbs`{{pt 'KG' 'countries'}}`);
     assert.dom(this.element).hasText('Kyrgyzstan', 'Contextual translations are working correctly.');

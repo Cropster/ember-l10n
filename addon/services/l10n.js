@@ -57,7 +57,6 @@ export default Service.extend({
   // -------------------------------------------------------------------------
   // Dependencies
 
-  ajax: service('l10n-ajax'),
   assetMap: service(),
 
   // -------------------------------------------------------------------------
@@ -749,9 +748,35 @@ export default Service.extend({
    * @public
    */
   _loadLocaleFile(locale) {
-    let ajax = get(this, 'ajax');
     let localeMap = get(this, '_localeMap');
-    return ajax.request(get(localeMap, locale));
+    let fileName = get(localeMap, locale);
+    return this.ajaxRequest(fileName);
+  },
+
+  /**
+   * Actually make the Ajax request.
+   *
+   * @method ajaxRequest
+   * @param {String} fileName
+   * @return {Promise<Object>}
+   * @protected
+   */
+  ajaxRequest(fileName) {
+    return new Promise((resolve, reject) => {
+      let request = new XMLHttpRequest();
+      request.open('GET', fileName);
+      request.addEventListener('load', function() {
+        try {
+          let { responseText } = this;
+          let json = JSON.parse(responseText);
+          resolve(json);
+        } catch(error) {
+          reject(error);
+        }
+      });
+      request.addEventListener('error', reject);
+      request.send();
+    });
   },
 
   /**
