@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
-    "lint:hbs": "ember-template-lint .",
+    "lint:hbs": "ember-template-lint ./addon ./app ./tests/dummy",
     "lint:js": "eslint ./*.js addon app config lib tests",
     "start": "ember serve",
     "test": "ember test",
