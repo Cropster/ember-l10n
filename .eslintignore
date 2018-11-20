@@ -7,7 +7,7 @@
 /tmp/
 
 # dependencies
-/bower_components/
+/node-tests/fixtures
 
 # misc
 /coverage/

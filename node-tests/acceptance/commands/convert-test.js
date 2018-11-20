@@ -4,7 +4,7 @@ const fs = require('fs');
 const shell = require('shelljs');
 const rimraf = require('rimraf');
 const Command = require('ember-cli/lib/models/command');
-const MockUI = require('console-ui/mock');
+const MockUI = require('console-ui/mock'); // eslint-disable-line
 const ConvertCommand = require('./../../../lib/commands/convert');
 
 function getOptions(options = {}) {
