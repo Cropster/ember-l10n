@@ -101,4 +101,20 @@ describe('extract command', function() {
     expect(actualFileContent).to.equals(expectedFileContent);
   });
 
+  it('correctly handles --include-patterns & --skip-patterns', async function() {
+    let options = getOptions({
+      extractFrom: './tests',
+      includePatterns: ['dummy/app'],
+      skipPatterns: ['services']
+    });
+
+    let cmd = createCommand();
+    await cmd.run(options);
+
+    let expectedFileContent = getPoFileContent('./node-tests/fixtures/extract/expected-without-skipped.pot');
+    let actualFileContent = getPoFileContent('./tmp/ember-l10n-tests/messages.pot');
+
+    expect(actualFileContent).to.equals(expectedFileContent);
+  });
+
 });
