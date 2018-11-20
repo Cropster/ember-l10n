@@ -12,7 +12,7 @@
 
 Using the string extractor requires:
 
-* [GNU gettext](https://www.gnu.org/software/gettext/) - extracts strings from JS files & creates PO
+* [GNU gettext](https://www.gnu.org/software/gettext/) - Convert from/to .po & .pot files
 
 Besides, `ember-l10n` uses [ember-ajax](https://github.com/ember-cli/ember-ajax) to fetch locale data.
 
@@ -59,9 +59,6 @@ There are two primary parts to ember-l10n
 In the ember-l10n workflow, you use the `t`, and `n` helpers and `l10n.t()` / `l10n.n()` functions to define your strings in your project. Then you run the extractor script to generate pot and po files, which you send off to your translators. After receiving the translated po files for additional locales, you use the same script to convert them into json files. These json files are then loaded by ember-l10n in your application and replaced at runtime.
 
 `ember-l10n` provides powerful string substitution and even component substitution for dynamic strings. See the [Components](#components) section below.
-
-###### Usage hints:
-Unfortunately, ```xgettext``` doesn't support ES6 template strings ([at the moment](https://savannah.gnu.org/bugs/?50920)), but the addon provides an easy way to handle variables in strings, please refer to [Helpers](#helpers) and [Components](#components) sections.
 
 ## Ember Side
 
@@ -349,7 +346,7 @@ ember l10n:extract <options...>
     aliases: -e <value>
   --extract-from (Array) (Default: ['./app']) The directory from which to extract the strings
     aliases: -i <value>
-  --exclude-patterns (Array) (Default: []) List of regex patterns to put into a dedicated `excluded.pot` file (configured in config/l10n-extract.js)
+  --include-patterns (Array) (Default: []) List of regex patterns to include for extraction. Defaults to all files. (configured in config/l10n-extract.js)
     aliases: -x <value>
   --skip-patterns (Array) (Default: ['mirage','fixtures','styleguide']) List of regex patterns to completely ignore from extraction
     aliases: -s <value>
@@ -385,7 +382,6 @@ Once you have extracted message ids with `ember l10n:extract`, which creates a d
 
 If you have excluded some files from prior extractions with `-x`  and want to merge them with your messages.pot you can do:
 
-* `ember l10n:extract -g -f excluded.pot -t messages.pot` (merge POT files)
 * `ember l10n:extract -g -l en` (merge english PO file)
 * `ember l10n:extract -g -l de` (merge german PO file)
 
