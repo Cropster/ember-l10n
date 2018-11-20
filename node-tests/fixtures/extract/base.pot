@@ -29,26 +29,30 @@ msgstr ""
 msgid "ko"
 msgstr ""
 
-#: tests/dummy/app/templates/application.l10n.hbs:24
+#: tests/dummy/app/templates/application.hbs:24:0
 msgid "Hello world!"
 msgstr ""
 
-#: tests/dummy/app/templates/application.l10n.hbs:39
-#: tests/dummy/app/templates/application.l10n.hbs:50
+#: tests/dummy/app/templates/application.hbs:39:0
+#: tests/dummy/app/templates/application.hbs:50:0
 msgid "You have {{count}} unit in your cart."
 msgid_plural "You have {{count}} units in your cart."
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/dummy/app/templates/application.l10n.hbs:63
+#: tests/dummy/app/templates/application.hbs:63:0
 msgid "My name is {{name}}."
 msgstr ""
 
-#: tests/dummy/app/templates/application.l10n.hbs:89
+#: tests/dummy/app/templates/application.hbs:89:20
 msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
 msgstr ""
 
-#: tests/dummy/app/templates/application.l10n.hbs:71
+#: tests/dummy/app/templates/application.hbs:71:0
 msgctxt "menu"
 msgid "User"
+msgstr ""
+
+#: tests/dummy/app/services/l10n.js:7
+msgid "does not exist anymore"
 msgstr ""

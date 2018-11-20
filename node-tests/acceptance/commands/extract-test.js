@@ -79,10 +79,10 @@ describe('extract command', function() {
     let cmd = createCommand();
     await cmd.run(options);
 
-    let targetFileContent = getPoFileContent('./node-tests/fixtures/extract/default.pot');
+    let expectedFileContent = getPoFileContent('./node-tests/fixtures/extract/expected.pot');
     let actualFileContent = getPoFileContent('./tmp/ember-l10n-tests/messages.pot');
 
-    expect(actualFileContent).to.equals(targetFileContent);
+    expect(actualFileContent).to.equals(expectedFileContent);
   });
 
   it('messages.po file is correctly updated if one already exists', async function() {
@@ -95,10 +95,10 @@ describe('extract command', function() {
     await cmd.run(options);
 
     // We want to ignore everything until the first comment
-    let targetFileContent = getPoFileContent('./node-tests/fixtures/extract/default.pot');
+    let expectedFileContent = getPoFileContent('./node-tests/fixtures/extract/expected.pot');
     let actualFileContent = getPoFileContent('./tmp/ember-l10n-tests/messages.pot');
 
-    expect(actualFileContent).to.equals(targetFileContent);
+    expect(actualFileContent).to.equals(expectedFileContent);
   });
 
 });
