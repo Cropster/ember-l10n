@@ -17,7 +17,7 @@ function getOptions(options = {}) {
     package: 'Test App',
     version: '1.0',
     extractFrom: './tests/dummy/app',
-    excludePatterns: [],
+    includePatterns: [],
     skipPatterns: [],
     skipDependencies: [],
     skipAllDependencies: false,

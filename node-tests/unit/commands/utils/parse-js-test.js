@@ -1,7 +1,6 @@
 const { expect } = require('chai');
 const { parseJsFile } = require('./../../../../lib/commands/utils/parse-js');
 
-
 describe('parseJsFile util', function() {
 
   it('it correctly parses t method', function() {
