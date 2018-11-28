@@ -4,7 +4,7 @@ const fs = require('fs');
 const shell = require('shelljs');
 const rimraf = require('rimraf');
 const Command = require('ember-cli/lib/models/command');
-const MockUI = require('console-ui/mock');
+const MockUI = require('console-ui/mock'); //eslint-disable-line
 const ExtractCommand = require('./../../../lib/commands/extract');
 
 function getOptions(options = {}) {
@@ -17,7 +17,7 @@ function getOptions(options = {}) {
     package: 'Test App',
     version: '1.0',
     extractFrom: './tests/dummy/app',
-    excludePatterns: [],
+    includePatterns: [],
     skipPatterns: [],
     skipDependencies: [],
     skipAllDependencies: false,
@@ -96,6 +96,22 @@ describe('extract command', function() {
 
     // We want to ignore everything until the first comment
     let expectedFileContent = getPoFileContent('./node-tests/fixtures/extract/expected.pot');
+    let actualFileContent = getPoFileContent('./tmp/ember-l10n-tests/messages.pot');
+
+    expect(actualFileContent).to.equals(expectedFileContent);
+  });
+
+  it('correctly handles --include-patterns & --skip-patterns', async function() {
+    let options = getOptions({
+      extractFrom: './tests',
+      includePatterns: ['dummy/app'],
+      skipPatterns: ['services']
+    });
+
+    let cmd = createCommand();
+    await cmd.run(options);
+
+    let expectedFileContent = getPoFileContent('./node-tests/fixtures/extract/expected-without-skipped.pot');
     let actualFileContent = getPoFileContent('./tmp/ember-l10n-tests/messages.pot');
 
     expect(actualFileContent).to.equals(expectedFileContent);

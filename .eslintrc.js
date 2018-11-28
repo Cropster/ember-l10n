@@ -57,11 +57,19 @@ module.exports = {
       },
       env: {
         browser: false,
-        node: true
+        node: true,
+        mocha: true
       },
       plugins: ['node'],
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
+        'node/no-unsupported-features/es-syntax': ['error', {
+          'version': '>=8.5.0',
+          'ignores': []
+        }],
+        'node/no-unsupported-features/node-builtins': ['error', {
+          'version': '>=8.5.0',
+          'ignores': []
+        }]
       })
     },
 

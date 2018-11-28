@@ -9,7 +9,7 @@
   "scripts": {
     "build": "ember build",
     "lint:hbs": "ember-template-lint ./addon ./app ./tests/dummy",
-    "lint:js": "eslint ./*.js addon app config lib tests",
+    "lint:js": "eslint .",
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
@@ -17,7 +17,7 @@
   },
   "repository": "https://github.com/Cropster/ember-l10n",
   "engines": {
-    "node": "^4.5 || 6.* || >= 7.*"
+    "node": ">= 6"
   },
   "author": "Cropster",
   "license": "MIT",

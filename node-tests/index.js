@@ -5,7 +5,6 @@ const mocha = new Mocha({
   reporter: 'spec'
 });
 
-const arg = process.argv[2];
 const root = 'node-tests/';
 
 function addFiles(mocha, files) {
@@ -16,6 +15,6 @@ addFiles(mocha, '/**/*-test.js');
 
 mocha.run(function(failures) {
   process.on('exit', function() {
-    process.exit(failures);
+    process.exit(failures); // eslint-disable-line
   });
 });
