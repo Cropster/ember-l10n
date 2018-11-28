@@ -14,8 +14,6 @@ Using the string extractor requires:
 
 * [GNU gettext](https://www.gnu.org/software/gettext/) - Convert from/to .po & .pot files
 
-Besides, `ember-l10n` uses [ember-ajax](https://github.com/ember-cli/ember-ajax) to fetch locale data.
-
 __Note:__ Addon's CLI commands will check dependencies for you and install them on demand (by executing `ember l10n:install`), so you don't have to do this on your own.
 
 ## Configuration
