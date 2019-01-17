@@ -21,44 +21,6 @@
           "Project-Id-Version: My App 1.0\nReport-Msgid-Bugs-To: support@mycompany.com\nPOT-Creation-Date: 2018-07-20 08:39+0200\nPO-Revision-Date: 2018-07-20 08:39+0200\nLast-Translator: Automatically generated\nLanguage-Team: none\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
         ]
       },
-      "en": {
-        "msgid": "en",
-        "msgstr": [
-          "en"
-        ]
-      },
-      "de": {
-        "msgid": "de",
-        "msgstr": [
-          "de"
-        ]
-      },
-      "ko": {
-        "msgid": "ko",
-        "msgstr": [
-          "ko"
-        ]
-      },
-      "You have {{count}} unit in your cart.": {
-        "msgid": "You have {{count}} unit in your cart.",
-        "msgid_plural": "You have {{count}} units in your cart.",
-        "msgstr": [
-          "You have {{count}} unit in your cart.",
-          "You have {{count}} units in your cart."
-        ]
-      },
-      "I'm a {{placeholder}}.": {
-        "msgid": "I'm a {{placeholder}}.",
-        "msgstr": [
-          "I'm a {{placeholder}}."
-        ]
-      },
-      "STATUS_ACTIVE": {
-        "msgid": "STATUS_ACTIVE",
-        "msgstr": [
-          "STATUS_ACTIVE"
-        ]
-      },
       "\"double quotes\" and 'single quotes'": {
         "msgid": "\"double quotes\" and 'single quotes'",
         "msgstr": [
@@ -71,16 +33,34 @@
           "Current status: {{status}}"
         ]
       },
-      "testing": {
-        "msgid": "testing",
+      "de": {
+        "msgid": "de",
         "msgstr": [
-          "testing"
+          "de"
+        ]
+      },
+      "en": {
+        "msgid": "en",
+        "msgstr": [
+          "en"
         ]
       },
       "Hello world!": {
         "msgid": "Hello world!",
         "msgstr": [
           "Hello world!"
+        ]
+      },
+      "I'm a {{placeholder}}.": {
+        "msgid": "I'm a {{placeholder}}.",
+        "msgstr": [
+          "I'm a {{placeholder}}."
+        ]
+      },
+      "ko": {
+        "msgid": "ko",
+        "msgstr": [
+          "ko"
         ]
       },
       "My name is {{name}}.": {
@@ -94,6 +74,26 @@
         "msgstr": [
           "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
         ]
+      },
+      "STATUS_ACTIVE": {
+        "msgid": "STATUS_ACTIVE",
+        "msgstr": [
+          "STATUS_ACTIVE"
+        ]
+      },
+      "testing": {
+        "msgid": "testing",
+        "msgstr": [
+          "testing"
+        ]
+      },
+      "You have {{count}} unit in your cart.": {
+        "msgid": "You have {{count}} unit in your cart.",
+        "msgid_plural": "You have {{count}} units in your cart.",
+        "msgstr": [
+          "You have {{count}} unit in your cart.",
+          "You have {{count}} units in your cart."
+        ]
       }
     },
     "menu": {
@@ -106,6 +106,13 @@
           "users"
         ]
       },
+      "User": {
+        "msgid": "User",
+        "msgctxt": "menu",
+        "msgstr": [
+          "User"
+        ]
+      },
       "You have {{count}} subscription": {
         "msgid": "You have {{count}} subscription",
         "msgctxt": "menu",
@@ -113,13 +120,6 @@
         "msgstr": [
           "You have {{count}} subscription",
           "You have {{count}} subscriptions"
-        ]
-      },
-      "User": {
-        "msgid": "User",
-        "msgctxt": "menu",
-        "msgstr": [
-          "User"
         ]
       }
     }

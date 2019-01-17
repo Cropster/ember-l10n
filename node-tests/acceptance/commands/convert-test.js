@@ -72,6 +72,18 @@ describe('convert command', function() {
     let expectedFileContent = readJSONFromFile('./node-tests/fixtures/convert/expected.json');
 
     expect(actualFileContent).to.deep.equals(expectedFileContent);
+
+    // Ensure order of props is correct as well
+    let actualNamespaces = Object.keys(actualFileContent.translations);
+    let expectedNamespaces = Object.keys(expectedFileContent.translations);
+
+    expect(actualNamespaces).to.deep.equal(expectedNamespaces, 'namespace sorting is correct');
+
+    actualNamespaces.forEach((namespace) => {
+      let actualItems = Object.keys(actualFileContent.translations[namespace]);
+      let expectedItems = Object.keys(expectedFileContent.translations[namespace]);
+      expect(actualItems).to.deep.equal(expectedItems, `item sorting for namespace ${namespace} is correct`);
+    });
   });
 
 });
