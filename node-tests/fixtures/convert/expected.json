@@ -24,69 +24,69 @@
       "Current status: {{status}}": {
         "msgid": "Current status: {{status}}",
         "msgstr": [
-          "Current status: {{status}}"
+          "Derzeitiger Status: {{status}}"
         ]
       },
       "de": {
         "msgid": "de",
         "msgstr": [
-          "de"
+          "Deutsch"
         ]
       },
       "en": {
         "msgid": "en",
         "msgstr": [
-          "en"
+          "Englisch"
         ]
       },
       "Hello world!": {
         "msgid": "Hello world!",
         "msgstr": [
-          "Hello world!"
+          "Hallo Welt!"
         ]
       },
       "I'm a {{placeholder}}.": {
         "msgid": "I'm a {{placeholder}}.",
         "msgstr": [
-          "I'm a {{placeholder}}."
+          "Ich bin ein {{placeholder}}."
         ]
       },
       "ko": {
         "msgid": "ko",
         "msgstr": [
-          "ko"
+          "Koreanisch"
         ]
       },
       "My name is {{name}}.": {
         "msgid": "My name is {{name}}.",
         "msgstr": [
-          "My name is {{name}}."
+          "Mein Name ist {{name}}."
         ]
       },
       "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}.": {
         "msgid": "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}.",
         "msgstr": [
-          "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
+          "Lies mehr im {{linkToGuide 'Guide'}} oder in der {{linkToHelp 'Hilfe'}}."
         ]
       },
       "STATUS_ACTIVE": {
         "msgid": "STATUS_ACTIVE",
         "msgstr": [
-          "STATUS_ACTIVE"
+          "Aktiv"
         ]
       },
       "testing": {
         "msgid": "testing",
         "msgstr": [
-          "testing"
+          "testend"
         ]
       },
       "You have {{count}} unit in your cart.": {
         "msgid": "You have {{count}} unit in your cart.",
         "msgid_plural": "You have {{count}} units in your cart.",
         "msgstr": [
-          "You have {{count}} unit in your cart.",
-          "You have {{count}} units in your cart."
+          "Du hast {{count}} Objekt in deinem Einkaufswagen.",
+          "Du hast {{count}} Objekte in deinem Einkaufswagen."
         ]
       }
     },
@@ -96,15 +96,8 @@
         "msgctxt": "menu",
         "msgid_plural": "users",
         "msgstr": [
-          "user",
-          "users"
-        ]
-      },
-      "User": {
-        "msgid": "User",
-        "msgctxt": "menu",
-        "msgstr": [
-          "User"
+          "Benutzer",
+          "Benuzter"
         ]
       },
       "You have {{count}} subscription": {
@@ -112,8 +105,8 @@
         "msgctxt": "menu",
         "msgid_plural": "You have {{count}} subscriptions",
         "msgstr": [
-          "You have {{count}} subscription",
-          "You have {{count}} subscriptions"
+          "Du hast {{count}} Account",
+          "Du hast {{count}} Accounts"
         ]
       }
     }
