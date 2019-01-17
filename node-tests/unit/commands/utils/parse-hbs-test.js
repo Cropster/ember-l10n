@@ -1,7 +1,6 @@
 const { expect } = require('chai');
 const { parseHbsFile } = require('./../../../../lib/commands/utils/parse-hbs');
 
-
 describe('parseHbsFile util', function() {
 
   it('it correctly parses t helper', function() {

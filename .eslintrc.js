@@ -25,7 +25,8 @@ module.exports = {
         'index.js',
         'testem.js',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js'
+        'tests/dummy/config/**/*.js',
+        'lib/**/*.js'
       ],
       excludedFiles: [
         'app/**',

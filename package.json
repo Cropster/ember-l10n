@@ -72,6 +72,7 @@
     "ember-get-config": "^0.2.4",
     "esprima": "^4.0.1",
     "gettext-parser": "^3.0.0",
+    "inquirer": "^6.2.1",
     "shelljs": "^0.8.2"
   },
   "ember-addon": {
