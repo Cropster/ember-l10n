@@ -88,5 +88,14 @@ msgctxt "menu"
 msgid "User"
 msgstr "User"
 
+#: tests/dummy/app/templates/application.hbs:90
+msgid "untranslated string"
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:90
+msgctxt "menu"
+msgid "untranslated string in context"
+msgstr ""
+
 #~ msgid "asdasd"
 #~ msgstr "asdasd"
