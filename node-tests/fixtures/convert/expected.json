@@ -15,50 +15,6 @@
   },
   "translations": {
     "": {
-      "": {
-        "msgid": "",
-        "msgstr": [
-          "Project-Id-Version: My App 1.0\nReport-Msgid-Bugs-To: support@mycompany.com\nPOT-Creation-Date: 2018-07-20 08:39+0200\nPO-Revision-Date: 2018-07-20 08:39+0200\nLast-Translator: Automatically generated\nLanguage-Team: none\nLanguage: en\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
-        ]
-      },
-      "en": {
-        "msgid": "en",
-        "msgstr": [
-          "en"
-        ]
-      },
-      "de": {
-        "msgid": "de",
-        "msgstr": [
-          "de"
-        ]
-      },
-      "ko": {
-        "msgid": "ko",
-        "msgstr": [
-          "ko"
-        ]
-      },
-      "You have {{count}} unit in your cart.": {
-        "msgid": "You have {{count}} unit in your cart.",
-        "msgid_plural": "You have {{count}} units in your cart.",
-        "msgstr": [
-          "You have {{count}} unit in your cart.",
-          "You have {{count}} units in your cart."
-        ]
-      },
-      "I'm a {{placeholder}}.": {
-        "msgid": "I'm a {{placeholder}}.",
-        "msgstr": [
-          "I'm a {{placeholder}}."
-        ]
-      },
-      "STATUS_ACTIVE": {
-        "msgid": "STATUS_ACTIVE",
-        "msgstr": [
-          "STATUS_ACTIVE"
-        ]
-      },
       "\"double quotes\" and 'single quotes'": {
         "msgid": "\"double quotes\" and 'single quotes'",
         "msgstr": [
@@ -68,31 +24,69 @@
       "Current status: {{status}}": {
         "msgid": "Current status: {{status}}",
         "msgstr": [
-          "Current status: {{status}}"
+          "Derzeitiger Status: {{status}}"
         ]
       },
-      "testing": {
-        "msgid": "testing",
+      "de": {
+        "msgid": "de",
         "msgstr": [
-          "testing"
+          "Deutsch"
+        ]
+      },
+      "en": {
+        "msgid": "en",
+        "msgstr": [
+          "Englisch"
         ]
       },
       "Hello world!": {
         "msgid": "Hello world!",
         "msgstr": [
-          "Hello world!"
+          "Hallo Welt!"
+        ]
+      },
+      "I'm a {{placeholder}}.": {
+        "msgid": "I'm a {{placeholder}}.",
+        "msgstr": [
+          "Ich bin ein {{placeholder}}."
+        ]
+      },
+      "ko": {
+        "msgid": "ko",
+        "msgstr": [
+          "Koreanisch"
         ]
       },
       "My name is {{name}}.": {
         "msgid": "My name is {{name}}.",
         "msgstr": [
-          "My name is {{name}}."
+          "Mein Name ist {{name}}."
         ]
       },
       "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}.": {
         "msgid": "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}.",
         "msgstr": [
-          "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
+          "Lies mehr im {{linkToGuide 'Guide'}} oder in der {{linkToHelp 'Hilfe'}}."
+        ]
+      },
+      "STATUS_ACTIVE": {
+        "msgid": "STATUS_ACTIVE",
+        "msgstr": [
+          "Aktiv"
+        ]
+      },
+      "testing": {
+        "msgid": "testing",
+        "msgstr": [
+          "testend"
+        ]
+      },
+      "You have {{count}} unit in your cart.": {
+        "msgid": "You have {{count}} unit in your cart.",
+        "msgid_plural": "You have {{count}} units in your cart.",
+        "msgstr": [
+          "Du hast {{count}} Objekt in deinem Einkaufswagen.",
+          "Du hast {{count}} Objekte in deinem Einkaufswagen."
         ]
       }
     },
@@ -102,8 +96,8 @@
         "msgctxt": "menu",
         "msgid_plural": "users",
         "msgstr": [
-          "user",
-          "users"
+          "Benutzer",
+          "Benuzter"
         ]
       },
       "You have {{count}} subscription": {
@@ -111,15 +105,8 @@
         "msgctxt": "menu",
         "msgid_plural": "You have {{count}} subscriptions",
         "msgstr": [
-          "You have {{count}} subscription",
-          "You have {{count}} subscriptions"
-        ]
-      },
-      "User": {
-        "msgid": "User",
-        "msgctxt": "menu",
-        "msgstr": [
-          "User"
+          "Du hast {{count}} Account",
+          "Du hast {{count}} Accounts"
         ]
       }
     }

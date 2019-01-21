@@ -19,42 +19,50 @@ msgstr ""
 
 #: tests/dummy/app/services/l10n.js:7 tests/unit/services/l10n-test.js:169
 msgid "en"
-msgstr "en"
+msgstr "Englisch"
 
 #: tests/dummy/app/services/l10n.js:8
 msgid "de"
-msgstr "de"
+msgstr "Deutsch"
 
 #: tests/dummy/app/services/l10n.js:9
 msgid "ko"
-msgstr "ko"
+msgstr "Koreanisch"
 
 #: tests/unit/services/l10n-test.js:145 tests/unit/services/l10n-test.js:203
 #: tests/unit/services/l10n-test.js:214 tests/unit/services/l10n-test.js:224
 #: tests/unit/services/l10n-test.js:235
 msgid "You have {{count}} unit in your cart."
 msgid_plural "You have {{count}} units in your cart."
-msgstr[0] "You have {{count}} unit in your cart."
-msgstr[1] "You have {{count}} units in your cart."
+msgstr[0] "Du hast {{count}} Objekt in deinem Einkaufswagen."
+msgstr[1] "Du hast {{count}} Objekte in deinem Einkaufswagen."
+
+#: tests/unit/services/l10n-test.js:145 tests/unit/services/l10n-test.js:203
+#: tests/unit/services/l10n-test.js:214 tests/unit/services/l10n-test.js:224
+#: tests/unit/services/l10n-test.js:235
+msgid "You have {{count}} unit in your cart. A"
+msgid_plural "You have {{count}} units in your cart. A"
+msgstr[0] "You have {{count}} unit in your cart. A"
+msgstr[1] "You have {{count}} units in your cart. A"
 
 #: tests/unit/services/l10n-test.js:176
 msgid "I'm a {{placeholder}}."
-msgstr "I'm a {{placeholder}}."
+msgstr "Ich bin ein {{placeholder}}."
 
 #: tests/unit/services/l10n-test.js:186
 msgid "STATUS_ACTIVE"
-msgstr "STATUS_ACTIVE"
+msgstr "Aktiv"
 
 #: tests/unit/services/l10n-test.js:185
 msgid "Current status: {{status}}"
-msgstr "Current status: {{status}}"
+msgstr "Derzeitiger Status: {{status}}"
 
 #: tests/unit/services/l10n-test.js:247 tests/unit/services/l10n-test.js:253
 msgctxt "menu"
 msgid "user"
 msgid_plural "users"
-msgstr[0] "user"
-msgstr[1] "users"
+msgstr[0] "Benutzer"
+msgstr[1] "Benuzter"
 
 #: tests/unit/services/l10n-test.js:248
 msgid "\"double quotes\" and 'single quotes'"
@@ -64,29 +72,38 @@ msgstr "“double quotes” and ‘single quotes’"
 msgctxt "menu"
 msgid "You have {{count}} subscription"
 msgid_plural "You have {{count}} subscriptions"
-msgstr[0] "You have {{count}} subscription"
-msgstr[1] "You have {{count}} subscriptions"
+msgstr[0] "Du hast {{count}} Account"
+msgstr[1] "Du hast {{count}} Accounts"
 
 #: tests/unit/services/l10n-test.js:314
 msgid "testing"
-msgstr "testing"
+msgstr "testend"
 
 #: tests/dummy/app/templates/application.hbs:24
 msgid "Hello world!"
-msgstr "Hello world!"
+msgstr "Hallo Welt!"
 
 #: tests/dummy/app/templates/application.hbs:63
 msgid "My name is {{name}}."
-msgstr "My name is {{name}}."
+msgstr "Mein Name ist {{name}}."
 
 #: tests/dummy/app/templates/application.hbs:89
 msgid "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
-msgstr "Read more in our {{linkToGuide 'guide'}} or {{linkToHelp 'help'}}."
+msgstr "Lies mehr im {{linkToGuide 'Guide'}} oder in der {{linkToHelp 'Hilfe'}}."
 
 #: tests/dummy/app/templates/application.hbs:71
 msgctxt "menu"
 msgid "User"
 msgstr "User"
+
+#: tests/dummy/app/templates/application.hbs:90
+msgid "untranslated string"
+msgstr ""
+
+#: tests/dummy/app/templates/application.hbs:90
+msgctxt "menu"
+msgid "untranslated string in context"
+msgstr ""
 
 #~ msgid "asdasd"
 #~ msgstr "asdasd"
