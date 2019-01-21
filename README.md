@@ -485,7 +485,7 @@ This library follows [Semantic Versioning](http://semver.org)
 
 ## Legal
 
-[Cropster](https://cropster.com), GmbH &copy; 2018
+[Cropster](https://cropster.com), GmbH &copy; 2019
 
 [@cropster](http://twitter.com/cropster)
 
