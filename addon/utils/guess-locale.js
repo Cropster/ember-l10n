@@ -25,7 +25,11 @@ import { A as array } from '@ember/array';
  * @param allowSubLocales
  * @return {String}
  */
-export function guessLocale(allowedLocales = [], desiredLocales = [], { defaultLocale = 'en', allowSubLocales = false } = {}) {
+export function guessLocale(
+  allowedLocales = [],
+  desiredLocales = [],
+  { defaultLocale = 'en', allowSubLocales = false } = {}
+) {
   desiredLocales = desiredLocales || [defaultLocale];
   desiredLocales = desiredLocales.map(normalizeLocale).map(getLocalAlias);
 
@@ -37,9 +41,12 @@ export function guessLocale(allowedLocales = [], desiredLocales = [], { defaultL
     allowedLocales = array(allowedLocales);
   }
 
-  let locale = desiredLocales.find((locale) => {
-    return allowedLocales.find((allowedLocale) => matchLocale(locale, allowedLocale));
-  }) || defaultLocale;
+  let locale =
+    desiredLocales.find((locale) => {
+      return allowedLocales.find((allowedLocale) =>
+        matchLocale(locale, allowedLocale)
+      );
+    }) || defaultLocale;
 
   // If allowSubLocales=false, we do not want to return sub locales
   // For example, if 'de' is allowed, but the first matching locale is de_AT, it will return 'de' if true, else de_AT.
@@ -47,7 +54,11 @@ export function guessLocale(allowedLocales = [], desiredLocales = [], { defaultL
     return locale;
   }
 
-  return allowedLocales.find((allowedLocale) => locale.indexOf(allowedLocale) === 0) || defaultLocale;
+  return (
+    allowedLocales.find(
+      (allowedLocale) => locale.indexOf(allowedLocale) === 0
+    ) || defaultLocale
+  );
 }
 
 export function normalizeLocale(locale) {

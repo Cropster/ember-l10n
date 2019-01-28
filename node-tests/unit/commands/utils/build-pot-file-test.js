@@ -1,9 +1,9 @@
 const { expect } = require('chai');
-const { buildPotFile } = require('./../../../../lib/commands/utils/build-pot-file');
-
+const {
+  buildPotFile
+} = require('./../../../../lib/commands/utils/build-pot-file');
 
 describe('buildPotFile util', function() {
-
   it('it works for empty items', function() {
     let options = { fromCode: 'UTF-8' };
 
@@ -337,5 +337,4 @@ msgstr ""
 
     expect(fileContent).to.equal(expected);
   });
-
 });

@@ -1,3 +1,4 @@
+{{! template-lint-disable no-triple-curlies }}
 {{#each messageParts as |part|~}}
   {{~#if part.name}}
     {{~yield part.text part.name}}

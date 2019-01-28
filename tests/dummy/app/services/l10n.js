@@ -4,11 +4,11 @@ import { computed } from '@ember/object';
 export default L10n.extend({
   availableLocales: computed('locale', function() {
     return {
-      'en': this.t('en'),
-      'de': this.t('de'),
-      'ko': this.t('ko')
+      en: this.t('en'),
+      de: this.t('de'),
+      ko: this.t('ko')
     };
   }),
 
-  autoInitialize: true,
+  autoInitialize: true
 });

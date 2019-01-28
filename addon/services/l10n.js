@@ -1,12 +1,5 @@
-import {
-  isNone,
-  typeOf
-} from '@ember/utils';
-import {
-  get,
-  set,
-  computed
-} from '@ember/object';
+import { isNone, typeOf } from '@ember/utils';
+import { get, set, computed } from '@ember/object';
 import { Promise } from 'rsvp';
 import Ember from 'ember';
 import Service from '@ember/service';
@@ -53,7 +46,6 @@ import { assert } from '@ember/debug';
  * @public
  */
 export default Service.extend({
-
   // -------------------------------------------------------------------------
   // Dependencies
 
@@ -166,7 +158,7 @@ export default Service.extend({
    */
   availableLocales: computed('locale', function() {
     return {
-      'en': this.t('en')
+      en: this.t('en')
     };
   }),
 
@@ -285,10 +277,7 @@ export default Service.extend({
         resolve();
       };
 
-      this._loadJSON(locale).then(
-        successCallback,
-        reject
-      );
+      this._loadJSON(locale).then(successCallback, reject);
     });
   },
 
@@ -379,7 +368,10 @@ export default Service.extend({
     let availableLocales = Object.keys(get(this, 'availableLocales'));
     let desiredLocales = this._getBrowserLocales();
 
-    return guessLocale(availableLocales, desiredLocales, { defaultLocale, allowSubLocales });
+    return guessLocale(availableLocales, desiredLocales, {
+      defaultLocale,
+      allowSubLocales
+    });
   },
 
   /**
@@ -562,8 +554,10 @@ export default Service.extend({
     if (typeOf(key) !== 'string') {
       try {
         key = key.toString();
-      } catch(e) {
-        this._log('Message ids should be either a string or an object implementing toString() method!');
+      } catch (e) {
+        this._log(
+          'Message ids should be either a string or an object implementing toString() method!'
+        );
         return key;
       }
     }
@@ -600,7 +594,10 @@ export default Service.extend({
           return;
         }
 
-        this._log(`An error occurred loading locale "${locale}": ${reason}`, 'error');
+        this._log(
+          `An error occurred loading locale "${locale}": ${reason}`,
+          'error'
+        );
         reject(reason);
       };
 
@@ -612,10 +609,7 @@ export default Service.extend({
       }
 
       // otherwise load json file from assets
-      this._loadLocaleFile(locale).then(
-        successCallback,
-        failureCallback
-      );
+      this._loadLocaleFile(locale).then(successCallback, failureCallback);
     });
   },
 
@@ -636,9 +630,7 @@ export default Service.extend({
     let json = this._sanitizeJSON(response);
 
     let {
-      headers: {
-        'plural-forms': pluralForm
-      }
+      headers: { 'plural-forms': pluralForm }
     } = json;
 
     set(this, `_data.${locale}`, json);
@@ -670,7 +662,9 @@ export default Service.extend({
       Object.keys(items).forEach((messageId) => {
         let item = items[messageId];
         let sanitizedMessageId = messageId.replace(/\s+/g, ' ');
-        sanitizedTranslations[context][sanitizedMessageId] = assign({}, item, { msgid: sanitizedMessageId });
+        sanitizedTranslations[context][sanitizedMessageId] = assign({}, item, {
+          msgid: sanitizedMessageId
+        });
       });
     });
 
@@ -689,12 +683,21 @@ export default Service.extend({
   _pluralFactory(pluralForm) {
     let defaultPluralForm = get(this, 'defaultPluralForm');
 
-    if (!pluralForm || !pluralForm.match(/^\s*nplurals=\s*[\d]+\s*;\s*plural\s*=\s*(?:[-+*/%?!&|=<>():;n\d\s]+);$/)) {
-      this._log(`Plural form "${pluralForm}" is invalid: 'nplurals=NUMBER; plural=EXPRESSION;' - falling back to ${defaultPluralForm}!`);
+    if (
+      !pluralForm ||
+      !pluralForm.match(
+        /^\s*nplurals=\s*[\d]+\s*;\s*plural\s*=\s*(?:[-+*/%?!&|=<>():;n\d\s]+);$/
+      )
+    ) {
+      this._log(
+        `Plural form "${pluralForm}" is invalid: 'nplurals=NUMBER; plural=EXPRESSION;' - falling back to ${defaultPluralForm}!`
+      );
       pluralForm = defaultPluralForm;
     }
 
-    return new Function('n', `
+    return new Function(
+      'n',
+      `
       var nplurals, plural; ${pluralForm}
 
       switch (typeof plural) {
@@ -717,7 +720,8 @@ export default Service.extend({
         plural: plural,
         nplurals: nplurals
       };
-    `);
+    `
+    );
   },
 
   /**
@@ -731,7 +735,10 @@ export default Service.extend({
 
     let localeMap = {};
     Object.keys(locales).forEach((locale) => {
-      assert('Do not use the locale zh, as it is not a valid locale. Instead, use dedicated locales for traditional & simplified Chinese.', locale !== 'zh');
+      assert(
+        'Do not use the locale zh, as it is not a valid locale. Instead, use dedicated locales for traditional & simplified Chinese.',
+        locale !== 'zh'
+      );
       localeMap[locale] = this._getPathForLocale(locale);
     });
 
@@ -770,7 +777,7 @@ export default Service.extend({
           let { responseText } = this;
           let json = JSON.parse(responseText);
           resolve(json);
-        } catch(error) {
+        } catch (error) {
           reject(error);
         }
       });
@@ -788,7 +795,7 @@ export default Service.extend({
    * @return {String}
    */
   _getPathForLocale(locale) {
-    const basePath = get(this, 'jsonPath');
+    let basePath = get(this, 'jsonPath');
     let assetMap = get(this, 'assetMap');
 
     let fullPath = `${basePath}/${locale}.json`;
@@ -814,10 +821,9 @@ export default Service.extend({
    * @private
    */
   _log(str, type = 'log') {
-    // @todo: remove on resolution of public modules API
-    // https://github.com/Cropster/ember-l10n/issues/21
+    // eslint-disable-next-line ember-suave/no-direct-property-access
     if (Ember.testing) {
-      return
+      return;
     }
 
     if (!['log', 'warn', 'error'].indexOf(type) === -1) {
@@ -827,7 +833,6 @@ export default Service.extend({
     // eslint-disable-next-line no-console
     console[type](`l10n.js: ${str}`);
   }
-
 });
 
 /**
@@ -850,9 +855,7 @@ export const strfmt = function(string, hash) {
   let replace = (idx, match) => {
     let value = hash[match];
 
-    return isNone(value)
-      ? `{{${match}}}`
-      : value;
+    return isNone(value) ? `{{${match}}}` : value;
   };
 
   return string.replace(pattern, replace);

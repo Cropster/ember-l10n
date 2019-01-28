@@ -24,35 +24,29 @@ module('Integration | Helper | pn', function(hooks) {
     this.server = new Pretender(function() {
       let json = {
         'en.json': {
-          'headers': {
-            'language': 'en',
+          headers: {
+            language: 'en',
             'plural-forms': 'nplurals=2; plural=(n != 1);'
           },
-          'translations': {
+          translations: {
             '': {
-              'user': {
-                'msgstr': [
-                  'user',
-                  'users'
-                ]
+              user: {
+                msgstr: ['user', 'users']
               }
             },
-            'menu': {
-              'user': {
-                'msgstr': [
-                  'subscription',
-                  'subscriptions'
-                ]
+            menu: {
+              user: {
+                msgstr: ['subscription', 'subscriptions']
               }
             }
           }
         }
       };
 
-      this.get('/assets/locales/:locale', (request)=> {
+      this.get('/assets/locales/:locale', (request) => {
         let response = json[request.params.locale];
         return [200, {}, JSON.stringify(response)];
-      })
+      });
     });
   });
 
@@ -65,12 +59,27 @@ module('Integration | Helper | pn', function(hooks) {
     await l10n.setLocale('en');
 
     await render(hbs`{{pn 'user' 'users' 1 'menu'}}`);
-    assert.dom(this.element).hasText('subscription', 'Contextual translations are working correctly for singular.');
+    assert
+      .dom(this.element)
+      .hasText(
+        'subscription',
+        'Contextual translations are working correctly for singular.'
+      );
 
     await render(hbs`{{pn 'user' 'users' 3 'menu'}}`);
-    assert.dom(this.element).hasText('subscriptions', 'Contextual translations are working correctly for plural.');
+    assert
+      .dom(this.element)
+      .hasText(
+        'subscriptions',
+        'Contextual translations are working correctly for plural.'
+      );
 
     await render(hbs`{{pn 'user' 'users' 3}}`);
-    assert.dom(this.element).hasText('users', 'Omitting context falls back to message without context.');
+    assert
+      .dom(this.element)
+      .hasText(
+        'users',
+        'Omitting context falls back to message without context.'
+      );
   });
 });
