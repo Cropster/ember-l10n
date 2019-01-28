@@ -4,12 +4,12 @@ module.exports = {
     ecmaVersion: 2017,
     sourceType: 'module'
   },
-  plugins: [
-    'ember'
-  ],
+  plugins: ['ember'],
   extends: [
     'eslint:recommended',
-    'plugin:ember/recommended'
+    'plugin:ember/recommended',
+    'plugin:ember-suave/recommended',
+    'plugin:prettier/recommended'
   ],
   env: {
     browser: true
@@ -28,11 +28,7 @@ module.exports = {
         'tests/dummy/config/**/*.js',
         'lib/**/*.js'
       ],
-      excludedFiles: [
-        'app/**',
-        'addon/**',
-        'tests/dummy/app/**'
-      ],
+      excludedFiles: ['app/**', 'addon/**', 'tests/dummy/app/**'],
       parserOptions: {
         sourceType: 'script',
         ecmaVersion: 2015
@@ -42,16 +38,18 @@ module.exports = {
         node: true
       },
       plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
-      })
+      rules: Object.assign(
+        {},
+        require('eslint-plugin-node').configs.recommended.rules,
+        {
+          // add your custom rules and overrides for node files here
+        }
+      )
     },
 
     // node tests
     {
-      files: [
-        'node-tests/**/*-test.js'
-      ],
+      files: ['node-tests/**/*-test.js'],
       parserOptions: {
         sourceType: 'script',
         ecmaVersion: 2017
@@ -62,16 +60,26 @@ module.exports = {
         mocha: true
       },
       plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        'node/no-unsupported-features/es-syntax': ['error', {
-          'version': '>=8.5.0',
-          'ignores': []
-        }],
-        'node/no-unsupported-features/node-builtins': ['error', {
-          'version': '>=8.5.0',
-          'ignores': []
-        }]
-      })
+      rules: Object.assign(
+        {},
+        require('eslint-plugin-node').configs.recommended.rules,
+        {
+          'node/no-unsupported-features/es-syntax': [
+            'error',
+            {
+              version: '>=8.5.0',
+              ignores: []
+            }
+          ],
+          'node/no-unsupported-features/node-builtins': [
+            'error',
+            {
+              version: '>=8.5.0',
+              ignores: []
+            }
+          ]
+        }
+      )
     },
 
     // test files
