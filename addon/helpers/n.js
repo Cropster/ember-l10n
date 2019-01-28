@@ -1,6 +1,5 @@
-import { get, observer } from '@ember/object';
-import Helper from '@ember/component/helper';
-import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
+import THelper from './t';
 
 /**
  * This helper provides gettext pluralization for message ids.
@@ -17,9 +16,7 @@ import { inject as service } from '@ember/service';
  * @extends Ember.Helper
  * @public
  */
-export default Helper.extend({
-  l10n: service(),
-
+export default THelper.extend({
   compute([msgid, msgidPlural, count], hash) {
     let l10n = get(this, 'l10n');
 
@@ -28,10 +25,5 @@ export default Helper.extend({
     }
 
     return l10n.n(msgid, msgidPlural, count, hash);
-  },
-
-  // eslint-disable-next-line ember/no-observers
-  _watchLocale: observer('l10n.locale', function() {
-    this.recompute();
-  })
+  }
 });

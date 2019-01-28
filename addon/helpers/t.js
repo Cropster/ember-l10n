@@ -20,11 +20,13 @@ export default Helper.extend({
   l10n: service(),
 
   compute([msgid], hash) {
+    let l10n = get(this, 'l10n');
+
     if (!msgid) {
       return msgid;
     }
 
-    return get(this, 'l10n').t(msgid, hash);
+    return l10n.t(msgid, hash);
   },
 
   // eslint-disable-next-line ember/no-observers
