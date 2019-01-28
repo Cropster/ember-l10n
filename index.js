@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = {
-   name: require('./package').name,
+  name: require('./package').name,
 
-  includedCommands: function() {
+  includedCommands() {
     return {
       'l10n:install': require('./lib/commands/install'),
       'l10n:extract': require('./lib/commands/extract'),

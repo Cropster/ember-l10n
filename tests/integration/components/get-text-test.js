@@ -23,19 +23,30 @@ module('Integration | Component | get-text', function(hooks) {
       {{/get-text}}
     `);
 
-
-
     assert.equal(find('a').textContent.trim(), 'STATIC REPLACEMENT');
-    assert.equal(find(findAll('a')[1]).textContent.trim(), 'DYNAMIC REPLACEMENT');
+    assert.equal(
+      find(findAll('a')[1]).textContent.trim(),
+      'DYNAMIC REPLACEMENT'
+    );
   });
 
   test('it works with a given message', async function(assert) {
     await render(hbs`{{get-text message=(t '<b>I am bold.</b>')}}`);
-    assert.equal(find('*').innerHTML, '&lt;b&gt;I am bold.&lt;/b&gt;', 'It escapes text per default.');
+    assert.equal(
+      find('*').innerHTML,
+      '&lt;b&gt;I am bold.&lt;/b&gt;',
+      'It escapes text per default.'
+    );
   });
 
   test('it works with unescapeText=true set', async function(assert) {
-    await render(hbs`{{get-text unescapeText=true message=(t '<b>I am bold.</b>')}}`);
-    assert.equal(find('*').innerHTML, '<b>I am bold.</b>', 'It unescapes text with `unescapeText` option.');
+    await render(
+      hbs`{{get-text unescapeText=true message=(t '<b>I am bold.</b>')}}`
+    );
+    assert.equal(
+      find('*').innerHTML,
+      '<b>I am bold.</b>',
+      'It unescapes text with `unescapeText` option.'
+    );
   });
 });

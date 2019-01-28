@@ -8,26 +8,29 @@ const MockUI = require('console-ui/mock'); //eslint-disable-line
 const ExtractCommand = require('./../../../lib/commands/extract');
 
 function getOptions(options = {}) {
-  return Object.assign({
-    defaultLanguage: 'en',
-    bugAddress: 'test-email@email.com',
-    copyright: 'Test Company',
-    fromCode: 'UTF-8',
-    language: 'en',
-    package: 'Test App',
-    version: '1.0',
-    extractFrom: './tests/dummy/app',
-    includePatterns: [],
-    skipPatterns: [],
-    skipDependencies: [],
-    skipAllDependencies: false,
-    generateOnly: false,
-    generateTo: null,
-    extractTo: './tmp/ember-l10n-tests',
-    keys: ['t', 'pt:1,2c', 'n:1,2', 'pn:1,2,4c'],
-    potName: 'messages.pot',
-    generateFrom: 'messages.pot'
-  }, options);
+  return Object.assign(
+    {
+      defaultLanguage: 'en',
+      bugAddress: 'test-email@email.com',
+      copyright: 'Test Company',
+      fromCode: 'UTF-8',
+      language: 'en',
+      package: 'Test App',
+      version: '1.0',
+      extractFrom: './tests/dummy/app',
+      includePatterns: [],
+      skipPatterns: [],
+      skipDependencies: [],
+      skipAllDependencies: false,
+      generateOnly: false,
+      generateTo: null,
+      extractTo: './tmp/ember-l10n-tests',
+      keys: ['t', 'pt:1,2c', 'n:1,2', 'pn:1,2,4c'],
+      potName: 'messages.pot',
+      generateFrom: 'messages.pot'
+    },
+    options
+  );
 }
 
 function getPoFileContent(filePath) {
@@ -54,7 +57,7 @@ describe('extract command', function() {
       }
     };
 
-    shell.mkdir('-p', tmpDir)
+    shell.mkdir('-p', tmpDir);
   });
 
   afterEach(function() {
@@ -64,7 +67,7 @@ describe('extract command', function() {
   function createCommand(options = {}) {
     Object.assign(options, {
       ui: new MockUI(),
-      project: project,
+      project,
       environment: {},
       settings: {}
     });
@@ -79,8 +82,12 @@ describe('extract command', function() {
     let cmd = createCommand();
     await cmd.run(options);
 
-    let expectedFileContent = getPoFileContent('./node-tests/fixtures/extract/expected.pot');
-    let actualFileContent = getPoFileContent('./tmp/ember-l10n-tests/messages.pot');
+    let expectedFileContent = getPoFileContent(
+      './node-tests/fixtures/extract/expected.pot'
+    );
+    let actualFileContent = getPoFileContent(
+      './tmp/ember-l10n-tests/messages.pot'
+    );
 
     expect(actualFileContent).to.equals(expectedFileContent);
   });
@@ -89,14 +96,21 @@ describe('extract command', function() {
     let options = getOptions({});
 
     // First put a dummy existing messages.po in the output folder
-    fs.copyFileSync('./node-tests/fixtures/extract/base.pot', `${options.extractTo}/messages.pot`);
+    fs.copyFileSync(
+      './node-tests/fixtures/extract/base.pot',
+      `${options.extractTo}/messages.pot`
+    );
 
     let cmd = createCommand();
     await cmd.run(options);
 
     // We want to ignore everything until the first comment
-    let expectedFileContent = getPoFileContent('./node-tests/fixtures/extract/expected.pot');
-    let actualFileContent = getPoFileContent('./tmp/ember-l10n-tests/messages.pot');
+    let expectedFileContent = getPoFileContent(
+      './node-tests/fixtures/extract/expected.pot'
+    );
+    let actualFileContent = getPoFileContent(
+      './tmp/ember-l10n-tests/messages.pot'
+    );
 
     expect(actualFileContent).to.equals(expectedFileContent);
   });
@@ -111,10 +125,13 @@ describe('extract command', function() {
     let cmd = createCommand();
     await cmd.run(options);
 
-    let expectedFileContent = getPoFileContent('./node-tests/fixtures/extract/expected-without-skipped.pot');
-    let actualFileContent = getPoFileContent('./tmp/ember-l10n-tests/messages.pot');
+    let expectedFileContent = getPoFileContent(
+      './node-tests/fixtures/extract/expected-without-skipped.pot'
+    );
+    let actualFileContent = getPoFileContent(
+      './tmp/ember-l10n-tests/messages.pot'
+    );
 
     expect(actualFileContent).to.equals(expectedFileContent);
   });
-
 });

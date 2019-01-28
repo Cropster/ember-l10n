@@ -2,7 +2,6 @@ const { expect } = require('chai');
 const { parseHbsFile } = require('./../../../../lib/commands/utils/parse-hbs');
 
 describe('parseHbsFile util', function() {
-
   it('it correctly parses t helper', function() {
     let options = { fromCode: 'UTF-8' };
 
@@ -185,7 +184,8 @@ describe('parseHbsFile util', function() {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
-    let fileName = './node-tests/fixtures/parse-hbs/t-for-yielded-component.hbs';
+    let fileName =
+      './node-tests/fixtures/parse-hbs/t-for-yielded-component.hbs';
     parseHbsFile(fileName, options, gettextItems);
 
     expect(gettextItems).to.deep.equal([
@@ -277,7 +277,8 @@ describe('parseHbsFile util', function() {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
-    let fileName = './node-tests/fixtures/parse-hbs/t-in-element-argument-string.hbs';
+    let fileName =
+      './node-tests/fixtures/parse-hbs/t-in-element-argument-string.hbs';
     parseHbsFile(fileName, options, gettextItems);
 
     expect(gettextItems).to.deep.equal([
@@ -323,7 +324,8 @@ describe('parseHbsFile util', function() {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
-    let fileName = './node-tests/fixtures/parse-hbs/t-in-nested-yielded-component.hbs';
+    let fileName =
+      './node-tests/fixtures/parse-hbs/t-in-nested-yielded-component.hbs';
     parseHbsFile(fileName, options, gettextItems);
 
     expect(gettextItems).to.deep.equal([
@@ -358,7 +360,6 @@ describe('parseHbsFile util', function() {
       }
     ]);
   });
-
 
   it('it correctly parses multiple helpers', function() {
     let options = { fromCode: 'UTF-8' };
@@ -420,8 +421,9 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/t-few-arguments.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('t-helper does not seem to have proper arguments: ./node-tests/fixtures/parse-hbs/t-few-arguments.hbs:6:2');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      't-helper does not seem to have proper arguments: ./node-tests/fixtures/parse-hbs/t-few-arguments.hbs:6:2'
+    );
   });
 
   it('it throws when not using enough arguments for n helper', function() {
@@ -430,8 +432,9 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/n-few-arguments.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('n-helper does not seem to have proper arguments: ./node-tests/fixtures/parse-hbs/n-few-arguments.hbs:6:2');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      'n-helper does not seem to have proper arguments: ./node-tests/fixtures/parse-hbs/n-few-arguments.hbs:6:2'
+    );
   });
 
   it('it throws when not using enough arguments for pt helper', function() {
@@ -440,8 +443,9 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/pt-few-arguments.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('pt-helper does not seem to have proper arguments: ./node-tests/fixtures/parse-hbs/pt-few-arguments.hbs:6:2');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      'pt-helper does not seem to have proper arguments: ./node-tests/fixtures/parse-hbs/pt-few-arguments.hbs:6:2'
+    );
   });
 
   it('it throws when not using enough arguments for pn helper', function() {
@@ -450,8 +454,9 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/pn-few-arguments.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('pn-helper does not seem to have proper arguments: ./node-tests/fixtures/parse-hbs/pn-few-arguments.hbs:6:2');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      'pn-helper does not seem to have proper arguments: ./node-tests/fixtures/parse-hbs/pn-few-arguments.hbs:6:2'
+    );
   });
 
   it('it throws on variables as arguments for t helper', function() {
@@ -460,8 +465,9 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/t-with-variable.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/t-with-variable.hbs:6:6');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      'You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/t-with-variable.hbs:6:6'
+    );
   });
 
   it('it throws on helpers as arguments for t helper', function() {
@@ -470,8 +476,9 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/t-with-helper.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/t-with-helper.hbs:6:6');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      'You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/t-with-helper.hbs:6:6'
+    );
   });
 
   it('it throws on variables as arguments for n helper', function() {
@@ -480,8 +487,9 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/n-with-variable.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/n-with-variable.hbs:6:13');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      'You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/n-with-variable.hbs:6:13'
+    );
   });
 
   it('it throws on variables as arguments for pt helper', function() {
@@ -490,8 +498,9 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/pt-with-variable.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/pt-with-variable.hbs:6:14');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      'You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/pt-with-variable.hbs:6:14'
+    );
   });
 
   it('it throws on variables as arguments for pn helper', function() {
@@ -500,9 +509,8 @@ describe('parseHbsFile util', function() {
     let gettextItems = [];
     let fileName = './node-tests/fixtures/parse-hbs/pn-with-variable.hbs';
 
-    expect(() => parseHbsFile(fileName, options, gettextItems))
-      .to.throw('You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/pn-with-variable.hbs:6:25');
+    expect(() => parseHbsFile(fileName, options, gettextItems)).to.throw(
+      'You need to pass a string as argument to l10n helpers: ./node-tests/fixtures/parse-hbs/pn-with-variable.hbs:6:25'
+    );
   });
-
-
 });

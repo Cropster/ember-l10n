@@ -25,52 +25,44 @@ module('Integration | Helper | t-var', function(hooks) {
     this.server = new Pretender(function() {
       let json = {
         'en.json': {
-          'headers': {
-            'language': 'en',
+          headers: {
+            language: 'en',
             'plural-forms': 'nplurals=2; plural=(n != 1);'
           },
-          'translations': {
+          translations: {
             '': {
-              'en': {
-                'msgstr': [
-                  'English'
-                ]
+              en: {
+                msgstr: ['English']
               },
-              'I\'m a {{placeholder}}.': {
-                'msgstr': [
-                  'I\'m a {{placeholder}}.'
-                ]
+              "I'm a {{placeholder}}.": {
+                msgstr: ["I'm a {{placeholder}}."]
               }
             }
           }
         },
 
         'de.json': {
-          'headers': {
-            'language': 'de',
+          headers: {
+            language: 'de',
             'plural-forms': 'nplurals=2; plural=(n != 1);'
           },
-          'translations': {
+          translations: {
             '': {
-              'en': {
-                'msgstr': [
-                  'English'
-                ]
+              en: {
+                msgstr: ['English']
               },
-              'I\'m a {{placeholder}}.': {
-                'msgstr': [
-                  'Ich bin ein {{placeholder}}.'
-                ]
+              "I'm a {{placeholder}}.": {
+                msgstr: ['Ich bin ein {{placeholder}}.']
               }
             }
           }
         }
       };
 
-      this.get('/assets/locales/:locale', (request)=> {
+      this.get('/assets/locales/:locale', (request) => {
         let response = json[request.params.locale];
         return [200, {}, JSON.stringify(response)];
-      })
+      });
     });
   });
 
@@ -83,18 +75,32 @@ module('Integration | Helper | t-var', function(hooks) {
     await l10n.setLocale('en');
 
     await render(hbs`{{t-var 'en'}}`);
-    assert.dom(this.element).hasText('English', 'Common translations are working.');
+    assert
+      .dom(this.element)
+      .hasText('English', 'Common translations are working.');
 
     this.set('value', 'PLACEHOLDER');
     await render(hbs`{{t-var "I'm a {{placeholder}}." placeholder=value}}`);
-    assert.dom(this.element).hasText('I\'m a PLACEHOLDER.', 'Placeholder translations are working.');
+    assert
+      .dom(this.element)
+      .hasText("I'm a PLACEHOLDER.", 'Placeholder translations are working.');
 
     await l10n.setLocale('de');
     await wait();
 
-    assert.dom(this.element).hasText('Ich bin ein PLACEHOLDER.', 'Changing locale recomputes translations properly.');
+    assert
+      .dom(this.element)
+      .hasText(
+        'Ich bin ein PLACEHOLDER.',
+        'Changing locale recomputes translations properly.'
+      );
 
     this.set('value', 'PLATZHALTER');
-    assert.dom(this.element).hasText('Ich bin ein PLATZHALTER.', 'Updating a bound property recomputes translations properly.');
+    assert
+      .dom(this.element)
+      .hasText(
+        'Ich bin ein PLATZHALTER.',
+        'Updating a bound property recomputes translations properly.'
+      );
   });
 });

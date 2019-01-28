@@ -24,33 +24,29 @@ module('Integration | Helper | pt', function(hooks) {
     this.server = new Pretender(function() {
       let json = {
         'en.json': {
-          'headers': {
-            'language': 'en',
+          headers: {
+            language: 'en',
             'plural-forms': 'nplurals=2; plural=(n != 1);'
           },
-          'translations': {
+          translations: {
             '': {
-              'KG': {
-                'msgstr': [
-                  'kg'
-                ]
+              KG: {
+                msgstr: ['kg']
               }
             },
-            'countries': {
-              'KG': {
-                'msgstr': [
-                  'Kyrgyzstan'
-                ]
+            countries: {
+              KG: {
+                msgstr: ['Kyrgyzstan']
               }
             }
           }
         }
       };
 
-      this.get('/assets/locales/:locale', (request)=> {
+      this.get('/assets/locales/:locale', (request) => {
         let response = json[request.params.locale];
         return [200, {}, JSON.stringify(response)];
-      })
+      });
     });
   });
 
@@ -63,9 +59,13 @@ module('Integration | Helper | pt', function(hooks) {
     await l10n.setLocale('en');
 
     await render(hbs`{{pt 'KG' 'countries'}}`);
-    assert.dom(this.element).hasText('Kyrgyzstan', 'Contextual translations are working correctly.');
+    assert
+      .dom(this.element)
+      .hasText('Kyrgyzstan', 'Contextual translations are working correctly.');
 
     await render(hbs`{{pt 'KG'}}`);
-    assert.dom(this.element).hasText('kg', 'Omitting context falls back to message without context.');
+    assert
+      .dom(this.element)
+      .hasText('kg', 'Omitting context falls back to message without context.');
   });
 });

@@ -1,6 +1,7 @@
 const { expect } = require('chai');
-const { validatePlaceholders } = require('./../../../../../lib/commands/utils/validate/validate-placeholders');
-
+const {
+  validatePlaceholders
+} = require('./../../../../../lib/commands/utils/validate/validate-placeholders');
 
 describe('validatePlaceholders util', function() {
   it('it works for empty id', function() {
@@ -49,10 +50,11 @@ describe('validatePlaceholders util', function() {
 
     let expected = [
       {
-        'id': 'My test {{val}}',
-        'level': 'ERROR',
-        'message': 'The placeholder "{{val2}}" seems to be wrongly translated. Allowed: {{val}}',
-        'translation': 'My test {{val2}}'
+        id: 'My test {{val}}',
+        level: 'ERROR',
+        message:
+          'The placeholder "{{val2}}" seems to be wrongly translated. Allowed: {{val}}',
+        translation: 'My test {{val2}}'
       }
     ];
     expect(validationErrors).to.deep.equal(expected);
@@ -68,10 +70,11 @@ describe('validatePlaceholders util', function() {
 
     let expected = [
       {
-        'id': 'My test {{val}} {{val2}} {{val3}}',
-        'level': 'ERROR',
-        'message': 'The placeholder "{{val4}}" seems to be wrongly translated. Allowed: {{val}}, {{val2}}, {{val3}}',
-        'translation': 'My {{val3}} test {{val4}} {{val5}}'
+        id: 'My test {{val}} {{val2}} {{val3}}',
+        level: 'ERROR',
+        message:
+          'The placeholder "{{val4}}" seems to be wrongly translated. Allowed: {{val}}, {{val2}}, {{val3}}',
+        translation: 'My {{val3}} test {{val4}} {{val5}}'
       }
     ];
     expect(validationErrors).to.deep.equal(expected);
@@ -87,10 +90,11 @@ describe('validatePlaceholders util', function() {
 
     let expected = [
       {
-        'id': 'My test {{val}}',
-        'level': 'ERROR',
-        'message': 'The placeholder "{{该}}" seems to be wrongly translated. Allowed: {{val}}',
-        'translation': 'My test {{该}}'
+        id: 'My test {{val}}',
+        level: 'ERROR',
+        message:
+          'The placeholder "{{该}}" seems to be wrongly translated. Allowed: {{val}}',
+        translation: 'My test {{该}}'
       }
     ];
     expect(validationErrors).to.deep.equal(expected);

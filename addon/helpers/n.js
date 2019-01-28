@@ -1,7 +1,4 @@
-import {
-  get,
-  observer
-} from '@ember/object';
+import { get, observer } from '@ember/object';
 import Helper from '@ember/component/helper';
 import { inject as service } from '@ember/service';
 
@@ -30,18 +27,11 @@ export default Helper.extend({
       return msgid;
     }
 
-    return l10n.n(
-      msgid,
-      msgidPlural,
-      count,
-      hash
-    );
+    return l10n.n(msgid, msgidPlural, count, hash);
   },
 
-  _watchLocale: observer(
-    'l10n.locale',
-    function() {
-      this.recompute();
-    }
-  )
+  // eslint-disable-next-line ember/no-observers
+  _watchLocale: observer('l10n.locale', function() {
+    this.recompute();
+  })
 });

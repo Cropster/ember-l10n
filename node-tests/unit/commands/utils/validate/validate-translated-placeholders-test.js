@@ -1,6 +1,7 @@
 const { expect } = require('chai');
-const { validateTranslatedPlaceholders } = require('./../../../../../lib/commands/utils/validate/validate-translated-placeholders');
-
+const {
+  validateTranslatedPlaceholders
+} = require('./../../../../../lib/commands/utils/validate/validate-translated-placeholders');
 
 describe('validateTranslatedPlaceholders util', function() {
   it('it works for empty id', function() {
@@ -73,10 +74,11 @@ describe('validateTranslatedPlaceholders util', function() {
 
     let expected = [
       {
-        'id': 'My test {{val "test"}}',
-        'level': 'WARNING',
-        'message': 'The content "test" for complex placeholder "val" is not translated',
-        'translation': 'Mein test {{val "test"}}'
+        id: 'My test {{val "test"}}',
+        level: 'WARNING',
+        message:
+          'The content "test" for complex placeholder "val" is not translated',
+        translation: 'Mein test {{val "test"}}'
       }
     ];
     expect(validationErrors).to.deep.equal(expected);
@@ -92,10 +94,10 @@ describe('validateTranslatedPlaceholders util', function() {
 
     let expected = [
       {
-        'id': 'My test {{val "test"}}',
-        'level': 'ERROR',
-        'message': 'The complex placeholder "val" is not correctly translated',
-        'translation': 'Mein test {{val2 "test"}}'
+        id: 'My test {{val "test"}}',
+        level: 'ERROR',
+        message: 'The complex placeholder "val" is not correctly translated',
+        translation: 'Mein test {{val2 "test"}}'
       }
     ];
     expect(validationErrors).to.deep.equal(expected);

@@ -1,9 +1,6 @@
-import {
-  typeOf,
-  isEmpty
-} from '@ember/utils';
+import { typeOf, isEmpty } from '@ember/utils';
 import { get } from '@ember/object';
-import Component from "@ember/component"
+import Component from '@ember/component';
 import layout from '../templates/get-text';
 
 /**
@@ -29,7 +26,6 @@ import layout from '../templates/get-text';
  * @public
  */
 export default Component.extend({
-
   tagName: '',
   layout,
 
@@ -89,7 +85,9 @@ export default Component.extend({
 
     if (!message) {
       // eslint-disable-next-line no-console
-      console.error('get-text.js: You need to provide a "message" attribute containing a gettext message!');
+      console.error(
+        'get-text.js: You need to provide a "message" attribute containing a gettext message!'
+      );
       return;
     }
 
@@ -98,7 +96,9 @@ export default Component.extend({
         message = message.toString();
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.error('get-text.js: "message" must be either a string or an object implementing toString() method!');
+        console.error(
+          'get-text.js: "message" must be either a string or an object implementing toString() method!'
+        );
         return;
       }
     }
@@ -139,5 +139,4 @@ export default Component.extend({
     // provide parts for template
     this.set('messageParts', parts);
   }
-
 });
