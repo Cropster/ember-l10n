@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const {
   validateTranslatedPlaceholders
-} = require('./../../../../../lib/commands/utils/validate/validate-translated-placeholders');
+} = require('./../../../../lib/utils/validate/validate-translated-placeholders');
 
 describe('validateTranslatedPlaceholders util', function() {
   it('it works for empty id', function() {

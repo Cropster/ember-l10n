@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const {
   validatePlaceholders
-} = require('./../../../../../lib/commands/utils/validate/validate-placeholders');
+} = require('./../../../../lib/utils/validate/validate-placeholders');
 
 describe('validatePlaceholders util', function() {
   it('it works for empty id', function() {

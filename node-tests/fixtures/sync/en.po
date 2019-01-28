@@ -1,0 +1,1700 @@
+# English translations for My App package.
+# Copyright (C) 2018 My Company
+# This file is distributed under the same license as the My App package.
+# Automatically generated, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: My App 1.0\n"
+"Report-Msgid-Bugs-To: support@mycompany.com\n"
+"POT-Creation-Date: 2018-04-25 09:21+0200\n"
+"PO-Revision-Date: 2018-04-25 09:21+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: addon/blend-profile-component/model.js:18
+#: addon/profile-component/model.js:19 addon/schedule-profile/model.js:63
+msgctxt "Filled in as {{description}} for validations"
+msgid "The percentage"
+msgstr "The percentage"
+
+#: addon/blend-profile-component/model.js:26
+msgctxt "Filled in as {{description}} for validations"
+msgid "The profile"
+msgstr "The profile"
+
+#: addon/blend-profile/model.js:21 addon/profile/model.js:60
+#: addon/schedule-profile/model.js:55 addon/schedule/model.js:23
+#: addon/scheduled-processing/model.js:52
+msgctxt "Filled in as {{description}} for validations"
+msgid "The components"
+msgstr "The components"
+
+#: addon/blend-profile/model.js:33 addon/profile/model.js:24
+#: addon/schedule/model.js:37
+msgid "The sum of percentages must be 100%."
+msgstr "The sum of percentages must be 100%."
+
+#: addon/blend-profile/model.js:40 addon/profile/model.js:31
+msgctxt "Filled in as {{description}} for validations"
+msgid "The name"
+msgstr "The name"
+
+#: addon/cocoa-physical-cut/model.js:26
+msgid "All counts must be 0 or larger and full numbers."
+msgstr "All counts must be 0 or larger and full numbers."
+
+#: addon/cocoa-physical-cut/model.js:36
+msgid "The counted beans in the cut have to match the target bean count."
+msgstr "The counted beans in the cut have to match the target bean count."
+
+#: addon/cocoa-physical-result/model.js:23 addon/physical-result/model.js:23
+msgctxt "Filled in as {{description}} for validations"
+msgid "The moisture"
+msgstr "The moisture"
+
+#: addon/cocoa-physical-result/model.js:31
+#: addon/physical-result-defect/model.js:19
+msgctxt "Filled in as {{description}} for validations"
+msgid "The bean count"
+msgstr "The bean count"
+
+#: addon/cocoa-physical-result/model.js:44
+msgctxt "Filled in as {{description}} for validations"
+msgid "The liquor fat content"
+msgstr "The liquor fat content"
+
+#: addon/cocoa-physical-result/model.js:52
+msgctxt "Filled in as {{description}} for validations"
+msgid "The trash percentage"
+msgstr "The trash percentage"
+
+#: addon/cocoa-physical-result/model.js:60
+msgctxt "Filled in as {{description}} for validations"
+msgid "The broken percentage"
+msgstr "The broken percentage"
+
+#: addon/cocoa-physical-result/model.js:68
+msgctxt "Filled in as {{description}} for validations"
+msgid "The cuts"
+msgstr "The cuts"
+
+#: addon/components/base-export/component.js:169
+#: addon/components/export-excel/component.js:381
+msgid "Could not download Excel file"
+msgstr "Could not download Excel file"
+
+#: addon/components/date-picker/component.js:29
+msgid "From..."
+msgstr "From..."
+
+#: addon/components/date-picker/component.js:29
+msgid "Select date..."
+msgstr "Select date..."
+
+#: addon/components/date-picker/component.js:33
+msgid "To..."
+msgstr "To..."
+
+#: addon/components/date-picker/component.js:65
+msgid "Clear"
+msgstr "Clear"
+
+#: addon/components/date-picker/component.js:70
+msgid "Today"
+msgstr "Today"
+
+#: addon/components/date-picker/component.js:75
+#: addon/components/date-picker/component.js:81
+msgid "Yesterday"
+msgstr "Yesterday"
+
+#: addon/components/date-picker/component.js:87
+msgid "Last 7 days"
+msgstr "Last 7 days"
+
+#: addon/components/date-picker/component.js:93
+msgid "Last 30 days"
+msgstr "Last 30 days"
+
+#: addon/components/date-picker/component.js:99
+msgid "Last year"
+msgstr "Last year"
+
+#: addon/components/date-picker/component.js:105
+msgid "Last 3 months"
+msgstr "Last 3 months"
+
+#: addon/components/date-picker/component.js:111
+msgid "Last 6 months"
+msgstr "Last 6 months"
+
+#: addon/components/date-picker/component.js:117
+msgid "This week"
+msgstr "This week"
+
+#: addon/components/date-picker/component.js:123
+msgid "This month"
+msgstr "This month"
+
+#: addon/components/error-message/component.js:38
+msgid "Sorry, but an error occurred!"
+msgstr "Sorry, but an error occurred!"
+
+#: addon/components/export-excel/component.js:120
+msgid "General"
+msgstr "General"
+
+#: addon/components/export-excel/component.js:343
+msgid "Generating Excel file ..."
+msgstr "Generating Excel file ..."
+
+#: addon/physical-result-defect/model.js:32
+#: addon/scheduled-processing/model.js:21
+msgctxt "Filled in as {{description}} for validations"
+msgid "The weight"
+msgstr "The weight"
+
+#: addon/physical-result/model.js:31
+msgctxt "Filled in as {{description}} for validations"
+msgid "The water activity"
+msgstr "The water activity"
+
+#: addon/physical-result/model.js:43
+msgctxt "Filled in as {{description}} for validations"
+msgid "The temperature"
+msgstr "The temperature"
+
+#: addon/physical-result/model.js:51
+msgctxt "Filled in as {{description}} for validations"
+msgid "The quaker count"
+msgstr "The quaker count"
+
+#: addon/physical-result/model.js:63
+msgctxt "Filled in as {{description}} for validations"
+msgid "The density"
+msgstr "The density"
+
+#: addon/physical-result/model.js:75
+msgctxt "Filled in as {{description}} for validations"
+msgid "The green weight"
+msgstr "The green weight"
+
+#: addon/physical-result/model.js:83
+msgctxt "Filled in as {{description}} for validations"
+msgid "The roasted weight"
+msgstr "The roasted weight"
+
+#: addon/physical-result/model.js:91
+msgctxt "Filled in as {{description}} for validations"
+msgid "The parchment weight"
+msgstr "The parchment weight"
+
+#: addon/physical-result/model.js:99
+msgctxt "Filled in as {{description}} for validations"
+msgid "The screen size"
+msgstr "The screen size"
+
+#: addon/physical-result/model.js:107
+msgctxt "Filled in as {{description}} for validations"
+msgid "The defects"
+msgstr "The defects"
+
+#: addon/processing-check/model.js:188 addon/processing-check/model.js:235
+msgid "Relative"
+msgstr "Relative"
+
+#: addon/processing-check/model.js:194
+msgid "Weight"
+msgstr "Weight"
+
+#: addon/processing-check/model.js:200
+msgid "RoR"
+msgstr "RoR"
+
+#: addon/processing-check/model.js:206
+msgid "Time"
+msgstr "Time"
+
+#: addon/processing-check/model.js:212
+msgid "Temperature"
+msgstr "Temperature"
+
+#: addon/processing-check/model.js:218
+msgid "Other attributes"
+msgstr "Other attributes"
+
+#: addon/processing-check/model.js:257
+msgid "These goals automatically adapt when you change the reference roast."
+msgstr "These goals automatically adapt when you change the reference roast."
+
+#: addon/processing-check/model.js:261
+msgid "Checks if the start weight of a roast is within your target range."
+msgstr "Checks if the start weight of a roast is within your target range."
+
+#: addon/processing-check/model.js:264
+msgid "Checks if the end weight of a roast is within your target range."
+msgstr "Checks if the end weight of a roast is within your target range."
+
+#: addon/processing-check/model.js:267
+msgid "Checks if the weight loss of a roast is within your target range."
+msgstr "Checks if the weight loss of a roast is within your target range."
+
+#: addon/processing-check/model.js:271
+msgid "Checks if the bean temperature RoR (for a 30 seconds interval) is within your target range during the specified time window."
+msgstr "Checks if the bean temperature RoR (for a 30 seconds interval) is within your target range during the specified time window."
+
+#: addon/processing-check/model.js:274
+msgid "The Constant RoR check will create an alert if the bean temperature RoR curve contains flat sections that last for 60 seconds or more."
+msgstr "The Constant RoR check will create an alert if the bean temperature RoR curve contains flat sections that last for 60 seconds or more."
+
+#: addon/processing-check/model.js:277
+msgid "Checks if the RoR stays within your defined range once it surpasses the lower bound. This goal uses a RoR interval of 10 seconds."
+msgstr "Checks if the RoR stays within your defined range once it surpasses the lower bound. This goal uses a RoR interval of 10 seconds."
+
+#: addon/processing-check/model.js:280
+msgid "Checks if the RoR stays within your defined range once it surpasses the lower bound. This goal uses a RoR interval of 15 seconds."
+msgstr "Checks if the RoR stays within your defined range once it surpasses the lower bound. This goal uses a RoR interval of 15 seconds."
+
+#: addon/processing-check/model.js:283
+msgid "Checks if the RoR stays within your defined range once it surpasses the lower bound. This goal uses a RoR interval of 30 seconds."
+msgstr "Checks if the RoR stays within your defined range once it surpasses the lower bound. This goal uses a RoR interval of 30 seconds."
+
+#: addon/processing-check/model.js:286
+msgid "Checks if the RoR stays within your defined range once it surpasses the lower bound. This goal uses a RoR interval of 60 seconds."
+msgstr "Checks if the RoR stays within your defined range once it surpasses the lower bound. This goal uses a RoR interval of 60 seconds."
+
+#: addon/processing-check/model.js:290
+msgid "Checks if your roast is within a defined duration."
+msgstr "Checks if your roast is within a defined duration."
+
+#: addon/processing-check/model.js:293
+msgid "Checks if the development time (=time from first crack to the end of the roast) is within your target range."
+msgstr "Checks if the development time (=time from first crack to the end of the roast) is within your target range."
+
+#: addon/processing-check/model.js:296
+msgid "Checks if the development time ratio (= time from first crack to the end of the roast divided by the overall duration of your roast) is within your target range."
+msgstr "Checks if the development time ratio (= time from first crack to the end of the roast divided by the overall duration of your roast) is within your target range."
+
+#: addon/processing-check/model.js:300
+msgid "Checks if the end temperature of a roast is within your target range"
+msgstr "Checks if the end temperature of a roast is within your target range"
+
+#: addon/processing-check/model.js:303
+msgid "Checks if the charge temperature of a roast is within your target range."
+msgstr "Checks if the charge temperature of a roast is within your target range."
+
+#: addon/processing-check/model.js:306
+msgid "Creates an alert if the bean temperature curve contains flat sections, which means the RoR turned to zero."
+msgstr "Creates an alert if the bean temperature curve contains flat sections, which means the RoR turned to zero."
+
+#: addon/processing-check/model.js:310
+msgid "Checks if the roast value (color, e.g. Colortrack, Agtron) of a roast is within your target range."
+msgstr "Checks if the roast value (color, e.g. Colortrack, Agtron) of a roast is within your target range."
+
+#: addon/processing-check/model.js:313
+msgid "This goal checks if the first crack of a roast occured within your target range."
+msgstr "This goal checks if the first crack of a roast occurred within your target range."
+
+#: addon/processing-check/model.js:316
+msgid "No description available."
+msgstr "No description available."
+
+#: addon/processing-goal/model.js:29
+msgctxt "Filled in as {{description}} for validations"
+msgid "Lower bound"
+msgstr "Lower bound"
+
+#: addon/processing-goal/model.js:51
+msgctxt "Filled in as {{description}} for validations"
+msgid "Upper bound"
+msgstr "Upper bound"
+
+#: addon/processing-goal/model.js:72
+msgctxt "Filled in as {{description}} for validations"
+msgid "Range"
+msgstr "Range"
+
+#: addon/processing-goal/model.js:90
+msgctxt "Filled in as {{description}} for validations"
+msgid "Start time"
+msgstr "Start time"
+
+#: addon/processing-goal/model.js:116
+msgctxt "Filled in as {{description}} for validations"
+msgid "End time"
+msgstr "End time"
+
+#: addon/processing-goal/model.js:142
+msgctxt "Filled in as {{description}} for validations"
+msgid "Selected profiles"
+msgstr "Selected profiles"
+
+#: addon/processing-goal/model.js:155
+msgctxt "Filled in as {{description}} for validations"
+msgid "The goal"
+msgstr "The goal"
+
+#: addon/profile/model.js:44
+msgctxt "Filled in as {{description}} for validations"
+msgid "The expected weight loss"
+msgstr "The expected weight loss"
+
+#: addon/profile/model.js:52
+msgctxt "Filled in as {{description}} for validations"
+msgid "The batch size"
+msgstr "The batch size"
+
+#: addon/schedule-profile-component/model.js:22
+msgid "A lot must be selected for the component if the profile has no lots specified."
+msgstr "A lot must be selected for the component if the profile has no lots specified."
+
+#: addon/schedule-profile/model.js:28
+msgid "A profile must be selected."
+msgstr "A profile must be selected."
+
+#: addon/schedule-profile/model.js:38
+msgid "A machine must be selected."
+msgstr "A machine must be selected."
+
+#: addon/schedule-profile/model.js:48
+msgid "A weight loss must be selected."
+msgstr "A weight loss must be selected."
+
+#: addon/schedule-profile/model.js:81
+msgid "The batch size cannot be higher than the machine's capacity ({machineCapacity})"
+msgstr "The batch size cannot be higher than the machine's capacity ({machineCapacity})"
+
+#: addon/schedule/model.js:44 addon/scheduled-processing/model.js:42
+msgctxt "Filled in as {{description}} for validations"
+msgid "The note"
+msgstr "The note"
+
+#: addon/schedule/model.js:54
+msgctxt "Filled in as {{description}} for validations"
+msgid "The start date"
+msgstr "The start date"
+
+#: addon/schedule/model.js:70
+msgctxt "Filled in as {{description}} for validations"
+msgid "The end date"
+msgstr "The end date"
+
+#: addon/scheduled-processing-component/model.js:20
+msgid "You must select a lot for each component."
+msgstr "You must select a lot for each component."
+
+#: addon/scheduled-processing/model.js:35
+msgid "The weight cannot be higher than the machine's capacity ({lte})."
+msgstr "The weight cannot be higher than the machine's capacity ({lte})."
+
+#: addon/sensorial-result-item/model.js:17
+msgctxt "Filled in as {{description}} for validations"
+msgid "The score"
+msgstr "The score"
+
+#: addon/sensorial-result-item/model.js:31
+msgctxt "Filled in as {{description}} for validations"
+msgid "The intensity"
+msgstr "The intensity"
+
+#: addon/sensorial-result/model.js:19
+msgctxt "Filled in as {{description}} for validations"
+msgid "The final score"
+msgstr "The final score"
+
+#: addon/services/dialog.js:11
+msgid "OK"
+msgstr "OK"
+
+#: addon/services/dialog.js:26
+msgid "Cancel"
+msgstr "Cancel"
+
+#: addon/services/dialog.js:34
+msgid "Delete"
+msgstr "Delete"
+
+#: addon/services/inventory-manager.js:141
+msgid "The lot needs to have a current inventory as well as a new weight."
+msgstr "The lot needs to have a current inventory as well as a new weight."
+
+#: addon/services/inventory-manager.js:330
+msgid "Generating PDF..."
+msgstr "Generating PDF..."
+
+#: addon/services/inventory-manager.js:740
+msgid "No variety name given"
+msgstr "No variety name given"
+
+#: addon/services/inventory-manager.js:744
+msgid "An error occurred when creating the variety"
+msgstr "An error occurred when creating the variety"
+
+#: addon/services/inventory-manager.js:809
+msgid "Group samples together"
+msgstr "Group samples together"
+
+#: addon/services/inventory-manager.js:810
+msgid "Some of the selected samples are already in different sample groups. Are you sure you want to group them together? If you continue, the samples will be removed from their current group and added to a new one."
+msgstr "Some of the selected samples are already in different sample groups. Are you sure you want to group them together? If you continue, the samples will be removed from their current group and added to a new one."
+
+#: addon/services/l10n.js:20
+msgid "English"
+msgstr "English"
+
+#: addon/services/l10n.js:58
+msgid "An error occurred!"
+msgstr "An error occurred!"
+
+#: addon/services/l10n.js:111
+msgid "Parchment"
+msgstr "Parchment"
+
+#: addon/services/l10n.js:112
+msgid "Packing"
+msgstr "Packing"
+
+#: addon/services/l10n.js:113
+msgid "Decaffeinated"
+msgstr "Decaffeinated"
+
+#: addon/services/l10n.js:114 addon/services/l10n.js:125
+msgid "Roast"
+msgstr "Roast"
+
+#: addon/services/l10n.js:115 addon/services/l10n.js:121
+msgid "Harvest"
+msgstr "Harvest"
+
+#: addon/services/l10n.js:116 addon/services/l10n.js:173
+msgid "Green"
+msgstr "Green"
+
+#: addon/services/l10n.js:117
+msgid "Post-roast blend"
+msgstr "Post-roast blend"
+
+#: addon/services/l10n.js:118
+msgid "Chocolate"
+msgstr "Chocolate"
+
+#: addon/services/l10n.js:119
+msgid "Dried"
+msgstr "Dried"
+
+#: addon/services/l10n.js:120
+msgid "Fermented"
+msgstr "Fermented"
+
+#: addon/services/l10n.js:122
+msgid "Butter"
+msgstr "Butter"
+
+#: addon/services/l10n.js:123
+msgid "Powder"
+msgstr "Powder"
+
+#: addon/services/l10n.js:124
+msgid "Liquor"
+msgstr "Liquor"
+
+#: addon/services/l10n.js:126
+msgid "Open"
+msgstr "Open"
+
+#: addon/services/l10n.js:127
+msgid "Draft"
+msgstr "Draft"
+
+#: addon/services/l10n.js:128
+msgid "Closed"
+msgstr "Closed"
+
+#: addon/services/l10n.js:129
+msgid "Bean temp."
+msgstr "Bean temp."
+
+#: addon/services/l10n.js:130
+msgid "Exhaust temp."
+msgstr "Exhaust temp."
+
+#: addon/services/l10n.js:131
+msgid "Afterburner temp."
+msgstr "Afterburner temp."
+
+#: addon/services/l10n.js:132
+msgid "Afterburner 2 temp."
+msgstr "Afterburner 2 temp."
+
+#: addon/services/l10n.js:133
+msgid "Env. temp."
+msgstr "Env. temp."
+
+#: addon/services/l10n.js:134
+msgid "Burner temp."
+msgstr "Burner temp."
+
+#: addon/services/l10n.js:135
+msgid "Inlet temp."
+msgstr "Inlet temp."
+
+#: addon/services/l10n.js:136
+msgid "Stack temp."
+msgstr "Stack temp."
+
+#: addon/services/l10n.js:137
+msgid "Return temp."
+msgstr "Return temp."
+
+#: addon/services/l10n.js:138
+msgid "Drum temp."
+msgstr "Drum temp."
+
+#: addon/services/l10n.js:139
+msgid "Other temp. "
+msgstr "Other temp. "
+
+#: addon/services/l10n.js:140 addon/services/l10n.js:157
+msgid "Gas"
+msgstr "Gas"
+
+#: addon/services/l10n.js:141 addon/services/l10n.js:158
+msgid "Gas comments"
+msgstr "Gas comments"
+
+#: addon/services/l10n.js:142
+msgid "Airflow Comments"
+msgstr "Airflow Comments"
+
+#: addon/services/l10n.js:143 addon/services/l10n.js:160
+msgid "Airflow"
+msgstr "Airflow"
+
+#: addon/services/l10n.js:144
+msgid "Drum pressure"
+msgstr "Drum pressure"
+
+#: addon/services/l10n.js:145
+msgid "Drum speed"
+msgstr "Drum speed"
+
+#: addon/services/l10n.js:146
+msgid "Bean"
+msgstr "Bean"
+
+#: addon/services/l10n.js:147
+msgid "Exhaust"
+msgstr "Exhaust"
+
+#: addon/services/l10n.js:148
+msgid "Afterburner"
+msgstr "Afterburner"
+
+#: addon/services/l10n.js:149
+msgid "Afterburner 2"
+msgstr "Afterburner 2"
+
+#: addon/services/l10n.js:150
+msgid "Env."
+msgstr "Env."
+
+#: addon/services/l10n.js:151
+msgid "Burner"
+msgstr "Burner"
+
+#: addon/services/l10n.js:152
+msgid "Inlet"
+msgstr "Inlet"
+
+#: addon/services/l10n.js:153
+msgid "Stack"
+msgstr "Stack"
+
+#: addon/services/l10n.js:154
+msgid "Return"
+msgstr "Return"
+
+#: addon/services/l10n.js:155
+msgid "Drum"
+msgstr "Drum"
+
+#: addon/services/l10n.js:156 addon/services/l10n.js:225
+#: addon/services/l10n.js:258
+msgid "Other"
+msgstr "Other"
+
+#: addon/services/l10n.js:159
+msgid "Airflow comments"
+msgstr "Airflow comments"
+
+#: addon/services/l10n.js:161
+msgid "Pressure"
+msgstr "Pressure"
+
+#: addon/services/l10n.js:162
+msgid "Speed"
+msgstr "Speed"
+
+#: addon/services/l10n.js:163 addon/services/l10n.js:203
+msgid "First crack"
+msgstr "First crack"
+
+#: addon/services/l10n.js:164
+msgid "Second crack"
+msgstr "Second crack"
+
+#: addon/services/l10n.js:165
+msgid "Maintenance"
+msgstr "Maintenance"
+
+#: addon/services/l10n.js:166
+msgid "Comment"
+msgstr "Comment"
+
+#: addon/services/l10n.js:167
+msgid "Color change"
+msgstr "Color change"
+
+#: addon/services/l10n.js:168
+msgid "Turning point"
+msgstr "Turning point"
+
+#: addon/services/l10n.js:169
+msgid "Clean"
+msgstr "Clean"
+
+#: addon/services/l10n.js:170
+msgid "Foreign"
+msgstr "Foreign"
+
+#: addon/services/l10n.js:171
+msgid "Blue-Green"
+msgstr "Blue-Green"
+
+#: addon/services/l10n.js:172
+msgid "Blueish-Green"
+msgstr "Blueish-Green"
+
+#: addon/services/l10n.js:174
+msgid "Greenish"
+msgstr "Greenish"
+
+#: addon/services/l10n.js:175
+msgid "Yellow-Green"
+msgstr "Yellow-Green"
+
+#: addon/services/l10n.js:176
+msgid "Pale Yellow"
+msgstr "Pale Yellow"
+
+#: addon/services/l10n.js:177
+msgid "Yellowish"
+msgstr "Yellowish"
+
+#: addon/services/l10n.js:178
+msgid "Brownish"
+msgstr "Brownish"
+
+#: addon/services/l10n.js:179 addon/services/l10n.js:186
+msgid "Inconsistent"
+msgstr "Inconsistent"
+
+#: addon/services/l10n.js:180
+msgid "Uniform"
+msgstr "Uniform"
+
+#: addon/services/l10n.js:181
+msgid "Mottled beans"
+msgstr "Mottled beans"
+
+#: addon/services/l10n.js:182
+msgid "Roasted"
+msgstr "Roasted"
+
+#: addon/services/l10n.js:183
+msgid "Unpublished"
+msgstr "Unpublished"
+
+#: addon/services/l10n.js:184
+msgid "Scheduled"
+msgstr "Scheduled"
+
+#: addon/services/l10n.js:185
+msgid "Synced"
+msgstr "Synced"
+
+#: addon/services/l10n.js:187
+msgid "Development time"
+msgstr "Development time"
+
+#: addon/services/l10n.js:188
+msgid "End temperature"
+msgstr "End temperature"
+
+#: addon/services/l10n.js:189
+msgid "Duration"
+msgstr "Duration"
+
+#: addon/services/l10n.js:190
+msgid "Roast value"
+msgstr "Roast value"
+
+#: addon/services/l10n.js:191
+msgid "Start temperature"
+msgstr "Start temperature"
+
+#: addon/services/l10n.js:192
+msgid "Bean temp. RoR/30s (time framed)"
+msgstr "Bean temp. RoR/30s (time framed)"
+
+#: addon/services/l10n.js:193
+msgid "Bean temp. RoR (no time frame)"
+msgstr "Bean temp. RoR (no time frame)"
+
+#: addon/services/l10n.js:194
+msgid "Bean temp. RoR/10s"
+msgstr "Bean temp. RoR/10s"
+
+#: addon/services/l10n.js:195
+msgid "Bean temp. RoR/15s"
+msgstr "Bean temp. RoR/15s"
+
+#: addon/services/l10n.js:196
+msgid "Bean temp. RoR/30s"
+msgstr "Bean temp. RoR/30s"
+
+#: addon/services/l10n.js:197
+msgid "Bean temp. RoR/60s"
+msgstr "Bean temp. RoR/60s"
+
+#: addon/services/l10n.js:198
+msgid "Start weight"
+msgstr "Start weight"
+
+#: addon/services/l10n.js:199
+msgid "End weight"
+msgstr "End weight"
+
+#: addon/services/l10n.js:200
+msgid "Constant RoR"
+msgstr "Constant RoR"
+
+#: addon/services/l10n.js:201
+msgid "Constant bean temperature"
+msgstr "Constant bean temperature"
+
+#: addon/services/l10n.js:202
+msgid "Development time ratio"
+msgstr "Development time ratio"
+
+#: addon/services/l10n.js:204
+msgid "Weight loss"
+msgstr "Weight loss"
+
+#: addon/services/l10n.js:205
+msgid "Meet the reference"
+msgstr "Meet the reference"
+
+#: addon/services/l10n.js:206
+msgid "Pre-roast blend"
+msgstr "Pre-roast blend"
+
+#: addon/services/l10n.js:207
+msgid "Single origin"
+msgstr "Single origin"
+
+#: addon/services/l10n.js:208
+msgid "Type sample"
+msgstr "Type sample"
+
+#: addon/services/l10n.js:209
+msgid "Offer"
+msgstr "Offer"
+
+#: addon/services/l10n.js:210
+msgid "Spot offer"
+msgstr "Spot offer"
+
+#: addon/services/l10n.js:211
+msgid "Pre-shipment"
+msgstr "Pre-shipment"
+
+#: addon/services/l10n.js:212
+msgid "Arrival"
+msgstr "Arrival"
+
+#: addon/services/l10n.js:213
+msgid "Evaluation"
+msgstr "Evaluation"
+
+#: addon/services/l10n.js:214
+msgid "Farm"
+msgstr "Farm"
+
+#: addon/services/l10n.js:215
+msgid "Association"
+msgstr "Association"
+
+#: addon/services/l10n.js:216
+msgid "Cooperative"
+msgstr "Cooperative"
+
+#: addon/services/l10n.js:217
+msgid "Community"
+msgstr "Community"
+
+#: addon/services/l10n.js:218
+msgid "Country"
+msgstr "Country"
+
+#: addon/services/l10n.js:219
+msgid "Washing station"
+msgstr "Washing station"
+
+#: addon/services/l10n.js:220
+msgid "Mill"
+msgstr "Mill"
+
+#: addon/services/l10n.js:221
+msgid "Exporter"
+msgstr "Exporter"
+
+#: addon/services/l10n.js:222
+msgid "Importer"
+msgstr "Importer"
+
+#: addon/services/l10n.js:223
+msgid "Roaster"
+msgstr "Roaster"
+
+#: addon/services/l10n.js:224
+msgid "Fermentation station"
+msgstr "Fermentation station"
+
+#: addon/services/l10n.js:226
+msgid "15kg barrel"
+msgstr "15kg barrel"
+
+#: addon/services/l10n.js:227
+msgid "24kg box"
+msgstr "24kg box"
+
+#: addon/services/l10n.js:228
+msgid "24.2kg box"
+msgstr "24.2kg box"
+
+#: addon/services/l10n.js:229
+msgid "25kg box"
+msgstr "25kg box"
+
+#: addon/services/l10n.js:230
+msgid "12.1kg box"
+msgstr "12.1kg box"
+
+#: addon/services/l10n.js:231
+msgid "30kg box"
+msgstr "30kg box"
+
+#: addon/services/l10n.js:232
+msgid "35kg box"
+msgstr "35kg box"
+
+#: addon/services/l10n.js:233
+msgid "65lb box"
+msgstr "65lb box"
+
+#: addon/services/l10n.js:234
+msgid "10kg bag"
+msgstr "10kg bag"
+
+#: addon/services/l10n.js:235
+msgid "15kg bag"
+msgstr "15kg bag"
+
+#: addon/services/l10n.js:236
+msgid "17kg bag"
+msgstr "17kg bag"
+
+#: addon/services/l10n.js:237
+msgid "20kg bag"
+msgstr "20kg bag"
+
+#: addon/services/l10n.js:238
+msgid "25kg bag"
+msgstr "25kg bag"
+
+#: addon/services/l10n.js:239
+msgid "30kg bag"
+msgstr "30kg bag"
+
+#: addon/services/l10n.js:240
+msgid "35kg bag"
+msgstr "35kg bag"
+
+#: addon/services/l10n.js:241
+msgid "45kg bag"
+msgstr "45kg bag"
+
+#: addon/services/l10n.js:242
+msgid "46kg bag"
+msgstr "46kg bag"
+
+#: addon/services/l10n.js:243
+msgid "50kg bag"
+msgstr "50kg bag"
+
+#: addon/services/l10n.js:244
+msgid "59kg bag"
+msgstr "59kg bag"
+
+#: addon/services/l10n.js:245
+msgid "60kg bag"
+msgstr "60kg bag"
+
+#: addon/services/l10n.js:246
+msgid "62.5kg bag"
+msgstr "62.5kg bag"
+
+#: addon/services/l10n.js:247
+msgid "64kg bag"
+msgstr "64kg bag"
+
+#: addon/services/l10n.js:248
+msgid "69kg bag"
+msgstr "69kg bag"
+
+#: addon/services/l10n.js:249
+msgid "70kg bag"
+msgstr "70kg bag"
+
+#: addon/services/l10n.js:250
+msgid "50lb bag"
+msgstr "50lb bag"
+
+#: addon/services/l10n.js:251
+msgid "100lb bag"
+msgstr "100lb bag"
+
+#: addon/services/l10n.js:252
+msgid "Natural"
+msgstr "Natural"
+
+#: addon/services/l10n.js:253
+msgid "Semi washed"
+msgstr "Semi washed"
+
+#: addon/services/l10n.js:254
+msgid "Fully washed"
+msgstr "Fully washed"
+
+#: addon/services/l10n.js:255
+msgid "Pulped natural"
+msgstr "Pulped natural"
+
+#: addon/services/l10n.js:256
+msgid "Honey"
+msgstr "Honey"
+
+#: addon/services/l10n.js:257
+msgid "Miscellaneous"
+msgstr "Miscellaneous"
+
+#: addon/services/l10n.js:259
+msgid "Accepted"
+msgstr "Accepted"
+
+#: addon/services/l10n.js:260
+msgid "Declined"
+msgstr "Declined"
+
+#: addon/services/l10n.js:261
+msgid "Not Rated"
+msgstr "Not Rated"
+
+#: addon/services/l10n.js:262
+msgid "Drying phase"
+msgstr "Drying phase"
+
+#: addon/services/l10n.js:263
+msgid "Maillard phase"
+msgstr "Maillard phase"
+
+#: addon/services/l10n.js:264
+msgid "Development phase"
+msgstr "Development phase"
+
+#: addon/services/l10n.js:265
+msgid "Missing data"
+msgstr "Missing data"
+
+#: addon/services/l10n.js:296
+msgid "It seems like you are currently not logged in. Please log in and try again."
+msgstr "It seems like you are currently not logged in. Please log in and try again."
+
+#: addon/services/l10n.js:300
+msgid "You do not have permission to make this API call: {{error}}"
+msgstr "You do not have permission to make this API call: {{error}}"
+
+#: addon/services/l10n.js:303
+msgid "Due to maintenance work, the server is shortly not available. Please wait and try again later."
+msgstr "Due to maintenance work, the server is shortly not available. Please wait and try again later."
+
+#: addon/services/l10n.js:306
+msgid "It seems like there is a problem with your internet connection. Please try again later."
+msgstr "It seems like there is a problem with your internet connection. Please try again later."
+
+#: addon/services/roast-manager.js:42
+msgid "No profile found for this lot."
+msgstr "No profile found for this lot."
+
+#: addon/services/roast-manager.js:54
+msgid "The profile has no prior reference."
+msgstr "The profile has no prior reference."
+
+#: addon/services/roast-manager.js:59
+msgid "The previous reference was the same as the current one."
+msgstr "The previous reference was the same as the current one."
+
+#: addon/validators/goal-valid-lower-bound.js:16
+#: addon/validators/goal-valid-upper-bound.js:16
+msgid "At least one bound must be set"
+msgstr "At least one bound must be set"
+
+#: addon/validators/goal-valid-lower-bound.js:24
+msgid "Lower bound has wrong format"
+msgstr "Lower bound has wrong format"
+
+#: addon/validators/goal-valid-lower-bound.js:36
+msgid "Lower bound must be smaller than {{upperAmount}}"
+msgstr "Lower bound must be smaller than {{upperAmount}}"
+
+#: addon/validators/goal-valid-upper-bound.js:24
+msgid "Upper bound has wrong format"
+msgstr "Upper bound has wrong format"
+
+#: addon/validators/goal-valid-upper-bound.js:36
+msgid "Upper bound must be larger than {{lowerAmount}}"
+msgstr "Upper bound must be larger than {{lowerAmount}}"
+
+#: addon/validators/measure.js:20 addon/validators/messages.js:11
+#: addon/validators/percentage.js:16
+msgid "This field"
+msgstr "This field"
+
+#: addon/validators/measure.js:23
+msgid "{{description}} must be either null or and object."
+msgstr "{{description}} must be either null or and object."
+
+#: addon/validators/measure.js:30
+msgid "{{description}} must have an amount and a unit."
+msgstr "{{description}} must have an amount and a unit."
+
+#: addon/validators/measure.js:34
+msgid "{{description}} must be a positive number."
+msgstr "{{description}} must be a positive number."
+
+#: addon/validators/messages.js:21
+msgid "{{description}} is not included in the list"
+msgstr "{{description}} is not included in the list"
+
+#: addon/validators/messages.js:22
+msgid "{{description}} is reserved"
+msgstr "{{description}} is reserved"
+
+#: addon/validators/messages.js:23
+msgid "{{description}} is invalid"
+msgstr "{{description}} is invalid"
+
+#: addon/validators/messages.js:24
+msgid "{{description}} doesn't match {{on}}"
+msgstr "{{description}} doesn't match {{on}}"
+
+#: addon/validators/messages.js:25
+msgid "{{description}} must be accepted"
+msgstr "{{description}} must be accepted"
+
+#: addon/validators/messages.js:26
+msgid "{{description}} can't be empty"
+msgstr "{{description}} can't be empty"
+
+#: addon/validators/messages.js:27
+msgid "{{description}} can't be blank"
+msgstr "{{description}} can't be blank"
+
+#: addon/validators/messages.js:28
+msgid "{{description}} must be blank"
+msgstr "{{description}} must be blank"
+
+#: addon/validators/messages.js:29
+msgid "{{description}} must be a collection"
+msgstr "{{description}} must be a collection"
+
+#: addon/validators/messages.js:30
+msgid "{{description}} can't be a collection"
+msgstr "{{description}} can't be a collection"
+
+#: addon/validators/messages.js:31
+msgid "{{description}} is too long (maximum is {{max}} characters)"
+msgstr "{{description}} is too long (maximum is {{max}} characters)"
+
+#: addon/validators/messages.js:32
+msgid "{{description}} is too short (minimum is {{min}} characters)"
+msgstr "{{description}} is too short (minimum is {{min}} characters)"
+
+#: addon/validators/messages.js:33
+msgid "{{description}} must be before {{before}}"
+msgstr "{{description}} must be before {{before}}"
+
+#: addon/validators/messages.js:34
+msgid "{{description}} must be on or before {{onOrBefore}}"
+msgstr "{{description}} must be on or before {{onOrBefore}}"
+
+#: addon/validators/messages.js:35
+msgid "{{description}} must be after {{after}}"
+msgstr "{{description}} must be after {{after}}"
+
+#: addon/validators/messages.js:36
+msgid "{{description}} must be on or after {{onOrAfter}}"
+msgstr "{{description}} must be on or after {{onOrAfter}}"
+
+#: addon/validators/messages.js:37
+msgid "{{description}} must be in the format of {{format}}"
+msgstr "{{description}} must be in the format of {{format}}"
+
+#: addon/validators/messages.js:38
+msgid "{{description}} is the wrong length (should be {{is}} characters)"
+msgstr "{{description}} is the wrong length (should be {{is}} characters)"
+
+#: addon/validators/messages.js:39
+msgid "{{description}} must be a number"
+msgstr "{{description}} must be a number"
+
+#: addon/validators/messages.js:40
+msgid "{{description}} must be an integer"
+msgstr "{{description}} must be an integer"
+
+#: addon/validators/messages.js:41
+msgid "{{description}} must be greater than {{gt}}"
+msgstr "{{description}} must be greater than {{gt}}"
+
+#: addon/validators/messages.js:42
+msgid "{{description}} must be greater than or equal to {{gte}}"
+msgstr "{{description}} must be greater than or equal to {{gte}}"
+
+#: addon/validators/messages.js:43
+msgid "{{description}} must be equal to {{is}}"
+msgstr "{{description}} must be equal to {{is}}"
+
+#: addon/validators/messages.js:44
+msgid "{{description}} must be less than {{lt}}"
+msgstr "{{description}} must be less than {{lt}}"
+
+#: addon/validators/messages.js:45
+msgid "{{description}} must be less than or equal to {{lte}}"
+msgstr "{{description}} must be less than or equal to {{lte}}"
+
+#: addon/validators/messages.js:46
+msgid "{{description}} must be other than {{value}}"
+msgstr "{{description}} must be other than {{value}}"
+
+#: addon/validators/messages.js:47
+msgid "{{description}} must be odd"
+msgstr "{{description}} must be odd"
+
+#: addon/validators/messages.js:48
+msgid "{{description}} must be even"
+msgstr "{{description}} must be even"
+
+#: addon/validators/messages.js:49
+msgid "{{description}} must be positive"
+msgstr "{{description}} must be positive"
+
+#: addon/validators/messages.js:50
+msgid "{{description}} must be a valid date"
+msgstr "{{description}} must be a valid date"
+
+#: addon/validators/messages.js:51
+msgid "{{description}} must be a valid email address"
+msgstr "{{description}} must be a valid email address"
+
+#: addon/validators/messages.js:52
+msgid "{{description}} must be a valid phone number"
+msgstr "{{description}} must be a valid phone number"
+
+#: addon/validators/messages.js:53
+msgid "{{description}} must be a valid url"
+msgstr "{{description}} must be a valid url"
+
+#: addon/validators/percentage.js:19
+msgid "{{description}} must be a number."
+msgstr "{{description}} must be a number."
+
+#: addon/validators/percentage.js:23
+msgid "{{description}} cannot be smaller than 0."
+msgstr "{{description}} cannot be smaller than 0."
+
+#: addon/validators/percentage.js:27
+msgid "{{description}} cannot be larger than 100."
+msgstr "{{description}} cannot be larger than 100."
+
+#: addon/validators/valid-intensity.js:21 addon/validators/valid-quality.js:21
+msgid "Only numbers in {{step}} steps are allowed."
+msgstr "Only numbers in {{step}} steps are allowed."
+
+#: addon/validators/valid-screen-sizes.js:26
+msgid "The sum of screen sizes must be {{greenWeightAmount}} but is {{totalScreenSizeAmount}}."
+msgstr "The sum of screen sizes must be {{greenWeightAmount}} but is {{totalScreenSizeAmount}}."
+
+#: addon/components\autocomplete-search\template.l10n.hbs:1
+msgid "Start typing to search..."
+msgstr "Start typing to search..."
+
+#: addon/components\base-export\template.l10n.hbs:1
+msgid "Export to Excel"
+msgstr "Export to Excel"
+
+#: addon/components\base-export\template.l10n.hbs:1
+msgid "You can select what you want to include in your Excel download."
+msgstr "You can select what you want to include in your Excel download."
+
+#: addon/components\base-print\template.l10n.hbs:1
+msgid "Print"
+msgstr "Print"
+
+#: addon/components\base-print\template.l10n.hbs:1
+msgid "You can change what you want to include in your print."
+msgstr "You can change what you want to include in your print."
+
+#: addon/components\base-print\template.l10n.hbs:1
+msgid "You can start printing by pressing the button below."
+msgstr "You can start printing by pressing the button below."
+
+#: addon/components\bread-crumbs\template.l10n.hbs:1
+msgid "Home"
+msgstr "Home"
+
+#: addon/components\bread-crumbs\template.l10n.hbs:1
+msgid "Loading..."
+msgstr "Loading..."
+
+#: addon/components\csar-header\template.l10n.hbs:1
+msgid "Quick search"
+msgstr "Quick search"
+
+#: addon/components\csar-header\template.l10n.hbs:1
+msgid "Menu"
+msgstr "Menu"
+
+#: addon/components\csar-header\template.l10n.hbs:1
+msgid "Created on {{date}} with <strong>Cropster</strong>"
+msgstr "Created on {{date}} with <strong>Cropster</strong>"
+
+#: addon/components\lot\cocoa-physical-information\cocoa-physical-result\template.l10n.hbs:1
+msgid "Physical analysis"
+msgstr "Physical analysis"
+
+#: addon/components\lot\cocoa-physical-information\cocoa-physical-result\template.l10n.hbs:1
+msgid "Hide cut details"
+msgstr "Hide cut details"
+
+#: addon/components\lot\cocoa-physical-information\cocoa-physical-result\template.l10n.hbs:1
+msgid "Show cut details"
+msgstr "Show cut details"
+
+#: addon/components\lot\cocoa-physical-information\cocoa-physical-result\template.l10n.hbs:1
+msgid "No physical data has been entered yet."
+msgstr "No physical data has been entered yet."
+
+#: addon/components\lot\cocoa-physical-information\template.l10n.hbs:1
+msgid "Physical Information"
+msgstr "Physical Information"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Green information"
+msgstr "Green information"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Project"
+msgstr "Project"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Variety"
+msgstr "Variety"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Notes"
+msgstr "Notes"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Inventory"
+msgstr "Inventory"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Location"
+msgstr "Location"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Green weight"
+msgstr "Green weight"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Traceability"
+msgstr "Traceability"
+
+#: addon/components\lot\green-information\template.l10n.hbs:1
+msgid "Certifications"
+msgstr "Certifications"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Green grading"
+msgstr "Green grading"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "No defects, acceptable color & smell, WA < 0.7"
+msgstr "No defects, acceptable color & smell, WA < 0.7"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "SCAA specialty grade"
+msgstr "SCAA specialty grade"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Moisture"
+msgstr "Moisture"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Water activity"
+msgstr "Water activity"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Density"
+msgstr "Density"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Show less"
+msgstr "Show less"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Show more"
+msgstr "Show more"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Defect count"
+msgstr "Defect count"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "No defects"
+msgstr "No defects"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Screen size"
+msgstr "Screen size"
+
+#: addon/components\lot\physical-information\template.l10n.hbs:1
+msgid "Moisture & WA over time"
+msgstr "Moisture & WA over time"
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "Sensorial information"
+msgstr "Sensorial information"
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "This is the reference lot."
+msgstr "This is the reference lot."
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "to the"
+msgstr "to the"
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "reference lot"
+msgstr "reference lot"
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "Latest analysis"
+msgstr "Latest analysis"
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "of {{count}}"
+msgstr "of {{count}}"
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "No analysis results yet"
+msgstr "No analysis results yet"
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "Descriptors"
+msgstr "Descriptors"
+
+#: addon/components\lot\sensorial-information\template.l10n.hbs:1
+msgid "Comments"
+msgstr "Comments"
+
+#: addon/components\quality\cocoa\cut-test-details\calculation-group\template.l10n.hbs:1
+msgid "Cut {{i}}"
+msgstr "Cut {{i}}"
+
+#: addon/components\quality\cocoa\cut-test-details\calculation-group\template.l10n.hbs:1
+msgid "Total %"
+msgstr "Total %"
+
+#: addon/components\quality\cocoa\cut-test-details\calculation-group\template.l10n.hbs:1
+msgid "Total"
+msgstr "Total"
+
+#: addon/components\quality\cocoa\cut-test-details\template.l10n.hbs:1
+msgid "Notes Cut {{i}}"
+msgstr "Notes Cut {{i}}"
+
+#: addon/components\quality\cocoa\cut-test-summary\template.l10n.hbs:1
+msgid "Add or edit cut"
+msgstr "Add or edit cut"
+
+#: addon/components\quality\cocoa\cut-test-summary\template.l10n.hbs:1
+msgid "{{beanCount}} Beans"
+msgstr "{{beanCount}} Beans"
+
+#: addon/components\quality\cocoa\cut-test-summary\template.l10n.hbs:1
+msgid "{{beanCount}} Beans in Cut Test"
+msgstr "{{beanCount}} Beans in Cut Test"
+
+#: addon/components\quality\cocoa\physical-general-summary\template.l10n.hbs:1
+msgid "Bean Count"
+msgstr "Bean Count"
+
+#: addon/components\quality\cocoa\physical-general-summary\template.l10n.hbs:1
+msgid "{{count}} beans/100g"
+msgstr "{{count}} beans/100g"
+
+#: addon/components\quality\cocoa\physical-general-summary\template.l10n.hbs:1
+msgid "Liquor fat content"
+msgstr "Liquor fat content"
+
+#: addon/components\quality\cocoa\physical-general-summary\template.l10n.hbs:1
+msgid "Smell"
+msgstr "Smell"
+
+#: addon/components\quality\cocoa\physical-general-summary\template.l10n.hbs:1
+msgid "Detritus/Trash"
+msgstr "Detritus/Trash"
+
+#: addon/components\quality\cocoa\physical-general-summary\template.l10n.hbs:1
+msgid "Broken"
+msgstr "Broken"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "QR code to download Cropster Cup"
+msgstr "QR code to download Cropster Cup"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "Scan this with your mobile device"
+msgstr "Scan this with your mobile device"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "iPhone & iPad (iOS 11+)"
+msgstr "iPhone & iPad (iOS 11+)"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "Simply use your camera"
+msgstr "Simply use your camera"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "Android & other"
+msgstr "Android & other"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "Use a QR-code scanning app"
+msgstr "Use a QR-code scanning app"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "Available on the App Store"
+msgstr "Available on the App Store"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "Get it on Google Play"
+msgstr "Get it on Google Play"
+
+#: addon/components\quality\info-use-cup\template.l10n.hbs:1
+msgid "Get it on the Amazon App Store"
+msgstr "Get it on the Amazon App Store"
+
+#: addon/components\quality\physical-compact-summary\template.l10n.hbs:1
+msgid "Moisture ({{date}})"
+msgstr "Moisture ({{date}})"
+
+#: addon/components\quality\physical-compact-summary\template.l10n.hbs:1
+msgid "Water activity ({{date}})"
+msgstr "Water activity ({{date}})"
+
+#: addon/components\quality\physical-compact-summary\template.l10n.hbs:1
+msgid "Density ({{date}})"
+msgstr "Density ({{date}})"
+
+#: addon/components\quality\physical-compact-summary\template.l10n.hbs:1
+msgid "Bean Count ({{date}})"
+msgstr "Bean Count ({{date}})"
+
+#: addon/components\quality\physical-detail-summary\template.l10n.hbs:1
+msgid "No screen size"
+msgstr "No screen size"
+
+#: addon/components\quality\sensorial-qc-detail-summary\template.l10n.hbs:1
+msgid "of"
+msgstr "of"
+
+#: addon/components\quality\sensorial-qc-detail-summary\template.l10n.hbs:1
+msgid "Add cupping result"
+msgstr "Add cupping result"
+
+#: addon/components\quality\sensorial-qc-detail-summary\template.l10n.hbs:1
+msgid "General comments"
+msgstr "General comments"
+
+#: addon/components\quality\sensorial-qc-overview\template.l10n.hbs:1
+msgid "See analysis"
+msgstr "See analysis"
+
+#: addon/components\quality\sensorial-qc-overview\template.l10n.hbs:1
+msgid "This is the reference roast."
+msgstr "This is the reference roast."
+
+#: addon/components\quality\sensorial-qc-overview\template.l10n.hbs:1
+msgid "reference roast"
+msgstr "reference roast"
+
+#: addon/components\select-lot\selected-display\template.l10n.hbs:1
+msgid "Search for lots..."
+msgstr "Search for lots..."
+
+#: addon/components\select-lot\template.l10n.hbs:1
+msgid "Search for lot..."
+msgstr "Search for lot..."
+
+#: addon/components\select-lot\template.l10n.hbs:1
+msgid "No lots found in last 12 months"
+msgstr "No lots found in last 12 months"
+
+#: addon/components\select-profile\template.l10n.hbs:1
+msgid "Search for profile..."
+msgstr "Search for profile..."
+
+#: addon/components\select-profile\template.l10n.hbs:1
+msgid "No active profiles found"
+msgstr "No active profiles found"
+
+#: addon/components\select-project\template.l10n.hbs:1
+msgid "Select project..."
+msgstr "Select project..."
+
+#: addon/components\tip-message\template.l10n.hbs:1
+msgid "Tip:"
+msgstr "Tip:"
+
+#~ msgctxt "Filled in as {{description}} for validations"
+#~ msgid "The sum of percentages"
+#~ msgstr "The sum of percentages"
+
+#~ msgctxt "Filled in as {{description}} for validations"
+#~ msgid "The sum of percentages must be 100%."
+#~ msgstr "The sum of percentages must be 100%."
+
+#~ msgid "Lower bound"
+#~ msgstr "Lower bound"
+
+#~ msgid "Upper bound"
+#~ msgstr "Upper bound"
+
+#~ msgid "Range"
+#~ msgstr "Range"
+
+#~ msgid "Start time"
+#~ msgstr "Start time"
+
+#~ msgid "End time"
+#~ msgstr "End time"
+
+#~ msgid "Selected profiles"
+#~ msgstr "Selected profiles"
+
+#~ msgid "Goal"
+#~ msgstr "Goal"
+
+#~ msgid "Show all"
+#~ msgstr "Show all"
+
+#~ msgid "Hide all"
+#~ msgstr "Hide all"
+
+#~ msgid "Restore defaults"
+#~ msgstr "Restore defaults"
+
+#~ msgid "Clear filters"
+#~ msgstr "Clear filters"
+
+#~ msgid "{{count}} selected"
+#~ msgstr "{{count}} selected"
+
+#~ msgid "Select records to see actions"
+#~ msgstr "Select records to see actions"
+
+#~ msgid "Select first 1000 of {{count}}"
+#~ msgstr "Select first 1000 of {{count}}"
+
+#~ msgid "Select all {{count}}"
+#~ msgstr "Select all {{count}}"
+
+#~ msgid "Display sets"
+#~ msgstr "Display sets"
+
+#~ msgid "Customize"
+#~ msgstr "Customize"
+
+#~ msgid "Woah! Careful there."
+#~ msgstr "Woah! Careful there."
+
+#~ msgid "Please reload and we'll try not to spill this time."
+#~ msgstr "Please reload and we'll try not to spill this time."
+
+#~ msgid "Reload"
+#~ msgstr "Reload"
+
+#~ msgid "The selected filters don't match any records. Please try changing the filters."
+#~ msgstr "The selected filters don't match any records. Please try changing the filters."
+
+#~ msgid "There is no data to display."
+#~ msgstr "There is no data to display."
+
+#~ msgid "Reset filters"
+#~ msgstr "Reset filters"
+
+#~ msgid "Show {{firstItem}} - {{lastItem}} of {{totalItemCount}}"
+#~ msgstr "Show {{firstItem}} - {{lastItem}} of {{totalItemCount}}"
+
+#~ msgid "Show"
+#~ msgstr "Show"
+
+#~ msgid "Filter..."
+#~ msgstr "Filter..."
+
+#~ msgid "You need to select at least one column to see the table."
+#~ msgstr "You need to select at least one column to see the table."
+
+#~ msgid "The percentage"
+#~ msgstr "The percentage"
+
+#~ msgid "The profile"
+#~ msgstr "The profile"
+
+#~ msgid "The components"
+#~ msgstr "The components"
+
+#~ msgid "The sum of percentages"
+#~ msgstr "The sum of percentages"
+
+#~ msgid "The name"
+#~ msgstr "The name"
