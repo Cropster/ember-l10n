@@ -1,6 +1,7 @@
 import { helper } from '@ember/component/helper';
 import { assign } from '@ember/polyfills';
 import { strfmt } from './services/l10n';
+import { deprecate } from '@ember/application/deprecations';
 
 export default function(context) {
   let tHelper = helper(([str], hash) => {
@@ -27,5 +28,10 @@ export default function(context) {
   context.register('helper:pt', ptHelper);
   context.register('helper:pn', pnHelper);
 
-  // TODO FN: Add deprecation
+  deprecate(
+    `ember-l10n/test-helpers has been deprecated.
+    You can use the helpers normally in your integration tests, without any further action.`,
+    false,
+    { id: 'ember-l10n.test-helpers', until: '4.0.0' }
+  );
 }
