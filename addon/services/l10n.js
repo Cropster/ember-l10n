@@ -9,6 +9,7 @@ import config from 'ember-get-config';
 import { guessLocale } from '../utils/guess-locale';
 import { A as array } from '@ember/array';
 import { assert } from '@ember/debug';
+import { getOwner } from '@ember/application';
 
 /**
  * This service translates through gettext.js.
@@ -128,6 +129,22 @@ export default Service.extend({
    */
   jsonPath: computed(function() {
     return '/assets/locales'; // Use a cp here to prevent broccoli-asset-rev from changing this
+  }),
+
+  /**
+   * The prefix for the path.
+   * This is usually the rootURL of the application.
+   * Especially when used with ember-cli-ifa, you will always get the relative path (e.g. assets/locales/en-xxx.json).
+   * This leads to issues if trying to fetch from another page than root,
+   * as it will just append (e.g. localhost:4200/my-page/assets/locales/en-xxx.json).
+   *
+   * @property jsonPathPrefix
+   * @type {String}
+   * @protected
+   */
+  jsonPathPrefix: computed(function() {
+    let config = getOwner(this).resolveRegistration('config:environment');
+    return config.rootURL || '/';
   }),
 
   /**
@@ -797,6 +814,7 @@ export default Service.extend({
   _getPathForLocale(locale) {
     let basePath = get(this, 'jsonPath');
     let assetMap = get(this, 'assetMap');
+    let jsonPathPrefix = get(this, 'jsonPathPrefix');
 
     let fullPath = `${basePath}/${locale}.json`;
 
@@ -808,7 +826,9 @@ export default Service.extend({
     if (path.indexOf('/') === 0) {
       path = path.substr(1);
     }
-    return assetMap.resolve(path) || fullPath;
+
+    let resolvedPath = assetMap.resolve(path);
+    return buildUrl(jsonPathPrefix, resolvedPath || fullPath);
   },
 
   /**
@@ -860,3 +880,13 @@ export const strfmt = function(string, hash) {
 
   return string.replace(pattern, replace);
 };
+
+export function buildUrl(...parts) {
+  let urlParts = parts.filter((val) => val);
+
+  let fullUrl = urlParts.join('/');
+
+  // Remove double slashes - but make sure http(s):// remains
+  let regex = /(\w|^|-|_)(\/+)/g;
+  return fullUrl.replace(regex, '$1/');
+}
