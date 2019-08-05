@@ -415,6 +415,45 @@ describe('parseHbsFile util', function() {
     expect(gettextItems).to.deep.equal([]);
   });
 
+  it('it correctly parses angle bracket component invocation', function() {
+    let options = { fromCode: 'UTF-8' };
+
+    let gettextItems = [];
+    let fileName =
+      './node-tests/fixtures/parse-hbs/angle-bracket-invocation.hbs';
+    parseHbsFile(fileName, options, gettextItems);
+
+    expect(gettextItems).to.deep.equal([
+      {
+        loc: {
+          column: 2,
+          fileName:
+            './node-tests/fixtures/parse-hbs/angle-bracket-invocation.hbs',
+          line: 5
+        },
+        messageId: 'test inner content'
+      },
+      {
+        loc: {
+          column: 12,
+          fileName:
+            './node-tests/fixtures/parse-hbs/angle-bracket-invocation.hbs',
+          line: 2
+        },
+        messageId: 'other test content'
+      },
+      {
+        loc: {
+          column: 8,
+          fileName:
+            './node-tests/fixtures/parse-hbs/angle-bracket-invocation.hbs',
+          line: 3
+        },
+        messageId: 'test content'
+      }
+    ]);
+  });
+
   it('it throws when not using enough arguments for t helper', function() {
     let options = { fromCode: 'UTF-8' };
 
