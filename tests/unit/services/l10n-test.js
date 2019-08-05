@@ -267,7 +267,7 @@ module('Unit | Service | l10n', function(hooks) {
       availableLocales: {
         de: true,
         en: true,
-        it: true
+        ko: true
       },
       autoInitialize: false,
       defaultLocale: 'de',
@@ -283,19 +283,19 @@ module('Unit | Service | l10n', function(hooks) {
       '`defaultLocale` is used on failed detection.'
     );
 
-    set(_window, 'navigator.languages', ['it']);
+    set(_window, 'navigator.languages', ['ko']);
 
     assert.strictEqual(
       service.detectLocale(),
-      'it',
+      'ko',
       'Detected locale is used if listed in `availableLocales`.'
     );
 
-    set(service, 'forceLocale', 'it');
+    set(service, 'forceLocale', 'ko');
 
     assert.strictEqual(
       service.detectLocale(),
-      'it',
+      'ko',
       '`forceLocale` is used if listed in `availableLocales`.'
     );
 
