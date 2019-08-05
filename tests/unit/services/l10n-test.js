@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { get, set } from '@ember/object';
 import Pretender from 'pretender';
+import L10nService from 'dummy/services/l10n';
 
 let server;
 
@@ -103,7 +104,7 @@ module('Unit | Service | l10n', function(hooks) {
   });
 
   test('it works', async function(assert) {
-    let service = this.owner.factoryFor('service:l10n').create({
+    let ExtendedL10nService = L10nService.extend({
       autoInitialize: false,
       _window: {
         navigator: {
@@ -111,6 +112,9 @@ module('Unit | Service | l10n', function(hooks) {
         }
       }
     });
+
+    this.owner.register('service:l10n', ExtendedL10nService);
+    let service = this.owner.lookup('service:l10n');
 
     assert.strictEqual(
       get(service, 'defaultLocale'),
@@ -258,7 +262,8 @@ module('Unit | Service | l10n', function(hooks) {
         languages: []
       }
     };
-    let service = this.owner.factoryFor('service:l10n').create({
+
+    let ExtendedL10nService = L10nService.extend({
       availableLocales: {
         de: true,
         en: true,
@@ -268,6 +273,9 @@ module('Unit | Service | l10n', function(hooks) {
       defaultLocale: 'de',
       _window
     });
+
+    this.owner.register('service:l10n', ExtendedL10nService);
+    let service = this.owner.lookup('service:l10n');
 
     assert.strictEqual(
       service.detectLocale(),
@@ -327,11 +335,15 @@ module('Unit | Service | l10n', function(hooks) {
         languages: []
       }
     };
-    let service = this.owner.factoryFor('service:l10n').create({
+    let ExtendedL10nService = L10nService.extend({
       autoInitialize: false,
       defaultLocale: 'de',
       _window
     });
+
+    this.owner.register('service:l10n', ExtendedL10nService);
+    let service = this.owner.lookup('service:l10n');
+
     assert.deepEqual(
       service._getBrowserLocales(),
       ['de'],
