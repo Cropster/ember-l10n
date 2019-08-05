@@ -369,8 +369,6 @@ ember l10n:extract <options...>
     aliases: -n <value>
   --package (String) (Default: 'My App') The name of the package (configured in config/l10n-extract.js)
     aliases: -p <value>
-  --version (String) (Default: '1.0') The version of the package
-    aliases: -v <value>
   --generate-only (Boolean) (Default: false) If only PO-file should be created from POT without extraction
     aliases: -g
   --generate-from (String) (Default: 'messages.pot') Source POT-file to be used in conjunction with `-g` flag
