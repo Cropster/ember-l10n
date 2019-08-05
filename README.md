@@ -6,17 +6,6 @@
 
 > A GNU gettext based localization workflow for ember.
 
-Compatibility
-------------------------------------------------------------------------------
-
-* Ember.js v3.4 or above
-* Ember CLI v2.13 or above
-* Node.js v8 or above
-
-
-Installation
-------------------------------------------------------------------------------
-
 ## Installation
 
 * `ember install ember-l10n`
@@ -26,6 +15,13 @@ Using the string extractor requires:
 * [GNU gettext](https://www.gnu.org/software/gettext/) - Convert from/to .po & .pot files
 
 __Note:__ Addon's CLI commands will check dependencies for you and install them on demand (by executing `ember l10n:install`), so you don't have to do this on your own.
+
+Compatibility
+------------------------------------------------------------------------------
+
+* Ember.js v3.4 or above
+* Ember CLI v2.13 or above
+* Node.js v8 or above
 
 ## Configuration
 
@@ -165,33 +161,49 @@ export default {
 };
 ```
 
-### Installation
+### Fingerprinting
 
-* `git clone <repository-url>`
-* `cd my-addon`
-* `npm install`
+As of version 2, the fingerprinting has changed from the custom fingerprint-map to usage of the general asset-map built by ember-cli. For this, we use [ember-cli-ifa](https://github.com/RuslanZavacky/ember-cli-ifa/). 
 
-### Linting
+You will need to configure your build accordingly to use this. This has to be configured in two places:
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+```js
+// ember-cli-build.js
+let env = process.env.EMBER_ENV || 'development';
 
-### Running tests
+let app = new EmberAddon(defaults, { 
+  // ... other options... 
+  fingerprint: {
+    enabled: env === 'production',
+    generateAssetMap: true,
+    fingerprintAssetMap: true,
+    // We need to add json to the fingerprinted extentions
+    extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'json']
+  }
+});
+```
 
-* `ember test` – Runs the test suite on the current Ember version
-* `ember test --server` – Runs the test suite in "watch mode"
-* `ember try:each` – Runs the test suite against multiple Ember versions
+This one is required to work! There are multiple important parts here. 
 
-### Running the dummy application
+* First, you need to add `json` to the list of extensions to fingerprint
+* Then, you need to ensure generateAssetMap & fingerprintAssetMap are true
+* Then, you need to enable this for all environments where you want to have fingerprinting. Usually, this is production, but it could also apply e.g. in staging.
 
-* `ember serve`
-* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
+__Note:__ If you experience issues with multiple `assetMap.json` files being generated, this might be related to 
+[this bug in broccoli-asset-rev](https://github.com/rickharrison/broccoli-asset-rev/issues/122), 
+which can be fixed by downgrading to broccoli-asset-rev@2.5.0.
 
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+Then, you might also need to configure your `config/environment.js`. 
+The following is the default config, which will be used if not otherwise overwritten:
 
-License
-------------------------------------------------------------------------------
+```js
+// config/environment.js
+let ENV = {
+  ifa: {
+    enabled: false,
+    inline: false
+  }
+};
 
 
 if (environment === 'production') {
