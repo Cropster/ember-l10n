@@ -1,33 +1,33 @@
-/node_modules
+# compiled output
+/dist/
+/tmp/
+
+# dependencies
+/bower_components/
+
+# misc
+/.bowerrc
+/.editorconfig
+/.ember-cli
+/.env*
+/.eslintignore
+/.eslintrc.js
+/.gitignore
+/.template-lintrc.js
+/.travis.yml
+/.watchmanconfig
+/bower.json
 /config/ember-try.js
-/dist
-/tests
-/tmp
-/translations
-/node-tests
-/.idea
-**/.gitkeep
-.bowerrc
-.editorconfig
-.ember-cli
-.eslintrc.js
-.template-lintrc.js
-.gitignore
-.watchmanconfig
-.travis.yml
-.yarnrc
-.npmrc
-bower.json
-ember-cli-build.js
-testem.js
-/translations
-/node-tests
-/.idea
-.eslintignore
-.yarnrc
-.template-lintrc.js
-yarn.lock
+/CONTRIBUTING.md
+/ember-cli-build.js
+/testem.js
+/tests/
+/yarn.lock
+.gitkeep
 yarn-error.log
+/translations
+/node-tests
+/.idea
 
 # ember-try
 /.node_modules.ember-try/

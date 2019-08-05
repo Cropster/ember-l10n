@@ -7,11 +7,13 @@
 /tmp/
 
 # dependencies
-/node-tests/fixtures
+/bower_components/
+/node_modules/
 
 # misc
 /coverage/
 !.*
+/node-tests/fixtures
 
 # ember-try
 /.node_modules.ember-try/
