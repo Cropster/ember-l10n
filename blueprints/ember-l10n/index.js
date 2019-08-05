@@ -9,9 +9,6 @@ module.exports = {
   afterInstall() {
     return this.addPackagesToProject([
       {
-        name: 'ember-ajax'
-      },
-      {
         name: 'ember-cli-ifa'
       }
     ]);
