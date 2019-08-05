@@ -121,6 +121,25 @@ with new line`
     ]);
   });
 
+  it('it correctly parses a native JS class', function() {
+    let options = { fromCode: 'UTF-8' };
+
+    let gettextItems = [];
+    let fileName = './node-tests/fixtures/parse-js/native-js-class.js';
+    parseJsFile(fileName, options, gettextItems);
+
+    expect(gettextItems).to.deep.equal([
+      {
+        loc: {
+          column: 11,
+          fileName: './node-tests/fixtures/parse-js/native-js-class.js',
+          line: 3
+        },
+        messageId: 'test string'
+      }
+    ]);
+  });
+
   it('it throws on template literals with placeholder', function() {
     let options = { fromCode: 'UTF-8' };
 
