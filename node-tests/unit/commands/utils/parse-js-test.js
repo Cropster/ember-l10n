@@ -170,6 +170,25 @@ with new line`
     ]);
   });
 
+  it('it correctly parses a typescript file', function() {
+    let options = { fromCode: 'UTF-8' };
+
+    let gettextItems = [];
+    let fileName = './node-tests/fixtures/parse-js/typescript.ts';
+    parseJsFile(fileName, options, gettextItems);
+
+    expect(gettextItems).to.deep.equal([
+      {
+        loc: {
+          column: 11,
+          fileName: './node-tests/fixtures/parse-js/typescript.ts',
+          line: 5
+        },
+        messageId: 'test content {{message}}'
+      }
+    ]);
+  });
+
   it('it throws on template literals with placeholder', function() {
     let options = { fromCode: 'UTF-8' };
 
