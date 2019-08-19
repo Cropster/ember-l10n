@@ -121,6 +121,74 @@ with new line`
     ]);
   });
 
+  it('it correctly parses a native JS class', function() {
+    let options = { fromCode: 'UTF-8' };
+
+    let gettextItems = [];
+    let fileName = './node-tests/fixtures/parse-js/native-js-class.js';
+    parseJsFile(fileName, options, gettextItems);
+
+    expect(gettextItems).to.deep.equal([
+      {
+        loc: {
+          column: 11,
+          fileName: './node-tests/fixtures/parse-js/native-js-class.js',
+          line: 3
+        },
+        messageId: 'test string'
+      }
+    ]);
+  });
+
+  it('it correctly parses a native JS class with decorators', function() {
+    let options = { fromCode: 'UTF-8' };
+
+    let gettextItems = [];
+    let fileName =
+      './node-tests/fixtures/parse-js/native-js-class-with-decorators.js';
+    parseJsFile(fileName, options, gettextItems);
+
+    expect(gettextItems).to.deep.equal([
+      {
+        loc: {
+          column: 11,
+          fileName:
+            './node-tests/fixtures/parse-js/native-js-class-with-decorators.js',
+          line: 11
+        },
+        messageId: 'test string'
+      },
+      {
+        loc: {
+          column: 11,
+          fileName:
+            './node-tests/fixtures/parse-js/native-js-class-with-decorators.js',
+          line: 16
+        },
+        messageId: 'other test string - this@my-domain.com'
+      }
+    ]);
+  });
+
+  it('it correctly parses a typescript file', function() {
+    let options = { fromCode: 'UTF-8' };
+
+    let gettextItems = [];
+    let fileName = './node-tests/fixtures/parse-js/typescript.ts';
+    parseJsFile(fileName, options, gettextItems);
+
+    expect(gettextItems).to.deep.equal([
+      {
+        loc: {
+          column: 11,
+          fileName: './node-tests/fixtures/parse-js/typescript.ts',
+          line: 5
+        },
+        messageId: 'test content {{message}}'
+      }
+    ]);
+  });
+
   it('it throws on template literals with placeholder', function() {
     let options = { fromCode: 'UTF-8' };
 
