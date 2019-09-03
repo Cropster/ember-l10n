@@ -828,6 +828,12 @@ export default Service.extend({
     }
 
     let resolvedPath = assetMap.resolve(path);
+
+    // If the resolved path is a full url (e.g. http:// or https://), just return it as is
+    if (resolvedPath.indexOf('http') === 0) {
+      return resolvedPath;
+    }
+
     return buildUrl(jsonPathPrefix, resolvedPath || fullPath);
   },
 
