@@ -7,6 +7,8 @@ import { assign } from '@ember/polyfills';
 import { guessLocale } from '../utils/guess-locale';
 import { A as array } from '@ember/array';
 import { assert } from '@ember/debug';
+import { getLocaleAssetMap } from 'ember-l10n/utils/get-locale-asset-map';
+import { fetchJsonFile } from 'ember-l10n/utils/fetch-json-file';
 
 /**
  * This service translates through gettext.js.
@@ -177,14 +179,7 @@ export default Service.extend({
    * @private
    */
   _localeMap: computed(function() {
-    let assetMapString = document.querySelector(
-      "meta[name='ember-l10n:localeAssetMap']"
-    ).content;
-    if (!assetMapString) {
-      return {};
-    }
-
-    return JSON.parse(decodeURIComponent(assetMapString));
+    return getLocaleAssetMap();
   }),
 
   // -------------------------------------------------------------------------
@@ -202,11 +197,18 @@ export default Service.extend({
   init() {
     this._super(...arguments);
 
+    this._checkLocaleFiles();
+
+    // Since FastBoot does not support XMLHttpRequest (which we use to usually load the locale .json files)
+    // We embed the whole locale files in that scenario, and preload all the locales here
+    // This way, no ajax requests need to be made in FastBoot
+    if (typeof FastBoot !== 'undefined') {
+      this._preloadLocaleFilesForFastBoot();
+    }
+
     if (get(this, 'autoInitialize')) {
       this.setLocale(this.detectLocale());
     }
-
-    this._checkLocaleFiles();
   },
 
   /**
@@ -716,6 +718,23 @@ export default Service.extend({
   },
 
   /**
+   * In FastBoot, the asset map does not contain the paths to the locale files,
+   * but the actual locale file content.
+   * We preload all locale content here, to avoid FastBoot needing to make network requests.
+   *
+   * @method _preloadLocaleFilesForFastBoot
+   * @private
+   */
+  _preloadLocaleFilesForFastBoot() {
+    let localeMap = get(this, '_localeMap');
+
+    Object.keys(localeMap).forEach((locale) => {
+      let content = JSON.parse(localeMap[locale]);
+      this._saveJSON(content, locale);
+    });
+  },
+
+  /**
    * Load a locale file.
    *
    * @method loadLocaleFile
@@ -738,21 +757,7 @@ export default Service.extend({
    * @protected
    */
   ajaxRequest(fileName) {
-    return new Promise((resolve, reject) => {
-      let request = new XMLHttpRequest();
-      request.open('GET', fileName);
-      request.addEventListener('load', function() {
-        try {
-          let { responseText } = this;
-          let json = JSON.parse(responseText);
-          resolve(json);
-        } catch (error) {
-          reject(error);
-        }
-      });
-      request.addEventListener('error', reject);
-      request.send();
-    });
+    return fetchJsonFile(fileName);
   },
 
   /**

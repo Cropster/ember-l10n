@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const MetaPlaceholder = '__ember-l10n__LocaleAssetMapPlaceholder__';
+const fastbootAssetMapModulePath = 'assets/fastboot-locale-asset-map.js';
 
 module.exports = {
   name: require('./package').name,
@@ -15,6 +16,26 @@ module.exports = {
       'l10n:convert': require('./lib/commands/convert'),
       'l10n:sync': require('./lib/commands/sync')
     };
+  },
+
+  treeForFastBoot(tree) {
+    this._isFastBoot = true;
+
+    return tree;
+  },
+
+  /**
+   * By default, during runtime the l10n service reads the asset map
+   * information from a meta tag on the index.html. As we do not have access to
+   * global `document` when running in FastBoot, we need to implement a
+   * different way to access this asset-map information. See
+   * `get-locale-asset-map` where we require the `asset-map` module that is
+   * generated in the postBuild() below.
+   */
+  updateFastBootManifest(manifest) {
+    manifest.vendorFiles.push(fastbootAssetMapModulePath);
+
+    return manifest;
   },
 
   contentFor(type, config) {
@@ -61,7 +82,7 @@ module.exports = {
       // eslint-disable-next-line no-console
       console.warn(
         `
-You need to ensure that .json files are fingerprinted for ember-l10n to work. 
+You need to ensure that .json files are fingerprinted for ember-l10n to work.
 To make this work, add something like this to your ember-cli-build.js:
 
 fingerprint: {
@@ -96,6 +117,29 @@ fingerprint: {
 
     replacePlaceholder(indexFilePath, assetMap);
     replacePlaceholder(testsIndexFilePath, assetMap);
+
+    // For FastBoot, we embed all the locales right away
+    // As we cannot use XMLHttpRequest there to fetch them
+    if (this._isFastBoot) {
+      let assetModulePath = `${build.directory}/${fastbootAssetMapModulePath}`;
+
+      let localeData = {};
+      Object.keys(assetMap).forEach((locale) => {
+        let filePath = path.join(build.directory, assetMap[locale]);
+        let localeContent = fs.readFileSync(filePath, 'utf-8');
+        localeData[locale] = localeContent;
+      });
+
+      fs.writeFileSync(
+        assetModulePath,
+        `define('ember-l10n/fastboot-locale-asset-map', [], function () {
+          return {
+            'default': ${JSON.stringify(localeData)},
+            __esModule: true,
+          };
+        });`
+      );
+    }
   }
 };
 
