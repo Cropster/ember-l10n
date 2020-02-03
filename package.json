@@ -78,7 +78,7 @@
     "ember-cli-htmlbars": "^4.2.2",
     "ember-get-config": "^0.2.4",
     "gettext-parser": "^4.0.2",
-    "inquirer": "^6.2.1",
+    "inquirer": "^7.0.4",
     "shelljs": "^0.8.2"
   },
   "ember-addon": {
