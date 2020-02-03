@@ -1,5 +1,5 @@
 import { typeOf, isEmpty } from '@ember/utils';
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../templates/get-text';
 
@@ -66,21 +66,7 @@ export default Component.extend({
    * @type {Array}
    * @public
    */
-  messageParts: null, // lazy initialized!
-
-  // -------------------------------------------------------------------------
-  // Methods
-
-  /**
-   * Parses message id and splits it
-   * up into corresponding parts.
-   *
-   * @method didReceiveAttrs
-   * @return {Void}
-   * @public
-   */
-  didReceiveAttrs() {
-    this._super(...arguments);
+  messageParts: computed('message', function() {
     let message = get(this, 'message');
 
     if (!message) {
@@ -136,7 +122,6 @@ export default Component.extend({
       });
     }
 
-    // provide parts for template
-    this.set('messageParts', parts);
-  }
+    return parts;
+  })
 });

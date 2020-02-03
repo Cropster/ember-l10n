@@ -2,8 +2,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 
 const MetaPlaceholder = '__ember-l10n__LocaleAssetMapPlaceholder__';
+const fastbootAssetMapModulePath = 'assets/fastboot-locale-asset-map.js';
 
 module.exports = {
   name: require('./package').name,
@@ -15,6 +17,88 @@ module.exports = {
       'l10n:convert': require('./lib/commands/convert'),
       'l10n:sync': require('./lib/commands/sync')
     };
+  },
+
+  included() {
+    this._super.included.apply(this, arguments);
+
+    let app = this._findHost();
+
+    // Fix fingerprinting options to work
+    if (
+      app.options &&
+      app.options.fingerprint &&
+      app.options.fingerprint.enabled
+    ) {
+      let fingerprintOptions = app.options.fingerprint;
+
+      let infoMessages = [];
+
+      // Ensure .json files are fingerprinted
+      if (!fingerprintOptions.extensions) {
+        // ['js', 'css', 'png', 'jpg', 'gif', 'map'] is the default, we add json to it
+        fingerprintOptions.extensions = [
+          'js',
+          'css',
+          'png',
+          'jpg',
+          'gif',
+          'map',
+          'json'
+        ];
+        infoMessages.push(
+          "set fingerprint.extensions = ['js', 'css', 'png', 'jpg', 'gif', 'map', 'json']"
+        );
+      } else if (!fingerprintOptions.extensions.includes('json')) {
+        fingerprintOptions.extensions.push('json');
+        infoMessages.push("added 'json' to fingerprint.extensions");
+      }
+
+      // Ensure package.json is NOT fingerprinted (this is added by fastboot)
+      let hasEmberCliFastboot = !!this.project.findAddonByName(
+        'ember-cli-fastboot'
+      );
+      let excluded = fingerprintOptions.exclude || [];
+      fingerprintOptions.exclude = excluded;
+
+      if (hasEmberCliFastboot && !excluded.includes('package.json')) {
+        excluded.push('package.json');
+        infoMessages.push("added 'package.json' to fingerprint.exclude");
+      }
+
+      if (infoMessages.length > 0) {
+        this.ui.writeLine('');
+        this.ui.writeLine(
+          chalk.bold(
+            'ember-l10n automatically adjusted the fingerprinting settings to work properly:'
+          )
+        );
+        infoMessages.forEach((message) =>
+          this.ui.writeLine(chalk.dim(`* ${message}`))
+        );
+        this.ui.writeLine('');
+      }
+    }
+  },
+
+  treeForFastBoot(tree) {
+    this._isFastBoot = true;
+
+    return tree;
+  },
+
+  /**
+   * By default, during runtime the l10n service reads the asset map
+   * information from a meta tag on the index.html. As we do not have access to
+   * global `document` when running in FastBoot, we need to implement a
+   * different way to access this asset-map information. See
+   * `get-locale-asset-map` where we require the `asset-map` module that is
+   * generated in the postBuild() below.
+   */
+  updateFastBootManifest(manifest) {
+    manifest.vendorFiles.push(fastbootAssetMapModulePath);
+
+    return manifest;
   },
 
   contentFor(type, config) {
@@ -52,25 +136,6 @@ module.exports = {
       fingerprintPrepend = this.app.options.fingerprint.prepend;
     }
 
-    if (
-      fingerprintOptions &&
-      fingerprintOptions.enabled &&
-      (!fingerprintOptions.extensions ||
-        !fingerprintOptions.extensions.includes('json'))
-    ) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `
-You need to ensure that .json files are fingerprinted for ember-l10n to work. 
-To make this work, add something like this to your ember-cli-build.js:
-
-fingerprint: {
-  extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'json']
-}
-`
-      );
-    }
-
     let fullFilePaths = files.map((assetFileName) => {
       return [fingerprintPrepend, localeAssetDirectoryPath, assetFileName]
         .map((pathPart) => {
@@ -96,6 +161,29 @@ fingerprint: {
 
     replacePlaceholder(indexFilePath, assetMap);
     replacePlaceholder(testsIndexFilePath, assetMap);
+
+    // For FastBoot, we embed all the locales right away
+    // As we cannot use XMLHttpRequest there to fetch them
+    if (this._isFastBoot) {
+      let assetModulePath = `${build.directory}/${fastbootAssetMapModulePath}`;
+
+      let localeData = {};
+      Object.keys(assetMap).forEach((locale) => {
+        let filePath = path.join(build.directory, assetMap[locale]);
+        let localeContent = fs.readFileSync(filePath, 'utf-8');
+        localeData[locale] = localeContent;
+      });
+
+      fs.writeFileSync(
+        assetModulePath,
+        `define('ember-l10n/fastboot-locale-asset-map', [], function () {
+          return {
+            'default': ${JSON.stringify(localeData)},
+            __esModule: true,
+          };
+        });`
+      );
+    }
   }
 };
 
