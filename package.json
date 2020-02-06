@@ -73,6 +73,7 @@
     "@babel/parser": "^7.5.5",
     "@glimmer/syntax": "^0.47.4",
     "ast-types": "^0.13.2",
+    "broccoli-plugin": "^3.1.0",
     "chalk": "^3.0.0",
     "ember-cli-babel": "^7.7.3",
     "ember-cli-htmlbars": "^4.2.2",
@@ -82,7 +83,10 @@
     "shelljs": "^0.8.2"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "before": [
+      "ember-cli-uglify"
+    ]
   },
   "husky": {
     "hooks": {
