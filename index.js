@@ -3,9 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const CreateEmberL10nFastBootAssetMap = require('./lib/utils/create-fastboot-asset-map');
 
 const MetaPlaceholder = '__ember-l10n__LocaleAssetMapPlaceholder__';
-const fastbootAssetMapModulePath = 'assets/fastboot-locale-asset-map.js';
+const fastbootAssetMapModulePath = 'ember-l10n/fastboot-locale-asset-map.js';
 
 module.exports = {
   name: require('./package').name,
@@ -23,6 +24,16 @@ module.exports = {
     this._super.included.apply(this, arguments);
 
     let app = this._findHost();
+
+    let hasEmberCliFastboot = !!this.project.findAddonByName(
+      'ember-cli-fastboot'
+    );
+    this._hasEmberCliFastboot = hasEmberCliFastboot;
+
+    let env = process.env.EMBER_ENV;
+    let l10nConfig = this.project.config(env)['ember-l10n'] || {};
+
+    this._localeAssetDirectoryPath = l10nConfig.jsonPath || 'assets/locales';
 
     // Fix fingerprinting options to work
     if (
@@ -55,15 +66,22 @@ module.exports = {
       }
 
       // Ensure package.json is NOT fingerprinted (this is added by fastboot)
-      let hasEmberCliFastboot = !!this.project.findAddonByName(
-        'ember-cli-fastboot'
-      );
       let excluded = fingerprintOptions.exclude || [];
       fingerprintOptions.exclude = excluded;
 
       if (hasEmberCliFastboot && !excluded.includes('package.json')) {
         excluded.push('package.json');
         infoMessages.push("added 'package.json' to fingerprint.exclude");
+      }
+
+      if (
+        hasEmberCliFastboot &&
+        !excluded.includes('**/fastboot-locale-asset-map.{js,map}')
+      ) {
+        excluded.push('**/fastboot-locale-asset-map,{js,map}');
+        infoMessages.push(
+          "added '**/fastboot-locale-asset-map.{js,map}' to fingerprint.exclude"
+        );
       }
 
       if (infoMessages.length > 0) {
@@ -81,8 +99,15 @@ module.exports = {
     }
   },
 
-  treeForFastBoot(tree) {
-    this._isFastBoot = true;
+  postprocessTree(type, tree) {
+    if (type === 'all' && this._hasEmberCliFastboot) {
+      // Parse the output tree, get the locale files and build /ember-l10n/fastboot-locale-asset-map.js from it
+      // This is all done in a custom Broccoli Plugin
+      return new CreateEmberL10nFastBootAssetMap(tree, {
+        localeAssetDirectoryPath: this._localeAssetDirectoryPath,
+        fastbootAssetMapModulePath
+      });
+    }
 
     return tree;
   },
@@ -114,12 +139,8 @@ module.exports = {
   postBuild(build) {
     this._super.postBuild.apply(this, arguments);
 
-    let env = process.env.EMBER_ENV;
-    let l10nConfig = this.project.config(env)['ember-l10n'] || {};
-
     let fingerprintPrepend = '/';
-
-    let localeAssetDirectoryPath = l10nConfig.jsonPath || 'assets/locales';
+    let localeAssetDirectoryPath = this._localeAssetDirectoryPath;
 
     let dirPath = path.join(build.directory, localeAssetDirectoryPath);
     let files = fs.readdirSync(dirPath);
@@ -156,42 +177,28 @@ module.exports = {
       assetMap[localeName] = assetFilePath;
     });
 
-    let indexFilePath = path.join(build.directory, 'index.html');
-    let testsIndexFilePath = path.join(build.directory, 'tests', 'index.html');
-
-    replacePlaceholder(indexFilePath, assetMap);
-    replacePlaceholder(testsIndexFilePath, assetMap);
-
-    // For FastBoot, we embed all the locales right away
-    // As we cannot use XMLHttpRequest there to fetch them
-    if (this._isFastBoot) {
-      let assetModulePath = `${build.directory}/${fastbootAssetMapModulePath}`;
-
-      let localeData = {};
-      Object.keys(assetMap).forEach((locale) => {
-        let filePath = path.join(build.directory, assetMap[locale]);
-        let localeContent = fs.readFileSync(filePath, 'utf-8');
-        localeData[locale] = localeContent;
-      });
-
-      fs.writeFileSync(
-        assetModulePath,
-        `define('ember-l10n/fastboot-locale-asset-map', [], function () {
-          return {
-            'default': ${JSON.stringify(localeData)},
-            __esModule: true,
-          };
-        });`
-      );
-    }
+    // Replace in all HTML Files (e.g. when using Prember, there could be multiple files)
+    replacePlaceholderInDirectory(build.directory, assetMap);
   }
 };
 
-function replacePlaceholder(filePath, assetMap) {
-  if (!fs.existsSync(filePath)) {
-    return;
-  }
+function replacePlaceholderInDirectory(dir, assetMap) {
+  let filePaths = fs.readdirSync(dir);
 
+  filePaths.forEach((filePath) => {
+    let fullPath = path.join(dir, filePath);
+    if (fs.statSync(fullPath).isDirectory()) {
+      replacePlaceholderInDirectory(fullPath, assetMap);
+      return;
+    }
+
+    if (path.extname(fullPath) === '.html') {
+      replacePlaceholder(fullPath, assetMap);
+    }
+  });
+}
+
+function replacePlaceholder(filePath, assetMap) {
   let assetMapString = encodeURIComponent(JSON.stringify(assetMap));
   let fileBody = fs.readFileSync(filePath, { encoding: 'utf-8' });
   fs.writeFileSync(filePath, fileBody.replace(MetaPlaceholder, assetMapString));
