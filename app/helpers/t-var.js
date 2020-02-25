@@ -1,1 +1,1 @@
-export { default, tVar } from 'ember-l10n/helpers/t-var';
+export { default } from 'ember-l10n/helpers/t-var';

@@ -1,1 +1,1 @@
-export { default, pt } from 'ember-l10n/helpers/pt';
+export { default } from 'ember-l10n/helpers/pt';

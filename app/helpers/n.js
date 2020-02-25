@@ -1,3 +1,1 @@
-import n from 'ember-l10n/helpers/n';
-
-export default n;
+export { default } from 'ember-l10n/helpers/n';
