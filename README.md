@@ -1,6 +1,5 @@
 # Ember-l10n
 
-[![Build Status](https://travis-ci.org/Cropster/ember-l10n.svg?branch=master)](https://travis-ci.org/Cropster/ember-l10n)
 [![Ember Observer Score](https://emberobserver.com/badges/ember-l10n.svg)](https://emberobserver.com/addons/ember-l10n)
 [![npm version](https://badge.fury.io/js/ember-l10n.svg)](https://badge.fury.io/js/ember-l10n)
 

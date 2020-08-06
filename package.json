@@ -14,6 +14,7 @@
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
+    "test:one": "ember try:one",
     "node-tests": "node node-tests/index.js"
   },
   "repository": "https://github.com/Cropster/ember-l10n",
