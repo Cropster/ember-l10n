@@ -18,7 +18,7 @@ __Note:__ Addon's CLI commands will check dependencies for you and install them 
 Compatibility
 ------------------------------------------------------------------------------
 
-* Ember.js v3.4 or above
+* Ember.js v3.12 or above
 * Ember CLI v2.13 or above
 * Node.js v10 or above
 

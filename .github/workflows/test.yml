@@ -35,9 +35,8 @@ jobs:
         # Keep this in sync with config/ember-try.js
         ember:
           [
-            ember-lts-3.4,
-            ember-lts-3.8,
             ember-lts-3.12,
+            ember-lts-3.16,
             ember-release,
             ember-beta,
             ember-canary,
