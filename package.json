@@ -21,7 +21,7 @@
   },
   "repository": "https://github.com/Cropster/ember-l10n",
   "engines": {
-    "node": "8.* || >= 10.*"
+    "node": "10.* || >= 12"
   },
   "author": "Cropster",
   "license": "MIT",
