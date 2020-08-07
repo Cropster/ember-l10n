@@ -33,7 +33,7 @@ module('Integration | Component | get-text', function(hooks) {
   test('it works with a given message', async function(assert) {
     await render(hbs`{{get-text message=(t '<b>I am bold.</b>')}}`);
     assert.equal(
-      find('*').innerHTML,
+      this.element.innerHTML,
       '&lt;b&gt;I am bold.&lt;/b&gt;',
       'It escapes text per default.'
     );
@@ -44,7 +44,7 @@ module('Integration | Component | get-text', function(hooks) {
       hbs`{{get-text unescapeText=true message=(t '<b>I am bold.</b>')}}`
     );
     assert.equal(
-      find('*').innerHTML,
+      this.element.innerHTML,
       '<b>I am bold.</b>',
       'It unescapes text with `unescapeText` option.'
     );

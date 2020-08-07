@@ -573,6 +573,7 @@ export default Service.extend({
       };
 
       // used cached translation from hash map
+      // eslint-disable-next-line no-prototype-builtins
       if (_data.hasOwnProperty(locale)) {
         successCallback(_data[locale]);
         resolve(_data[locale]);

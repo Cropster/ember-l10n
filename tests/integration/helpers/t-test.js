@@ -1,7 +1,7 @@
 /* eslint-disable ember/avoid-leaking-state-in-ember-objects */
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, find } from '@ember/test-helpers';
+import { render } from '@ember/test-helpers';
 import L10n from 'ember-l10n/services/l10n';
 import hbs from 'htmlbars-inline-precompile';
 import wait from 'ember-test-helpers/wait';
@@ -81,7 +81,7 @@ module('Integration | Helper | t', function(hooks) {
 
     await render(hbs`{{t '<b>I am bold.</b>'}}`);
     assert.equal(
-      find('*').innerHTML,
+      this.element.innerHTML,
       '&lt;b&gt;I am bold.&lt;/b&gt;',
       'It escapes text per default.'
     );

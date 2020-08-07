@@ -17,9 +17,9 @@ jobs:
       - name: Install native l10n dependencies
         run: sudo apt-get install -y gettext
       - name: Run Ember tests
-        run: yarn test
+        run: yarn test:ember
       - name: Run node tests
-        run: yarn node-tests
+        run: yarn test:node
       - name: Lint JS
         run: yarn lint:js
       - name: Lint HBS
@@ -51,4 +51,4 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run tests
-        run: yarn test:one ${{ matrix.ember }}
+        run: yarn test:ember-one ${{ matrix.ember }}
