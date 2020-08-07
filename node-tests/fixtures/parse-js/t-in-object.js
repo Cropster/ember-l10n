@@ -1,7 +1,7 @@
 export default {
   test() {
     return {
-      test: this.t('text')
+      test: this.t('text'),
     };
-  }
+  },
 };

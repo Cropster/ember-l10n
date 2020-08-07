@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 const { parseHbsFile } = require('./../../../../lib/commands/utils/parse-hbs');
 
-describe('parseHbsFile util', function() {
-  it('it correctly parses t helper', function() {
+describe('parseHbsFile util', function () {
+  it('it correctly parses t helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -14,14 +14,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it correctly parses n helper', function() {
+  it('it correctly parses n helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -33,15 +33,15 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
         messageId: 'test content singular',
-        messageIdPlural: 'test content plural'
-      }
+        messageIdPlural: 'test content plural',
+      },
     ]);
   });
 
-  it('it correctly parses indented n helper', function() {
+  it('it correctly parses indented n helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -53,15 +53,15 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
         messageId: 'test content singular',
-        messageIdPlural: 'test content plural'
-      }
+        messageIdPlural: 'test content plural',
+      },
     ]);
   });
 
-  it('it correctly parses pt helper', function() {
+  it('it correctly parses pt helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -73,15 +73,15 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
         messageId: 'test content',
-        messageContext: 'test context'
-      }
+        messageContext: 'test context',
+      },
     ]);
   });
 
-  it('it correctly parses pn helper', function() {
+  it('it correctly parses pn helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -93,16 +93,16 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
         messageId: 'test content singular',
         messageIdPlural: 'test content plural',
-        messageContext: 'test context'
-      }
+        messageContext: 'test context',
+      },
     ]);
   });
 
-  it('it correctly parses multiline t helper', function() {
+  it('it correctly parses multiline t helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -114,16 +114,16 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
         messageId: `test content
     across multiple lines
-    goes here`
-      }
+    goes here`,
+      },
     ]);
   });
 
-  it('it correctly parses t helper in hash', function() {
+  it('it correctly parses t helper in hash', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -135,14 +135,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 7,
-          column: 9
+          column: 9,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it correctly parses t helper in positional argument', function() {
+  it('it correctly parses t helper in positional argument', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -154,14 +154,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 10
+          column: 10,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it correctly parses t helper with placeholders', function() {
+  it('it correctly parses t helper with placeholders', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -173,14 +173,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content {{placeholder}}'
-      }
+        messageId: 'test content {{placeholder}}',
+      },
     ]);
   });
 
-  it('it correctly parses t helper as argument for yielded component', function() {
+  it('it correctly parses t helper as argument for yielded component', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -193,14 +193,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 7,
-          column: 12
+          column: 12,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it correctly parses t helper in yielded component', function() {
+  it('it correctly parses t helper in yielded component', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -212,14 +212,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 7,
-          column: 4
+          column: 4,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it correctly parses t helper in if/else block', function() {
+  it('it correctly parses t helper in if/else block', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -231,30 +231,30 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: 'if'
+        messageId: 'if',
       },
       {
         loc: {
           fileName,
           line: 8,
-          column: 2
+          column: 2,
         },
-        messageId: 'else 1'
+        messageId: 'else 1',
       },
       {
         loc: {
           fileName,
           line: 10,
-          column: 2
+          column: 2,
         },
-        messageId: 'else 2'
-      }
+        messageId: 'else 2',
+      },
     ]);
   });
 
-  it('it correctly parses t helper in element argument', function() {
+  it('it correctly parses t helper in element argument', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -266,14 +266,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 11
+          column: 11,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it correctly parses t helper in element argument string', function() {
+  it('it correctly parses t helper in element argument string', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -286,14 +286,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 12
+          column: 12,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it correctly parses t helper in other helper', function() {
+  it('it correctly parses t helper in other helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -305,22 +305,22 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 11
+          column: 11,
         },
-        messageId: 'test'
+        messageId: 'test',
       },
       {
         loc: {
           fileName,
           line: 6,
-          column: 22
+          column: 22,
         },
-        messageId: 'other'
-      }
+        messageId: 'other',
+      },
     ]);
   });
 
-  it('it correctly parses t helper in nested yielded component', function() {
+  it('it correctly parses t helper in nested yielded component', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -333,14 +333,14 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 8,
-          column: 6
+          column: 6,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it correctly parses t helper with tags and indentation', function() {
+  it('it correctly parses t helper with tags and indentation', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -352,16 +352,16 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
         messageId: `test with
           <strong>tags</strong> and weird indentation
-      works`
-      }
+      works`,
+      },
     ]);
   });
 
-  it('it correctly parses multiple helpers', function() {
+  it('it correctly parses multiple helpers', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -373,39 +373,39 @@ describe('parseHbsFile util', function() {
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
+        messageId: 'test content',
       },
       {
         loc: {
           fileName,
           line: 7,
-          column: 2
+          column: 2,
         },
-        messageId: 'other test content'
+        messageId: 'other test content',
       },
       {
         loc: {
           fileName,
           line: 8,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
+        messageId: 'test content',
       },
       {
         loc: {
           fileName,
           line: 12,
-          column: 2
+          column: 2,
         },
         messageId: 'test content',
-        messageIdPlural: 'test content plural'
-      }
+        messageIdPlural: 'test content plural',
+      },
     ]);
   });
 
-  it('it ignores helpers in comments', function() {
+  it('it ignores helpers in comments', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -415,7 +415,7 @@ describe('parseHbsFile util', function() {
     expect(gettextItems).to.deep.equal([]);
   });
 
-  it('it correctly parses angle bracket component invocation', function() {
+  it('it correctly parses angle bracket component invocation', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -429,32 +429,32 @@ describe('parseHbsFile util', function() {
           column: 2,
           fileName:
             './node-tests/fixtures/parse-hbs/angle-bracket-invocation.hbs',
-          line: 5
+          line: 5,
         },
-        messageId: 'test inner content'
+        messageId: 'test inner content',
       },
       {
         loc: {
           column: 12,
           fileName:
             './node-tests/fixtures/parse-hbs/angle-bracket-invocation.hbs',
-          line: 2
+          line: 2,
         },
-        messageId: 'other test content'
+        messageId: 'other test content',
       },
       {
         loc: {
           column: 8,
           fileName:
             './node-tests/fixtures/parse-hbs/angle-bracket-invocation.hbs',
-          line: 3
+          line: 3,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ]);
   });
 
-  it('it throws when not using enough arguments for t helper', function() {
+  it('it throws when not using enough arguments for t helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -465,7 +465,7 @@ describe('parseHbsFile util', function() {
     );
   });
 
-  it('it throws when not using enough arguments for n helper', function() {
+  it('it throws when not using enough arguments for n helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -476,7 +476,7 @@ describe('parseHbsFile util', function() {
     );
   });
 
-  it('it throws when not using enough arguments for pt helper', function() {
+  it('it throws when not using enough arguments for pt helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -487,7 +487,7 @@ describe('parseHbsFile util', function() {
     );
   });
 
-  it('it throws when not using enough arguments for pn helper', function() {
+  it('it throws when not using enough arguments for pn helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -498,7 +498,7 @@ describe('parseHbsFile util', function() {
     );
   });
 
-  it('it throws on variables as arguments for t helper', function() {
+  it('it throws on variables as arguments for t helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -509,7 +509,7 @@ describe('parseHbsFile util', function() {
     );
   });
 
-  it('it throws on helpers as arguments for t helper', function() {
+  it('it throws on helpers as arguments for t helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -520,7 +520,7 @@ describe('parseHbsFile util', function() {
     );
   });
 
-  it('it throws on variables as arguments for n helper', function() {
+  it('it throws on variables as arguments for n helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -531,7 +531,7 @@ describe('parseHbsFile util', function() {
     );
   });
 
-  it('it throws on variables as arguments for pt helper', function() {
+  it('it throws on variables as arguments for pt helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -542,7 +542,7 @@ describe('parseHbsFile util', function() {
     );
   });
 
-  it('it throws on variables as arguments for pn helper', function() {
+  it('it throws on variables as arguments for pn helper', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];

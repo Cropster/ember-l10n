@@ -4,5 +4,5 @@ export default {
       `template literal
 with new line`
     );
-  }
+  },
 };

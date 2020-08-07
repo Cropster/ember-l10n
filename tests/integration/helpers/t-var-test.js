@@ -11,52 +11,52 @@ const mockL10nService = L10n.extend({
   autoInitialize: false,
   availableLocales: {
     en: 'en',
-    de: 'de'
-  }
+    de: 'de',
+  },
 });
 
-module('Integration | Helper | t-var', function(hooks) {
+module('Integration | Helper | t-var', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.owner.register('service:l10n', mockL10nService);
     this.l10n = this.owner.lookup('service:l10n');
 
-    this.server = new Pretender(function() {
+    this.server = new Pretender(function () {
       let json = {
         'en.json': {
           headers: {
             language: 'en',
-            'plural-forms': 'nplurals=2; plural=(n != 1);'
+            'plural-forms': 'nplurals=2; plural=(n != 1);',
           },
           translations: {
             '': {
               en: {
-                msgstr: ['English']
+                msgstr: ['English'],
               },
               "I'm a {{placeholder}}.": {
-                msgstr: ["I'm a {{placeholder}}."]
-              }
-            }
-          }
+                msgstr: ["I'm a {{placeholder}}."],
+              },
+            },
+          },
         },
 
         'de.json': {
           headers: {
             language: 'de',
-            'plural-forms': 'nplurals=2; plural=(n != 1);'
+            'plural-forms': 'nplurals=2; plural=(n != 1);',
           },
           translations: {
             '': {
               en: {
-                msgstr: ['English']
+                msgstr: ['English'],
               },
               "I'm a {{placeholder}}.": {
-                msgstr: ['Ich bin ein {{placeholder}}.']
-              }
-            }
-          }
-        }
+                msgstr: ['Ich bin ein {{placeholder}}.'],
+              },
+            },
+          },
+        },
       };
 
       this.get('/assets/locales/:locale', (request) => {
@@ -66,11 +66,11 @@ module('Integration | Helper | t-var', function(hooks) {
     });
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     this.server.shutdown();
   });
 
-  test('it works', async function(assert) {
+  test('it works', async function (assert) {
     let { l10n } = this;
     await l10n.setLocale('en');
 

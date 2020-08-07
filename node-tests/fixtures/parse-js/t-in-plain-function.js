@@ -1,7 +1,7 @@
 export default {
   test() {
     this.t('test 1');
-  }
+  },
 };
 
 function test1() {

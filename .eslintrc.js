@@ -7,18 +7,18 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
     ecmaFeatures: {
-      legacyDecorators: true
-    }
+      legacyDecorators: true,
+    },
   },
   plugins: ['ember'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
     'plugin:ember-suave/recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   env: {
-    browser: true
+    browser: true,
   },
   rules: {},
   overrides: [
@@ -33,18 +33,18 @@ module.exports = {
         'testem.js',
         'config/**/*.js',
         'tests/dummy/config/**/*.js',
-        'lib/**/*.js'
+        'lib/**/*.js',
       ],
       excludedFiles: ['app/**', 'addon/**', 'tests/dummy/app/**'],
       parserOptions: {
-        sourceType: 'script'
+        sourceType: 'script',
       },
       env: {
         browser: false,
-        node: true
+        node: true,
       },
       plugins: ['node'],
-      extends: ['plugin:node/recommended']
+      extends: ['plugin:node/recommended'],
     },
 
     // node tests
@@ -52,12 +52,12 @@ module.exports = {
       files: ['node-tests/**/*-test.js'],
       parserOptions: {
         sourceType: 'script',
-        ecmaVersion: 2017
+        ecmaVersion: 2017,
       },
       env: {
         browser: false,
         node: true,
-        mocha: true
+        mocha: true,
       },
       plugins: ['node'],
       extends: ['plugin:node/recommended'],
@@ -66,17 +66,17 @@ module.exports = {
           'error',
           {
             version: '>=8.5.0',
-            ignores: []
-          }
+            ignores: [],
+          },
         ],
         'node/no-unsupported-features/node-builtins': [
           'error',
           {
             version: '>=8.5.0',
-            ignores: []
-          }
-        ]
-      }
+            ignores: [],
+          },
+        ],
+      },
     },
 
     // test files
@@ -84,8 +84,8 @@ module.exports = {
       files: ['tests/**/*.js'],
       excludedFiles: ['tests/dummy/**/*.js'],
       rules: {
-        'ember/avoid-leaking-state-in-ember-objects': 'off'
-      }
-    }
-  ]
+        'ember/avoid-leaking-state-in-ember-objects': 'off',
+      },
+    },
+  ],
 };

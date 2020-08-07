@@ -14,7 +14,7 @@ function getOptions(options = {}) {
       convertTo: './tmp/ember-l10n-tests',
       language: 'en',
       validateThrow: null,
-      dryRun: false
+      dryRun: false,
     },
     options
   );
@@ -25,13 +25,13 @@ function readJSONFromFile(fileName) {
   return JSON.parse(fileContent);
 }
 
-describe('convert command', function() {
+describe('convert command', function () {
   let project;
   let tmpDir = './tmp/ember-l10n-tests';
 
   this.timeout(100000);
 
-  beforeEach(function() {
+  beforeEach(function () {
     project = {
       root: path.resolve('.'),
       addonPackages: {},
@@ -40,13 +40,13 @@ describe('convert command', function() {
       },
       isEmberCLIProject() {
         return true;
-      }
+      },
     };
 
     shell.mkdir('-p', tmpDir);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     rimraf.sync(tmpDir);
   });
 
@@ -55,14 +55,14 @@ describe('convert command', function() {
       ui: new MockUI(),
       project,
       environment: {},
-      settings: {}
+      settings: {},
     });
 
     let TestCommand = Command.extend(ConvertCommand);
     return new TestCommand(options);
   }
 
-  it('it correctly converts a po file', async function() {
+  it('it correctly converts a po file', async function () {
     let options = getOptions({});
 
     // First put the example en.po in the output folder
@@ -102,7 +102,7 @@ describe('convert command', function() {
     });
   });
 
-  it('it appends a semicolon to the plural forms if it is missing', async function() {
+  it('it appends a semicolon to the plural forms if it is missing', async function () {
     let options = getOptions({});
 
     // First put the example en.po in the output folder
@@ -128,11 +128,11 @@ describe('convert command', function() {
         'po-revision-date': '2018-07-20 08:39+0200',
         'pot-creation-date': '2018-07-20 08:39+0200',
         'project-id-version': 'My App 1.0',
-        'report-msgid-bugs-to': 'support@mycompany.com'
+        'report-msgid-bugs-to': 'support@mycompany.com',
       },
       translations: {
-        '': {}
-      }
+        '': {},
+      },
     };
 
     expect(actualFileContent).to.deep.equals(expectedFileContent);

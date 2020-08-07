@@ -2,17 +2,17 @@
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   let env = process.env.EMBER_ENV || 'development';
 
   let app = new EmberAddon(defaults, {
     pretender: {
-      enabled: true
+      enabled: true,
     },
     fingerprint: {
       enabled: env === 'production',
-      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'json']
-    }
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'json'],
+    },
   });
 
   /*

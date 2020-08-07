@@ -16,7 +16,7 @@ module.exports = {
       'l10n:install': require('./lib/commands/install'),
       'l10n:extract': require('./lib/commands/extract'),
       'l10n:convert': require('./lib/commands/convert'),
-      'l10n:sync': require('./lib/commands/sync')
+      'l10n:sync': require('./lib/commands/sync'),
     };
   },
 
@@ -55,7 +55,7 @@ module.exports = {
           'jpg',
           'gif',
           'map',
-          'json'
+          'json',
         ];
         infoMessages.push(
           "set fingerprint.extensions = ['js', 'css', 'png', 'jpg', 'gif', 'map', 'json']"
@@ -105,7 +105,7 @@ module.exports = {
       // This is all done in a custom Broccoli Plugin
       return new CreateEmberL10nFastBootAssetMap(tree, {
         localeAssetDirectoryPath: this._localeAssetDirectoryPath,
-        fastbootAssetMapModulePath
+        fastbootAssetMapModulePath,
       });
     }
 
@@ -179,7 +179,7 @@ module.exports = {
 
     // Replace in all HTML Files (e.g. when using Prember, there could be multiple files)
     replacePlaceholderInDirectory(build.directory, assetMap);
-  }
+  },
 };
 
 function replacePlaceholderInDirectory(dir, assetMap) {

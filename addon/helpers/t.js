@@ -30,7 +30,7 @@ export default Helper.extend({
   },
 
   // eslint-disable-next-line ember/no-observers
-  _watchLocale: observer('l10n.locale', function() {
+  _watchLocale: observer('l10n.locale', function () {
     this.recompute();
-  })
+  }),
 });

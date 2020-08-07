@@ -13,6 +13,6 @@ export default Controller.extend({
     select(locale) {
       let l10n = get(this, 'l10n');
       l10n.setLocale(locale);
-    }
-  }
+    },
+  },
 });
