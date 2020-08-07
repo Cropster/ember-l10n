@@ -1,10 +1,10 @@
 const { expect } = require('chai');
 const {
-  buildPotFile
+  buildPotFile,
 } = require('./../../../../lib/commands/utils/build-pot-file');
 
-describe('buildPotFile util', function() {
-  it('it works for empty items', function() {
+describe('buildPotFile util', function () {
+  it('it works for empty items', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -18,7 +18,7 @@ msgstr "Content-Type: text/plain; charset=utf-8"
     expect(fileContent).to.equal(expected);
   });
 
-  it('it correctly handles multiple items with the same message id', function() {
+  it('it correctly handles multiple items with the same message id', function () {
     let options = { fromCode: 'UTF-8' };
     let fileName = 'test/file.hbs';
     let gettextItems = [
@@ -26,26 +26,26 @@ msgstr "Content-Type: text/plain; charset=utf-8"
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
+        messageId: 'test content',
       },
       {
         loc: {
           fileName,
           line: 7,
-          column: 2
+          column: 2,
         },
-        messageId: 'other test content'
+        messageId: 'other test content',
       },
       {
         loc: {
           fileName,
           line: 8,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ];
 
     let fileContent = buildPotFile(gettextItems, options);
@@ -67,7 +67,7 @@ msgstr ""
     expect(fileContent).to.equal(expected);
   });
 
-  it('it correctly handles singular & plural items with same message id', function() {
+  it('it correctly handles singular & plural items with same message id', function () {
     let options = { fromCode: 'UTF-8' };
     let fileName = 'test/file.hbs';
     let gettextItems = [
@@ -75,35 +75,35 @@ msgstr ""
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
+        messageId: 'test content',
       },
       {
         loc: {
           fileName,
           line: 7,
-          column: 2
+          column: 2,
         },
-        messageId: 'other test content'
+        messageId: 'other test content',
       },
       {
         loc: {
           fileName,
           line: 8,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
+        messageId: 'test content',
       },
       {
         loc: {
           fileName,
           line: 12,
-          column: 2
+          column: 2,
         },
         messageId: 'test content',
-        messageIdPlural: 'test content plural'
-      }
+        messageIdPlural: 'test content plural',
+      },
     ];
 
     let fileContent = buildPotFile(gettextItems, options);
@@ -128,33 +128,33 @@ msgstr ""
     expect(fileContent).to.equal(expected);
   });
 
-  it('it correctly sorts by fileName and line', function() {
+  it('it correctly sorts by fileName and line', function () {
     let options = { fromCode: 'UTF-8' };
     let gettextItems = [
       {
         loc: {
           fileName: 'files/b/test.hbs',
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
+        messageId: 'test content',
       },
       {
         loc: {
           fileName: 'files/a/test.hbs',
           line: 7,
-          column: 2
+          column: 2,
         },
-        messageId: 'other test content'
+        messageId: 'other test content',
       },
       {
         loc: {
           fileName: 'files/b/test.hbs',
           line: 4,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
-      }
+        messageId: 'test content',
+      },
     ];
 
     let fileContent = buildPotFile(gettextItems, options);
@@ -176,7 +176,7 @@ msgstr ""
     expect(fileContent).to.equal(expected);
   });
 
-  it('it correctly handles message context', function() {
+  it('it correctly handles message context', function () {
     let options = { fromCode: 'UTF-8' };
     let fileName = 'test/file.hbs';
     let gettextItems = [
@@ -184,54 +184,54 @@ msgstr ""
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
+        messageId: 'test content',
       },
       {
         loc: {
           fileName,
           line: 7,
-          column: 2
+          column: 2,
         },
-        messageId: 'other test content'
+        messageId: 'other test content',
       },
       {
         loc: {
           fileName,
           line: 8,
-          column: 2
+          column: 2,
         },
-        messageId: 'test content'
+        messageId: 'test content',
       },
       {
         loc: {
           fileName,
           line: 4,
-          column: 2
+          column: 2,
         },
         messageId: 'test content',
-        messageContext: 'test context'
+        messageContext: 'test context',
       },
       {
         loc: {
           fileName,
           line: 22,
-          column: 2
+          column: 2,
         },
         messageId: 'test content',
-        messageContext: 'test context'
+        messageContext: 'test context',
       },
       {
         loc: {
           fileName,
           line: 21,
-          column: 2
+          column: 2,
         },
         messageId: 'singular message',
         messageIdPlural: 'plural message',
-        messageContext: 'test context'
-      }
+        messageContext: 'test context',
+      },
     ];
 
     let fileContent = buildPotFile(gettextItems, options);
@@ -266,7 +266,7 @@ msgstr[1] ""
     expect(fileContent).to.equal(expected);
   });
 
-  it('it correctly normalizes strings', function() {
+  it('it correctly normalizes strings', function () {
     let options = { fromCode: 'UTF-8' };
     let fileName = 'test/file.hbs';
     let gettextItems = [
@@ -274,7 +274,7 @@ msgstr[1] ""
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
         messageId: ` id with
         indented new lines
@@ -282,8 +282,8 @@ msgstr[1] ""
         messageIdPlural: `plural id with
         indented new lines`,
         messageContext: `context with
-        indented new lines`
-      }
+        indented new lines`,
+      },
     ];
 
     let fileContent = buildPotFile(gettextItems, options);
@@ -310,7 +310,7 @@ msgstr[1] ""
     expect(fileContent).to.equal(expected);
   });
 
-  it('it correctly escapes strings', function() {
+  it('it correctly escapes strings', function () {
     let options = { fromCode: 'UTF-8' };
     let fileName = 'test/file.hbs';
     let gettextItems = [
@@ -318,10 +318,10 @@ msgstr[1] ""
         loc: {
           fileName,
           line: 6,
-          column: 2
+          column: 2,
         },
-        messageId: `a text with ", ', and \` - are they escaped?`
-      }
+        messageId: `a text with ", ', and \` - are they escaped?`,
+      },
     ];
 
     let fileContent = buildPotFile(gettextItems, options);

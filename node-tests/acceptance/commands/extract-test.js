@@ -27,7 +27,7 @@ function getOptions(options = {}) {
       extractTo: './tmp/ember-l10n-tests',
       keys: ['t', 'pt:1,2c', 'n:1,2', 'pn:1,2,4c'],
       potName: 'messages.pot',
-      generateFrom: 'messages.pot'
+      generateFrom: 'messages.pot',
     },
     options
   );
@@ -39,13 +39,13 @@ function getPoFileContent(filePath) {
   return fileContent.substr(fileContent.indexOf('#: '));
 }
 
-describe('extract command', function() {
+describe('extract command', function () {
   let project;
   let tmpDir = './tmp/ember-l10n-tests';
 
   this.timeout(100000);
 
-  beforeEach(function() {
+  beforeEach(function () {
     project = {
       root: path.resolve('.'),
       addonPackages: {},
@@ -54,13 +54,13 @@ describe('extract command', function() {
       },
       isEmberCLIProject() {
         return true;
-      }
+      },
     };
 
     shell.mkdir('-p', tmpDir);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     rimraf.sync(tmpDir);
   });
 
@@ -69,14 +69,14 @@ describe('extract command', function() {
       ui: new MockUI(),
       project,
       environment: {},
-      settings: {}
+      settings: {},
     });
 
     let TestCommand = Command.extend(ExtractCommand);
     return new TestCommand(options);
   }
 
-  it('messages.po file is correctly generated from scratch', async function() {
+  it('messages.po file is correctly generated from scratch', async function () {
     let options = getOptions({});
 
     let cmd = createCommand();
@@ -92,7 +92,7 @@ describe('extract command', function() {
     expect(actualFileContent).to.equals(expectedFileContent);
   });
 
-  it('messages.po file is correctly updated if one already exists', async function() {
+  it('messages.po file is correctly updated if one already exists', async function () {
     let options = getOptions({});
 
     // First put a dummy existing messages.po in the output folder
@@ -115,11 +115,11 @@ describe('extract command', function() {
     expect(actualFileContent).to.equals(expectedFileContent);
   });
 
-  it('correctly handles --include-patterns & --skip-patterns', async function() {
+  it('correctly handles --include-patterns & --skip-patterns', async function () {
     let options = getOptions({
       extractFrom: './tests',
       includePatterns: ['dummy/app'],
-      skipPatterns: ['services']
+      skipPatterns: ['services'],
     });
 
     let cmd = createCommand();

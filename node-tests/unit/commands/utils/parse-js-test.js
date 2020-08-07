@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 const { parseJsFile } = require('./../../../../lib/commands/utils/parse-js');
 
-describe('parseJsFile util', function() {
-  it('it correctly parses t method', function() {
+describe('parseJsFile util', function () {
+  it('it correctly parses t method', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -14,14 +14,14 @@ describe('parseJsFile util', function() {
         loc: {
           fileName,
           line: 3,
-          column: 4
+          column: 4,
         },
-        messageId: 'text'
-      }
+        messageId: 'text',
+      },
     ]);
   });
 
-  it('it correctly parses n method', function() {
+  it('it correctly parses n method', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -33,15 +33,15 @@ describe('parseJsFile util', function() {
         loc: {
           fileName,
           line: 3,
-          column: 4
+          column: 4,
         },
         messageId: 'text',
-        messageIdPlural: 'plural'
-      }
+        messageIdPlural: 'plural',
+      },
     ]);
   });
 
-  it('it correctly parses pt method', function() {
+  it('it correctly parses pt method', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -53,15 +53,15 @@ describe('parseJsFile util', function() {
         loc: {
           fileName,
           line: 3,
-          column: 4
+          column: 4,
         },
         messageId: 'text',
-        messageContext: 'context'
-      }
+        messageContext: 'context',
+      },
     ]);
   });
 
-  it('it correctly parses pn method', function() {
+  it('it correctly parses pn method', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -73,16 +73,16 @@ describe('parseJsFile util', function() {
         loc: {
           fileName,
           line: 3,
-          column: 4
+          column: 4,
         },
         messageId: 'text',
         messageIdPlural: 'plural',
-        messageContext: 'context'
-      }
+        messageContext: 'context',
+      },
     ]);
   });
 
-  it('it correctly parses t method with double quotes', function() {
+  it('it correctly parses t method with double quotes', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -94,14 +94,14 @@ describe('parseJsFile util', function() {
         loc: {
           fileName,
           line: 3,
-          column: 4
+          column: 4,
         },
-        messageId: 'text'
-      }
+        messageId: 'text',
+      },
     ]);
   });
 
-  it('it correctly parses t method with template literal', function() {
+  it('it correctly parses t method with template literal', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -113,15 +113,15 @@ describe('parseJsFile util', function() {
         loc: {
           fileName,
           line: 3,
-          column: 4
+          column: 4,
         },
         messageId: `template literal
-with new line`
-      }
+with new line`,
+      },
     ]);
   });
 
-  it('it correctly parses a native JS class', function() {
+  it('it correctly parses a native JS class', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -133,14 +133,14 @@ with new line`
         loc: {
           column: 11,
           fileName: './node-tests/fixtures/parse-js/native-js-class.js',
-          line: 3
+          line: 3,
         },
-        messageId: 'test string'
-      }
+        messageId: 'test string',
+      },
     ]);
   });
 
-  it('it correctly parses a native JS class with decorators', function() {
+  it('it correctly parses a native JS class with decorators', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -154,23 +154,23 @@ with new line`
           column: 11,
           fileName:
             './node-tests/fixtures/parse-js/native-js-class-with-decorators.js',
-          line: 11
+          line: 11,
         },
-        messageId: 'test string'
+        messageId: 'test string',
       },
       {
         loc: {
           column: 11,
           fileName:
             './node-tests/fixtures/parse-js/native-js-class-with-decorators.js',
-          line: 16
+          line: 16,
         },
-        messageId: 'other test string - this@my-domain.com'
-      }
+        messageId: 'other test string - this@my-domain.com',
+      },
     ]);
   });
 
-  it('it correctly parses a typescript file', function() {
+  it('it correctly parses a typescript file', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -182,14 +182,14 @@ with new line`
         loc: {
           column: 11,
           fileName: './node-tests/fixtures/parse-js/typescript.ts',
-          line: 5
+          line: 5,
         },
-        messageId: 'test content {{message}}'
-      }
+        messageId: 'test content {{message}}',
+      },
     ]);
   });
 
-  it('it throws on template literals with placeholder', function() {
+  it('it throws on template literals with placeholder', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -201,7 +201,7 @@ with new line`
     );
   });
 
-  it('it throws on variables as arguments', function() {
+  it('it throws on variables as arguments', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -212,7 +212,7 @@ with new line`
     );
   });
 
-  it('it throws on tertiary operators as arguments', function() {
+  it('it throws on tertiary operators as arguments', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -223,7 +223,7 @@ with new line`
     );
   });
 
-  it('it throws on concatenated strings', function() {
+  it('it throws on concatenated strings', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -234,7 +234,7 @@ with new line`
     );
   });
 
-  it('it ignores non-member invocations of t', function() {
+  it('it ignores non-member invocations of t', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -244,7 +244,7 @@ with new line`
     expect(gettextItems).to.deep.equal([]);
   });
 
-  it('it correctly parses named exports', function() {
+  it('it correctly parses named exports', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -256,22 +256,22 @@ with new line`
         loc: {
           fileName,
           line: 3,
-          column: 4
+          column: 4,
         },
-        messageId: 'test 1'
+        messageId: 'test 1',
       },
       {
         loc: {
           fileName,
           line: 9,
-          column: 4
+          column: 4,
         },
-        messageId: 'test 2'
-      }
+        messageId: 'test 2',
+      },
     ]);
   });
 
-  it('it correctly parses in plain functions', function() {
+  it('it correctly parses in plain functions', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -283,22 +283,22 @@ with new line`
         loc: {
           fileName,
           line: 3,
-          column: 4
+          column: 4,
         },
-        messageId: 'test 1'
+        messageId: 'test 1',
       },
       {
         loc: {
           fileName,
           line: 8,
-          column: 2
+          column: 2,
         },
-        messageId: 'test 2'
-      }
+        messageId: 'test 2',
+      },
     ]);
   });
 
-  it('it correctly parses t method as object property', function() {
+  it('it correctly parses t method as object property', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -310,14 +310,14 @@ with new line`
         loc: {
           fileName,
           line: 4,
-          column: 12
+          column: 12,
         },
-        messageId: 'text'
-      }
+        messageId: 'text',
+      },
     ]);
   });
 
-  it('it correctly parses t method as function argument', function() {
+  it('it correctly parses t method as function argument', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -329,14 +329,14 @@ with new line`
         loc: {
           fileName,
           line: 3,
-          column: 16
+          column: 16,
         },
-        messageId: 'text'
-      }
+        messageId: 'text',
+      },
     ]);
   });
 
-  it('it throws when not using enough arguments for t method', function() {
+  it('it throws when not using enough arguments for t method', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -347,7 +347,7 @@ with new line`
     );
   });
 
-  it('it throws when not using enough arguments for n method', function() {
+  it('it throws when not using enough arguments for n method', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -358,7 +358,7 @@ with new line`
     );
   });
 
-  it('it throws when not using enough arguments for pt method', function() {
+  it('it throws when not using enough arguments for pt method', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];
@@ -369,7 +369,7 @@ with new line`
     );
   });
 
-  it('it throws when not using enough arguments for pn method', function() {
+  it('it throws when not using enough arguments for pn method', function () {
     let options = { fromCode: 'UTF-8' };
 
     let gettextItems = [];

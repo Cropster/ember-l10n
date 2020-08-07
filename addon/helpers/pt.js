@@ -23,5 +23,5 @@ export default THelper.extend({
     }
 
     return l10n.pt(msgid, msgctxt, hash);
-  }
+  },
 });

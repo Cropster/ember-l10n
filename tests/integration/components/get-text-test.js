@@ -3,10 +3,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, find, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | get-text', function(hooks) {
+module('Integration | Component | get-text', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it works', async function(assert) {
+  test('it works', async function (assert) {
     await render(hbs`
       {{#get-text
               message=(t "Makes placeholders for {{dynamic_blocks}} {{linkToSomeRoute 'DYNAMIC REPLACEMENT'}} within translations possible.") as |text placeholder|}}
@@ -30,21 +30,21 @@ module('Integration | Component | get-text', function(hooks) {
     );
   });
 
-  test('it works with a given message', async function(assert) {
+  test('it works with a given message', async function (assert) {
     await render(hbs`{{get-text message=(t '<b>I am bold.</b>')}}`);
     assert.equal(
-      find('*').innerHTML,
+      this.element.innerHTML,
       '&lt;b&gt;I am bold.&lt;/b&gt;',
       'It escapes text per default.'
     );
   });
 
-  test('it works with unescapeText=true set', async function(assert) {
+  test('it works with unescapeText=true set', async function (assert) {
     await render(
       hbs`{{get-text unescapeText=true message=(t '<b>I am bold.</b>')}}`
     );
     assert.equal(
-      find('*').innerHTML,
+      this.element.innerHTML,
       '<b>I am bold.</b>',
       'It unescapes text with `unescapeText` option.'
     );

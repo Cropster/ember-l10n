@@ -6,111 +6,111 @@ import L10nService from 'dummy/services/l10n';
 
 let server;
 
-module('Unit | Service | l10n', function(hooks) {
+module('Unit | Service | l10n', function (hooks) {
   setupTest(hooks);
 
-  hooks.beforeEach(function() {
-    server = new Pretender(function() {
-      this.get('/assets/locales/en.json', function() {
+  hooks.beforeEach(function () {
+    server = new Pretender(function () {
+      this.get('/assets/locales/en.json', function () {
         let response = {
           headers: {
             language: 'en',
-            'plural-forms': 'nplurals=2; plural=(n!=1);'
+            'plural-forms': 'nplurals=2; plural=(n!=1);',
           },
           translations: {
             '': {
               en: {
                 msgid: 'en',
-                msgstr: ['English']
+                msgstr: ['English'],
               },
               "I'm a {{placeholder}}.": {
-                msgstr: ["I'm a {{placeholder}}."]
+                msgstr: ["I'm a {{placeholder}}."],
               },
               'You have {{count}} unit in your cart.': {
                 msgstr: [
                   'You have {{count}} unit in your cart.',
-                  'You have {{count}} units in your cart.'
-                ]
+                  'You have {{count}} units in your cart.',
+                ],
               },
               STATUS_ACTIVE: {
-                msgstr: ['active']
-              }
+                msgstr: ['active'],
+              },
             },
             menu: {
               user: {
-                msgstr: ['subscription', 'subscriptions']
+                msgstr: ['subscription', 'subscriptions'],
               },
               'You have {{count}} subscription': {
                 msgstr: [
                   'You have {{count}} subscription',
-                  'You have {{count}} subscriptions'
-                ]
-              }
-            }
-          }
+                  'You have {{count}} subscriptions',
+                ],
+              },
+            },
+          },
         };
 
         return [
           200,
           {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          JSON.stringify(response)
+          JSON.stringify(response),
         ];
       });
 
-      this.get('/assets/locales/de.json', function() {
+      this.get('/assets/locales/de.json', function () {
         let response = {
           headers: {
             language: 'de',
-            'plural-forms': 'nplurals=2; plural=(n!=1);'
+            'plural-forms': 'nplurals=2; plural=(n!=1);',
           },
           translations: {
             '': {
               en: {
-                msgstr: ['Englisch']
+                msgstr: ['Englisch'],
               },
               testing: {
-                msgstr: ['Test']
-              }
+                msgstr: ['Test'],
+              },
             },
             menu: {
               user: {
-                msgstr: ['Abonnement', 'Abonnements']
+                msgstr: ['Abonnement', 'Abonnements'],
               },
               'You have {{count}} subscription': {
                 msgstr: [
                   'Sie haben {{count}} Abonnement',
-                  'Sie haben {{count}} Abonnements'
-                ]
-              }
-            }
-          }
+                  'Sie haben {{count}} Abonnements',
+                ],
+              },
+            },
+          },
         };
 
         return [
           200,
           {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          JSON.stringify(response)
+          JSON.stringify(response),
         ];
       });
     });
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     server.shutdown();
   });
 
-  test('it works', async function(assert) {
+  test('it works', async function (assert) {
     let ExtendedL10nService = L10nService.extend({
       autoInitialize: false,
       _window: {
         navigator: {
-          languages: ['en']
-        }
-      }
+          languages: ['en'],
+        },
+      },
     });
 
     this.owner.register('service:l10n', ExtendedL10nService);
@@ -161,7 +161,7 @@ module('Unit | Service | l10n', function(hooks) {
 
     assert.strictEqual(
       service.t('Current status: {{status}}', {
-        status: service.t('STATUS_ACTIVE')
+        status: service.t('STATUS_ACTIVE'),
       }),
       'Current status: active',
       'Placeholders translations work correctly.'
@@ -237,7 +237,7 @@ module('Unit | Service | l10n', function(hooks) {
         3,
         'menu',
         {
-          count: 3
+          count: 3,
         }
       ),
       'Sie haben 3 Abonnements',
@@ -256,22 +256,22 @@ module('Unit | Service | l10n', function(hooks) {
     );
   });
 
-  test('detect and swap locale test', async function(assert) {
+  test('detect and swap locale test', async function (assert) {
     let _window = {
       navigator: {
-        languages: []
-      }
+        languages: [],
+      },
     };
 
     let ExtendedL10nService = L10nService.extend({
       availableLocales: {
         de: true,
         en: true,
-        ko: true
+        ko: true,
       },
       autoInitialize: false,
       defaultLocale: 'de',
-      _window
+      _window,
     });
 
     this.owner.register('service:l10n', ExtendedL10nService);
@@ -329,16 +329,16 @@ module('Unit | Service | l10n', function(hooks) {
     );
   });
 
-  test('_getBrowserLocales works', function(assert) {
+  test('_getBrowserLocales works', function (assert) {
     let _window = {
       navigator: {
-        languages: []
-      }
+        languages: [],
+      },
     };
     let ExtendedL10nService = L10nService.extend({
       autoInitialize: false,
       defaultLocale: 'de',
-      _window
+      _window,
     });
 
     this.owner.register('service:l10n', ExtendedL10nService);
@@ -353,8 +353,8 @@ module('Unit | Service | l10n', function(hooks) {
     set(service, '_window', {
       navigator: {
         languages: undefined,
-        browserLanguage: 'en'
-      }
+        browserLanguage: 'en',
+      },
     });
     assert.deepEqual(
       service._getBrowserLocales(),
@@ -364,8 +364,8 @@ module('Unit | Service | l10n', function(hooks) {
 
     set(service, '_window', {
       navigator: {
-        languages: ['de-AT', 'de', 'en-US', 'en']
-      }
+        languages: ['de-AT', 'de', 'en-US', 'en'],
+      },
     });
     assert.deepEqual(
       service._getBrowserLocales(),
@@ -374,15 +374,15 @@ module('Unit | Service | l10n', function(hooks) {
     );
   });
 
-  module('_saveJSON', function() {
-    test('it works with a missing plural-form header', function(assert) {
+  module('_saveJSON', function () {
+    test('it works with a missing plural-form header', function (assert) {
       let service = this.owner.factoryFor('service:l10n').create({
-        autoInitialize: false
+        autoInitialize: false,
       });
 
       let payload = {
         headers: {},
-        translations: {}
+        translations: {},
       };
 
       service._saveJSON(payload, 'de');
@@ -391,7 +391,7 @@ module('Unit | Service | l10n', function(hooks) {
         get(service, '_plurals').de(),
         {
           plural: 1,
-          nplurals: 2
+          nplurals: 2,
         },
         'plural is correctly set to default'
       );
@@ -400,21 +400,21 @@ module('Unit | Service | l10n', function(hooks) {
         {
           de: {
             headers: {},
-            translations: {}
-          }
+            translations: {},
+          },
         },
         'data is correctly set'
       );
     });
 
-    test('it works with a plural-form header', function(assert) {
+    test('it works with a plural-form header', function (assert) {
       let service = this.owner.factoryFor('service:l10n').create({
-        autoInitialize: false
+        autoInitialize: false,
       });
 
       let payload = {
         headers: {},
-        translations: {}
+        translations: {},
       };
 
       service._saveJSON(payload, 'de');
@@ -423,7 +423,7 @@ module('Unit | Service | l10n', function(hooks) {
         get(service, '_plurals').de(),
         {
           plural: 1,
-          nplurals: 2
+          nplurals: 2,
         },
         'plural is correctly set to default'
       );
@@ -432,23 +432,23 @@ module('Unit | Service | l10n', function(hooks) {
         {
           de: {
             headers: {},
-            translations: {}
-          }
+            translations: {},
+          },
         },
         'data is correctly set'
       );
     });
 
-    test('it works with a plural-form header for no plural', function(assert) {
+    test('it works with a plural-form header for no plural', function (assert) {
       let service = this.owner.factoryFor('service:l10n').create({
-        autoInitialize: false
+        autoInitialize: false,
       });
 
       let payload = {
         headers: {
-          'plural-forms': 'nplurals=2; plural=(n != 1);'
+          'plural-forms': 'nplurals=2; plural=(n != 1);',
         },
-        translations: {}
+        translations: {},
       };
 
       service._saveJSON(payload, 'de');
@@ -457,7 +457,7 @@ module('Unit | Service | l10n', function(hooks) {
         get(service, '_plurals').de(),
         {
           plural: 1,
-          nplurals: 2
+          nplurals: 2,
         },
         'plural is correctly set'
       );

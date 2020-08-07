@@ -1,14 +1,14 @@
 const { expect } = require('chai');
 const {
-  validateTranslatedPlaceholders
+  validateTranslatedPlaceholders,
 } = require('./../../../../../lib/commands/utils/validate/validate-translated-placeholders');
 
-describe('validateTranslatedPlaceholders util', function() {
-  it('it works for empty id', function() {
+describe('validateTranslatedPlaceholders util', function () {
+  it('it works for empty id', function () {
     let validationErrors = [];
     let gettextItem = {
       id: '',
-      translations: []
+      translations: [],
     };
     validateTranslatedPlaceholders(gettextItem, validationErrors);
 
@@ -16,11 +16,11 @@ describe('validateTranslatedPlaceholders util', function() {
     expect(validationErrors).to.deep.equal(expected);
   });
 
-  it('it works without translated placeholders', function() {
+  it('it works without translated placeholders', function () {
     let validationErrors = [];
     let gettextItem = {
       id: 'My test {{val}}',
-      translations: ['My test {{val}}']
+      translations: ['My test {{val}}'],
     };
     validateTranslatedPlaceholders(gettextItem, validationErrors);
 
@@ -28,11 +28,11 @@ describe('validateTranslatedPlaceholders util', function() {
     expect(validationErrors).to.deep.equal(expected);
   });
 
-  it('it ignores missing translations for translated placeholders', function() {
+  it('it ignores missing translations for translated placeholders', function () {
     let validationErrors = [];
     let gettextItem = {
       id: 'My test {{val "test"}}',
-      translations: ['']
+      translations: [''],
     };
     validateTranslatedPlaceholders(gettextItem, validationErrors);
 
@@ -40,11 +40,11 @@ describe('validateTranslatedPlaceholders util', function() {
     expect(validationErrors).to.deep.equal(expected);
   });
 
-  it('it works with correct translated placeholders for default language', function() {
+  it('it works with correct translated placeholders for default language', function () {
     let validationErrors = [];
     let gettextItem = {
       id: 'My test {{val "test"}}',
-      translations: ['My test {{val "test"}}']
+      translations: ['My test {{val "test"}}'],
     };
     validateTranslatedPlaceholders(gettextItem, validationErrors);
 
@@ -52,11 +52,11 @@ describe('validateTranslatedPlaceholders util', function() {
     expect(validationErrors).to.deep.equal(expected);
   });
 
-  it('it works with correct translated placeholders for other language', function() {
+  it('it works with correct translated placeholders for other language', function () {
     let validationErrors = [];
     let gettextItem = {
       id: 'My test {{val "test"}}',
-      translations: ['Mein test {{val "Test"}}']
+      translations: ['Mein test {{val "Test"}}'],
     };
     validateTranslatedPlaceholders(gettextItem, validationErrors);
 
@@ -64,11 +64,11 @@ describe('validateTranslatedPlaceholders util', function() {
     expect(validationErrors).to.deep.equal(expected);
   });
 
-  it('it works with incorrect translated placeholders for other language', function() {
+  it('it works with incorrect translated placeholders for other language', function () {
     let validationErrors = [];
     let gettextItem = {
       id: 'My test {{val "test"}}',
-      translations: ['Mein test {{val "test"}}']
+      translations: ['Mein test {{val "test"}}'],
     };
     validateTranslatedPlaceholders(gettextItem, validationErrors);
 
@@ -78,17 +78,17 @@ describe('validateTranslatedPlaceholders util', function() {
         level: 'WARNING',
         message:
           'The content "test" for complex placeholder "val" is not translated',
-        translation: 'Mein test {{val "test"}}'
-      }
+        translation: 'Mein test {{val "test"}}',
+      },
     ];
     expect(validationErrors).to.deep.equal(expected);
   });
 
-  it('it works with changed placeholder names', function() {
+  it('it works with changed placeholder names', function () {
     let validationErrors = [];
     let gettextItem = {
       id: 'My test {{val "test"}}',
-      translations: ['Mein test {{val2 "test"}}']
+      translations: ['Mein test {{val2 "test"}}'],
     };
     validateTranslatedPlaceholders(gettextItem, validationErrors);
 
@@ -97,8 +97,8 @@ describe('validateTranslatedPlaceholders util', function() {
         id: 'My test {{val "test"}}',
         level: 'ERROR',
         message: 'The complex placeholder "val" is not correctly translated',
-        translation: 'Mein test {{val2 "test"}}'
-      }
+        translation: 'Mein test {{val2 "test"}}',
+      },
     ];
     expect(validationErrors).to.deep.equal(expected);
   });

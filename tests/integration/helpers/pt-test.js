@@ -10,37 +10,37 @@ const mockL10nService = L10n.extend({
   autoInitialize: false,
   availableLocales: {
     en: 'en',
-    de: 'de'
-  }
+    de: 'de',
+  },
 });
 
-module('Integration | Helper | pt', function(hooks) {
+module('Integration | Helper | pt', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.owner.register('service:l10n', mockL10nService);
     this.l10n = this.owner.lookup('service:l10n');
 
-    this.server = new Pretender(function() {
+    this.server = new Pretender(function () {
       let json = {
         'en.json': {
           headers: {
             language: 'en',
-            'plural-forms': 'nplurals=2; plural=(n != 1);'
+            'plural-forms': 'nplurals=2; plural=(n != 1);',
           },
           translations: {
             '': {
               KG: {
-                msgstr: ['kg']
-              }
+                msgstr: ['kg'],
+              },
             },
             countries: {
               KG: {
-                msgstr: ['Kyrgyzstan']
-              }
-            }
-          }
-        }
+                msgstr: ['Kyrgyzstan'],
+              },
+            },
+          },
+        },
       };
 
       this.get('/assets/locales/:locale', (request) => {
@@ -50,11 +50,11 @@ module('Integration | Helper | pt', function(hooks) {
     });
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     this.server.shutdown();
   });
 
-  test('it works', async function(assert) {
+  test('it works', async function (assert) {
     let { l10n } = this;
     await l10n.setLocale('en');
 

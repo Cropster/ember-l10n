@@ -119,9 +119,9 @@ export default Service.extend({
    * @type {Object}
    * @public
    */
-  availableLocales: computed('locale', function() {
+  availableLocales: computed('locale', function () {
     return {
-      en: this.t('en')
+      en: this.t('en'),
     };
   }),
 
@@ -133,7 +133,7 @@ export default Service.extend({
    * @readOnly
    * @private
    */
-  _window: computed(function() {
+  _window: computed(function () {
     return window || {};
   }),
 
@@ -147,7 +147,7 @@ export default Service.extend({
    * @default {}
    * @private
    */
-  _plurals: computed(function() {
+  _plurals: computed(function () {
     let pluralForm = get(this, 'defaultPluralForm');
     let locale = get(this, 'defaultLocale');
     let _plurals = {};
@@ -167,7 +167,7 @@ export default Service.extend({
    * @default {}
    * @private
    */
-  _data: computed(function() {
+  _data: computed(function () {
     return {};
   }),
 
@@ -178,7 +178,7 @@ export default Service.extend({
    * @type {Object}
    * @private
    */
-  _localeMap: computed(function() {
+  _localeMap: computed(function () {
     return getLocaleAssetMap();
   }),
 
@@ -341,7 +341,7 @@ export default Service.extend({
 
     return guessLocale(availableLocales, desiredLocales, {
       defaultLocale,
-      allowSubLocales
+      allowSubLocales,
     });
   },
 
@@ -573,6 +573,7 @@ export default Service.extend({
       };
 
       // used cached translation from hash map
+      // eslint-disable-next-line no-prototype-builtins
       if (_data.hasOwnProperty(locale)) {
         successCallback(_data[locale]);
         resolve(_data[locale]);
@@ -601,7 +602,7 @@ export default Service.extend({
     let json = this._sanitizeJSON(response);
 
     let {
-      headers: { 'plural-forms': pluralForm }
+      headers: { 'plural-forms': pluralForm },
     } = json;
 
     set(this, `_data.${locale}`, json);
@@ -634,7 +635,7 @@ export default Service.extend({
         let item = items[messageId];
         let sanitizedMessageId = messageId.replace(/\s+/g, ' ');
         sanitizedTranslations[context][sanitizedMessageId] = assign({}, item, {
-          msgid: sanitizedMessageId
+          msgid: sanitizedMessageId,
         });
       });
     });
@@ -781,7 +782,7 @@ export default Service.extend({
 
     // eslint-disable-next-line no-console
     console[type](`l10n.js: ${str}`);
-  }
+  },
 });
 
 /**
@@ -793,7 +794,7 @@ export default Service.extend({
  * @param {Object} hash
  * @return {String}
  */
-export const strfmt = function(string, hash) {
+export const strfmt = function (string, hash) {
   // ignore each invalid hash param
   if (typeOf(hash) !== 'object') {
     return string;

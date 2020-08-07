@@ -66,7 +66,7 @@ export default Component.extend({
    * @type {Array}
    * @public
    */
-  messageParts: computed('message', function() {
+  messageParts: computed('message', function () {
     let message = get(this, 'message');
 
     if (!message) {
@@ -100,14 +100,14 @@ export default Component.extend({
       // 1) normal text
       parts.push({
         isPlaceholder: false,
-        text: split[0]
+        text: split[0],
       });
 
       // 2) placeholder
       parts.push({
         isPlaceholder: true,
         name: result[1],
-        text: result[2]
+        text: result[2],
       });
 
       // set remainder
@@ -118,10 +118,10 @@ export default Component.extend({
     if (!isEmpty(text)) {
       parts.push({
         isPlaceholder: false,
-        text
+        text,
       });
     }
 
     return parts;
-  })
+  }),
 });

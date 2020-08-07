@@ -11,64 +11,64 @@ const mockL10nService = L10n.extend({
   autoInitialize: false,
   availableLocales: {
     en: 'en',
-    de: 'de'
-  }
+    de: 'de',
+  },
 });
 
-module('Integration | Helper | n', function(hooks) {
+module('Integration | Helper | n', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.owner.register('service:l10n', mockL10nService);
     this.l10n = this.owner.lookup('service:l10n');
 
-    this.server = new Pretender(function() {
+    this.server = new Pretender(function () {
       let json = {
         'en.json': {
           headers: {
             language: 'en',
-            'plural-forms': 'nplurals=2; plural=(n != 1);'
+            'plural-forms': 'nplurals=2; plural=(n != 1);',
           },
           translations: {
             '': {
               'I am one plural translation.': {
                 msgstr: [
                   'I am one plural translation.',
-                  'We are multiple plural translations.'
-                ]
+                  'We are multiple plural translations.',
+                ],
               },
               'You have {{count}} unit in your cart.': {
                 msgstr: [
                   'You have {{count}} unit in your cart.',
-                  'You have {{count}} units in your cart.'
-                ]
-              }
-            }
-          }
+                  'You have {{count}} units in your cart.',
+                ],
+              },
+            },
+          },
         },
 
         'de.json': {
           headers: {
             language: 'de',
-            'plural-forms': 'nplurals=2; plural=(n != 1);'
+            'plural-forms': 'nplurals=2; plural=(n != 1);',
           },
           translations: {
             '': {
               'I am one plural translation.': {
                 msgstr: [
                   'Ich bin eine Pluralübersetzung.',
-                  'Wir sind mehrere Pluralübersetzungen.'
-                ]
+                  'Wir sind mehrere Pluralübersetzungen.',
+                ],
               },
               'You have {{count}} unit in your cart.': {
                 msgstr: [
                   'Du hast {{count}} Einheit in deinem Warenkorb.',
-                  'Du hast {{count}} Einheiten in deinem Warenkorb.'
-                ]
-              }
-            }
-          }
-        }
+                  'Du hast {{count}} Einheiten in deinem Warenkorb.',
+                ],
+              },
+            },
+          },
+        },
       };
 
       this.get('/assets/locales/:locale', (request) => {
@@ -78,11 +78,11 @@ module('Integration | Helper | n', function(hooks) {
     });
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     this.server.shutdown();
   });
 
-  test('it works', async function(assert) {
+  test('it works', async function (assert) {
     let { l10n } = this;
     await l10n.setLocale('en');
 

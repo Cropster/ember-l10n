@@ -5,5 +5,5 @@ function t() {
 export default {
   test() {
     t('this should be ignored');
-  }
+  },
 };

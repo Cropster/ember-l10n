@@ -13,9 +13,9 @@ export default L10n.extend({
    * @type {object}
    * @public
    */
-  availableLocales: computed('locale', function() {
+  availableLocales: computed('locale', function () {
     return {
-      en: 'English'
+      en: 'English',
     };
   }),
 
@@ -27,5 +27,5 @@ export default L10n.extend({
    * @type {boolean}
    * @public
    */
-  autoInitialize: true
+  autoInitialize: true,
 });

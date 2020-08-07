@@ -3,7 +3,7 @@ import { assign } from '@ember/polyfills';
 import { strfmt } from './services/l10n';
 import { deprecate } from '@ember/application/deprecations';
 
-export default function(context) {
+export default function (context) {
   let tHelper = helper(([str], hash) => {
     return strfmt(str, assign({}, hash));
   });
