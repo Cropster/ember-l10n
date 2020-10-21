@@ -83,7 +83,6 @@
     "chalk": "^4.1.0",
     "ember-cli-babel": "^7.22.1",
     "ember-cli-htmlbars": "^5.3.1",
-    "ember-get-config": "^0.2.4",
     "gettext-parser": "^4.0.2",
     "inquirer": "^7.0.4",
     "shelljs": "^0.8.4"
