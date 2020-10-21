@@ -77,7 +77,7 @@
   ],
   "dependencies": {
     "@babel/parser": "^7.12.3",
-    "@glimmer/syntax": "^0.56.0",
+    "@glimmer/syntax": "^0.62.3",
     "ast-types": "^0.14.2",
     "broccoli-plugin": "^4.0.3",
     "chalk": "^4.1.0",
