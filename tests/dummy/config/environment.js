@@ -21,6 +21,13 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+
+    'ember-l10n': {
+      locales: ['en', 'de', 'ko'],
+      defaultLocale: 'en',
+      defaultPluralForm: 'nplurals=2; plural=(n != 1);',
+      autoInitialize: true,
+    },
   };
 
   if (environment === 'development') {

@@ -1,5 +1,4 @@
-import { get } from '@ember/object';
-import THelper from './t';
+import BaseHelper from './-base';
 
 /**
  * This helper provides contextual plural message, where context has to
@@ -14,14 +13,14 @@ import THelper from './t';
  * @extends Ember.Helper
  * @public
  */
-export default THelper.extend({
+export default class PNHelper extends BaseHelper {
   compute([msgid, msgidPlural, count, msgctxt], hash) {
-    let l10n = get(this, 'l10n');
+    let { l10n } = this;
 
     if (!msgid) {
       return msgid;
     }
 
     return l10n.pn(msgid, msgidPlural, count, msgctxt, hash);
-  },
-});
+  }
+}

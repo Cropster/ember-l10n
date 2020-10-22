@@ -2,23 +2,27 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import L10n from 'ember-l10n/services/l10n';
+import L10nService from 'ember-l10n/services/l10n';
 import hbs from 'htmlbars-inline-precompile';
 import Pretender from 'pretender';
 
-const mockL10nService = L10n.extend({
-  autoInitialize: false,
-  availableLocales: {
-    en: 'en',
-    de: 'de',
-  },
-});
+class ExtendedL10nService extends L10nService {
+  _loadConfig() {
+    let config = {
+      locales: ['de', 'en'],
+      autoInitialize: false,
+      defaultLocale: 'de',
+    };
+
+    return super._loadConfig(config);
+  }
+}
 
 module('Integration | Helper | pn', function (hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function () {
-    this.owner.register('service:l10n', mockL10nService);
+    this.owner.register('service:l10n', ExtendedL10nService);
     this.l10n = this.owner.lookup('service:l10n');
 
     this.server = new Pretender(function () {

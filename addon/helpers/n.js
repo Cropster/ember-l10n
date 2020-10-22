@@ -1,5 +1,4 @@
-import { get } from '@ember/object';
-import THelper from './t';
+import BaseHelper from './-base';
 
 /**
  * This helper provides gettext pluralization for message ids.
@@ -16,14 +15,14 @@ import THelper from './t';
  * @extends Ember.Helper
  * @public
  */
-export default THelper.extend({
+export default class NHelper extends BaseHelper {
   compute([msgid, msgidPlural, count], hash) {
-    let l10n = get(this, 'l10n');
+    let { l10n } = this;
 
     if (!msgid) {
       return msgid;
     }
 
     return l10n.n(msgid, msgidPlural, count, hash);
-  },
-});
+  }
+}
