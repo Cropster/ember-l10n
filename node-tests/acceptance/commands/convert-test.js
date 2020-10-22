@@ -102,6 +102,28 @@ describe('convert command', function () {
     });
   });
 
+  it('it allows to specify a full input file path', async function () {
+    let options = getOptions({
+      convertFromFile: `${tmpDir}/custom.po`,
+    });
+
+    // First put the example en.po in the output folder
+    fs.copyFileSync(
+      './node-tests/fixtures/convert/en.po',
+      options.convertFromFile
+    );
+
+    let cmd = createCommand();
+    await cmd.run(options);
+
+    let actualFileContent = readJSONFromFile('./tmp/ember-l10n-tests/en.json');
+    let expectedFileContent = readJSONFromFile(
+      './node-tests/fixtures/convert/expected.json'
+    );
+
+    expect(actualFileContent).to.deep.equals(expectedFileContent);
+  });
+
   it('it appends a semicolon to the plural forms if it is missing', async function () {
     let options = getOptions({});
 
