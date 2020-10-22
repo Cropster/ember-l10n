@@ -59,5 +59,6 @@ msgid ""
 msgstr ""
 
 #: tests/dummy/app/templates/test-page.hbs:19:0
+#: tests/dummy/app/templates/test-page.hbs:20:0
 msgid "en"
 msgstr ""
