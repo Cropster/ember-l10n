@@ -76,9 +76,9 @@
     "po"
   ],
   "dependencies": {
-    "@babel/parser": "^7.5.5",
-    "@glimmer/syntax": "^0.56.0",
-    "ast-types": "^0.13.2",
+    "@babel/parser": "^7.12.3",
+    "@glimmer/syntax": "^0.62.3",
+    "ast-types": "^0.14.2",
     "broccoli-plugin": "^4.0.3",
     "chalk": "^4.1.0",
     "ember-cli-babel": "^7.21.0",
