@@ -119,7 +119,7 @@ describe('extract command', function () {
     let options = getOptions({
       extractFrom: './tests',
       includePatterns: ['dummy/app'],
-      skipPatterns: ['services'],
+      skipPatterns: ['controllers'],
     });
 
     let cmd = createCommand();

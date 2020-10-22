@@ -1,5 +1,4 @@
-import { get } from '@ember/object';
-import THelper from './t';
+import BaseHelper from './-base';
 
 /**
  * This helper provides contextual singular message, where context has to
@@ -14,14 +13,14 @@ import THelper from './t';
  * @extends Ember.Helper
  * @public
  */
-export default THelper.extend({
+export default class PTHelper extends BaseHelper {
   compute([msgid, msgctxt], hash) {
-    let l10n = get(this, 'l10n');
+    let { l10n } = this;
 
     if (!msgid) {
       return msgid;
     }
 
     return l10n.pt(msgid, msgctxt, hash);
-  },
-});
+  }
+}

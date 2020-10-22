@@ -24,7 +24,28 @@ Compatibility
 
 ## Configuration
 
-You should activate fingerprinting for your translation files, to ensure they can be properly cached.
+You configure ember-l10n in your `config/environment.js`:
+
+```js
+ENV['ember-l10n'] = {
+  // This is required to be set
+  locales: ['en', 'de'],
+
+  // These are optional (defaults listed)
+  defaultLocale: 'en',
+  autoInitialize: false,
+  defaultPluralForm: 'nplurals=2; plural=(n != 1);',
+  jsonPath: '/assets/locales'
+}
+```
+
+* `locales`: The available locales for your application. 
+* `defaultLocale`: The default locale to use, if no other matching locale is found.
+* `autoInitialize`: If you set this to true, the browser locale will be detected on initialization and automatically be set.
+* `defaultPluralForm`: Overwrite this if your default locale has a different plural form.
+* `jsonPath`: The folder where the JSON files containing the translations can be found.
+
+You should also activate fingerprinting for your translation files, to ensure they can be properly cached.
 To do so, you need to add this to your `ember-cli-build.js`:
 
 ```js
@@ -71,7 +92,7 @@ be used for translations message ids from JS source:
 
 `tVar()` works exactly the same as `t()`, but it will be ignored by the gettext parser. This is useful if your message ids are variables, for example: `l10n.t(myProperty)` would create a `myProperty` entry in your po-file when gettext is run. So in this case, `l10n.tVar(myProperty)` should be used instead.
 
-Furthermore, there's an auto initialization feature (default: true), which detects user's locale according to system preferences. If the user's locale is supported in `availableLocales`, the corresponding translations are loaded. If the user's locale is not supported, the default locale will be used instead (default: "en"). Please use the following method to change locales:
+Furthermore, there's an auto initialization feature (default: false), which detects user's locale according to system preferences. If the user's locale is supported , the corresponding translations are loaded. If the user's locale is not supported, the default locale will be used instead (default: "en"). Please use the following method to change locales:
 
 * `setLocale(locale)` 
 
@@ -80,71 +101,11 @@ The following utility methods are also available:
 * `getLocale()`
 * `hasLocale(locale)`
 * `detectLocale()`
-
-To configure the path of the JSON files (depending on the path configured via convertor's `-o` option) use the `jsonPath` property (default: "/assets/locales").
-
-When installing via `ember install ember-l10n`, an `l10n` service will be created for you under `app/services/l10n.js`.
-There, you can configure (and overwrite) all service properties/methods:
-
-```js
-import { computed } from '@ember/object';
-import L10n from 'ember-l10n/services/l10n';
-
-export default L10n.extend({
-  /**
-   * Defines available locales as hash map, where key corresponds
-   * to ISO_639-1 country codes and value can be any truthy value.
-   * By default, it's used to translate the language codes, which
-   * could be used for a language drop down. Adjust the hash map
-   * for each new language being added your translatable project.
-   *
-   * @property availableLocales
-   * @type {object}
-   * @public
-   */
-  availableLocales: computed('locale', function() {
-    return {
-      'en': 'English'
-    };
-  }),
-
-  /**
-   * Flag indicating if service should try to detect user langugage
-   * from browser settings and load/set the corresponding JSON file.
-   *
-   * @property autoInitialize
-   * @type {boolean}
-   * @public
-   */
-  autoInitialize: true,
-});
-```
-
-You can create an initializer to inject the l10n-service everywhere with the following blueprint:
-
-```bash
-ember g ember-l10n-initializer my-l10n-initializer
-```
-
-This will produce an initializer such as:
-
-```js
-export function initialize(application) {
-  application.inject('model', 'l10n', 'service:l10n');
-  application.inject('route', 'l10n', 'service:l10n');
-  application.inject('controller', 'l10n', 'service:l10n');
-  application.inject('component', 'l10n', 'service:l10n');
-}
-
-export default {
-  initialize: initialize,
-  name: 'my-l10n-initializer'
-};
-```
+* `setDetectedLocale()`
 
 ### Helpers
 
-For handling your translations within your handlebar templates you can use `t` and `n` helper:
+For handling your translations within your templates you can use `t` and `n` helper:
 
 ###### Singular translations:
 
@@ -190,8 +151,8 @@ Please note: Both contextual helpers also accept placeholders just as their non-
 If you have complex message ids, which should contain "dynamic" placeholders, which can also be replaced with components (such as a `link-to`), you can use the `get-text` component.
 
 ```hbs
-{{#get-text 
-  message=(t "My translation with {{dynamicLink 'optional link text'}} and {{staticLink}}.") as |text placeholder|}}
+<GetText
+  @message={{t "My translation with {{dynamicLink 'optional link text'}} and {{staticLink}}."}} as |text placeholder|>
   {{!-- You can omit the if helper if you have only one placeholder --}}
   {{~#if (eq placeholder 'dynamicLink')}}
       {{~#link-to 'my-route'}}
@@ -201,29 +162,14 @@ If you have complex message ids, which should contain "dynamic" placeholders, wh
    {{~#if (eq placeholder 'staticLink')}}
       <a href="http://www.google.com">Google</a>
    {{~/if~}}
-{{/get-text}}
+</GetText>
 ```
 
-Please note: If your message id contains HTML, you have to set `unescapeText=true` on the component. Be sure to use this option only in combination with safe strings and don't make use of it when dealing with user generated inputs (XSS)!
+Please note: If your message id contains HTML, you have to set `@unescapeText={{true}}` on the component. Be sure to use this option only in combination with safe strings and don't make use of it when dealing with user generated inputs (XSS)!
 
 ### Testing
 
-In acceptance tests, ember-l10n should work without any further work. In integration tests, you can use the provided test helpers to provide easy to use `{{t}}`,`{{tVar}}` and `{{n}}` helpers:
-
-```js
-// tests/integration/components/my-component-test.js
-import l10nTestHelper from 'ember-l10n/test-helpers';
-
-moduleForComponent('my-component', 'Integration | Component | my component', {
-  integration: true,
-
-  beforeEach() {
-    l10nTestHelper(this);
-  }
-});
-```
-
-These helpers will basically just pass the string through replacing only placeholders.
+In tests, ember-l10n should work without any further work. 
 
 ## 2. CLI
 
@@ -306,6 +252,8 @@ ember l10n:convert <options...>
   Convert PO files to JSON
     --convert-from (String) (Default: ./translations) Directory of PO file to convert
       aliases: -i <value>
+     --convert-from-file (String) Optional full path to file to convert. Takes precedence over convert-from & language.
+      aliases: -f <value>
     --convert-to (String) (Default: ./public/assets/locales) Directory to write JSON files to
       aliases: -o <value>
     --language (String) (Default: en) Target language for PO to JSON conversion
@@ -367,6 +315,49 @@ module.exports = {
 
 ## Note for Upgrading
 
+### Upgrading from 4.x to 5.x
+
+In 5.0.0, the configuration format was changed, in order to align better with the Octane world.
+Instead of overwriting the l10n service in your app, you now pass the configuration in `config/environment.js`:
+
+```js
+ENV['ember-l10n'] = {
+  // This is required to be set
+  locales: ['en', 'de'],
+
+  // These are optional (defaults listed)
+  defaultLocale: 'en',
+  autoInitialize: false,
+  defaultPluralForm: 'nplurals=2; plural=(n != 1);',
+  jsonPath: '/assets/locales'
+}
+```
+
+Other notable changes:
+
+* `autoInitialize` defaults to false now, as you usually want to set the locale manually (e.g. in the application route's `beforeModel` hook). 
+* If you have been overwriting some fields for tests, the recommended way to do so now is different:
+
+```js
+class ExtendedL10nService extends L10nService {
+  _loadConfig() {
+    let config = {
+      locales: ['de', 'en', 'ko'],
+      autoInitialize: false,
+      defaultLocale: 'de',
+    };
+
+    return super._loadConfig(config);
+  }
+
+  _getWindow() {
+    return {};
+  }
+}
+```
+
+Unless you are doing something very special, you shouldn't need to extend `ember-l10n/services/l10n` anymore.
+
 ### Upgrading from 3.x to 4.x
 
 In 4.0.0, the dependency on `ember-cli-ifa` was dropped. 
@@ -392,7 +383,7 @@ This library follows [Semantic Versioning](http://semver.org)
 
 ## Legal
 
-[Cropster](https://cropster.com), GmbH &copy; 2019
+[Cropster](https://cropster.com), GmbH &copy; 2020
 
 [@cropster](http://twitter.com/cropster)
 

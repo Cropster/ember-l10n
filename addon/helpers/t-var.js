@@ -1,3 +1,3 @@
 import THelper from './t';
 
-export default THelper.extend();
+export default class TVarHelper extends THelper {}

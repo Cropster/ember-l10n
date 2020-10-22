@@ -1,8 +1,8 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import Pretender from 'pretender';
-import L10nService from 'dummy/services/l10n';
+import L10nService from 'ember-l10n/services/l10n';
 
 let server;
 
@@ -104,20 +104,21 @@ module('Unit | Service | l10n', function (hooks) {
   });
 
   test('it works', async function (assert) {
-    let ExtendedL10nService = L10nService.extend({
-      autoInitialize: false,
-      _window: {
-        navigator: {
-          languages: ['en'],
-        },
-      },
-    });
+    class ExtendedL10nService extends L10nService {
+      _getWindow() {
+        return {
+          navigator: {
+            languages: ['en'],
+          },
+        };
+      }
+    }
 
     this.owner.register('service:l10n', ExtendedL10nService);
     let service = this.owner.lookup('service:l10n');
 
     assert.strictEqual(
-      get(service, 'defaultLocale'),
+      service.defaultLocale,
       'en',
       'English is default locale.'
     );
@@ -143,7 +144,7 @@ module('Unit | Service | l10n', function (hooks) {
 
     assert.strictEqual(
       service.getLocale(),
-      get(service, 'defaultLocale'),
+      service.defaultLocale,
       "Setting an unsupported locale doesn't work."
     );
 
@@ -257,22 +258,27 @@ module('Unit | Service | l10n', function (hooks) {
   });
 
   test('detect and swap locale test', async function (assert) {
-    let _window = {
+    let window = {
       navigator: {
         languages: [],
       },
     };
 
-    let ExtendedL10nService = L10nService.extend({
-      availableLocales: {
-        de: true,
-        en: true,
-        ko: true,
-      },
-      autoInitialize: false,
-      defaultLocale: 'de',
-      _window,
-    });
+    class ExtendedL10nService extends L10nService {
+      _loadConfig() {
+        let config = {
+          locales: ['de', 'en', 'ko'],
+          autoInitialize: false,
+          defaultLocale: 'de',
+        };
+
+        return super._loadConfig(config);
+      }
+
+      _getWindow() {
+        return window;
+      }
+    }
 
     this.owner.register('service:l10n', ExtendedL10nService);
     let service = this.owner.lookup('service:l10n');
@@ -283,7 +289,7 @@ module('Unit | Service | l10n', function (hooks) {
       '`defaultLocale` is used on failed detection.'
     );
 
-    set(_window, 'navigator.languages', ['ko']);
+    set(window, 'navigator.languages', ['ko']);
 
     assert.strictEqual(
       service.detectLocale(),
@@ -291,15 +297,7 @@ module('Unit | Service | l10n', function (hooks) {
       'Detected locale is used if listed in `availableLocales`.'
     );
 
-    set(service, 'forceLocale', 'ko');
-
-    assert.strictEqual(
-      service.detectLocale(),
-      'ko',
-      '`forceLocale` is used if listed in `availableLocales`.'
-    );
-
-    set(service, 'forceLocale', 'es');
+    set(window, 'navigator.languages', ['es']);
 
     assert.strictEqual(
       service.detectLocale(),
@@ -330,16 +328,27 @@ module('Unit | Service | l10n', function (hooks) {
   });
 
   test('_getBrowserLocales works', function (assert) {
-    let _window = {
+    let window = {
       navigator: {
         languages: [],
       },
     };
-    let ExtendedL10nService = L10nService.extend({
-      autoInitialize: false,
-      defaultLocale: 'de',
-      _window,
-    });
+
+    class ExtendedL10nService extends L10nService {
+      _loadConfig() {
+        let config = {
+          locales: ['de', 'en'],
+          autoInitialize: false,
+          defaultLocale: 'de',
+        };
+
+        return super._loadConfig(config);
+      }
+
+      _getWindow() {
+        return window;
+      }
+    }
 
     this.owner.register('service:l10n', ExtendedL10nService);
     let service = this.owner.lookup('service:l10n');
@@ -350,23 +359,21 @@ module('Unit | Service | l10n', function (hooks) {
       'it returns the default locale if empty languages is found'
     );
 
-    set(service, '_window', {
-      navigator: {
-        languages: undefined,
-        browserLanguage: 'en',
-      },
+    set(window, 'navigator', {
+      languages: undefined,
+      browserLanguage: 'en',
     });
+
     assert.deepEqual(
       service._getBrowserLocales(),
       ['en'],
       'it uses the browserLanguage if languages is not found'
     );
 
-    set(service, '_window', {
-      navigator: {
-        languages: ['de-AT', 'de', 'en-US', 'en'],
-      },
+    set(window, 'navigator', {
+      languages: ['de-AT', 'de', 'en-US', 'en'],
     });
+
     assert.deepEqual(
       service._getBrowserLocales(),
       ['de-AT', 'de', 'en-US', 'en'],
@@ -376,9 +383,7 @@ module('Unit | Service | l10n', function (hooks) {
 
   module('_saveJSON', function () {
     test('it works with a missing plural-form header', function (assert) {
-      let service = this.owner.factoryFor('service:l10n').create({
-        autoInitialize: false,
-      });
+      let service = this.owner.lookup('service:l10n');
 
       let payload = {
         headers: {},
@@ -388,7 +393,7 @@ module('Unit | Service | l10n', function (hooks) {
       service._saveJSON(payload, 'de');
 
       assert.deepEqual(
-        get(service, '_plurals').de(),
+        service._plurals.de(),
         {
           plural: 1,
           nplurals: 2,
@@ -396,7 +401,7 @@ module('Unit | Service | l10n', function (hooks) {
         'plural is correctly set to default'
       );
       assert.deepEqual(
-        get(service, '_data'),
+        service._data,
         {
           de: {
             headers: {},
@@ -408,9 +413,7 @@ module('Unit | Service | l10n', function (hooks) {
     });
 
     test('it works with a plural-form header', function (assert) {
-      let service = this.owner.factoryFor('service:l10n').create({
-        autoInitialize: false,
-      });
+      let service = this.owner.lookup('service:l10n');
 
       let payload = {
         headers: {},
@@ -420,7 +423,7 @@ module('Unit | Service | l10n', function (hooks) {
       service._saveJSON(payload, 'de');
 
       assert.deepEqual(
-        get(service, '_plurals').de(),
+        service._plurals.de(),
         {
           plural: 1,
           nplurals: 2,
@@ -428,7 +431,7 @@ module('Unit | Service | l10n', function (hooks) {
         'plural is correctly set to default'
       );
       assert.deepEqual(
-        get(service, '_data'),
+        service._data,
         {
           de: {
             headers: {},
@@ -440,9 +443,7 @@ module('Unit | Service | l10n', function (hooks) {
     });
 
     test('it works with a plural-form header for no plural', function (assert) {
-      let service = this.owner.factoryFor('service:l10n').create({
-        autoInitialize: false,
-      });
+      let service = this.owner.lookup('service:l10n');
 
       let payload = {
         headers: {
@@ -454,7 +455,7 @@ module('Unit | Service | l10n', function (hooks) {
       service._saveJSON(payload, 'de');
 
       assert.deepEqual(
-        get(service, '_plurals').de(),
+        service._plurals.de(),
         {
           plural: 1,
           nplurals: 2,

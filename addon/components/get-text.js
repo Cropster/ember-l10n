@@ -1,13 +1,11 @@
-import { typeOf, isEmpty } from '@ember/utils';
-import { get, computed } from '@ember/object';
-import Component from '@ember/component';
-import layout from '../templates/get-text';
+import { isEmpty } from '@ember/utils';
+import Component from '@glimmer/component';
 
 /**
  * A simple helper component to include dynamic parts - mostly link-to helper - within gettext message ids.
  *
  * ```html
- * {{#get-text message=(t "My translation with {{dynamicLink 'optional link text'}} and {{staticLink}}") as |text placeholder|}}
+ * <GetText @message={{t "My translation with {{dynamicLink 'optional link text'}} and {{staticLink}}"}} as |text placeholder|>
  *  {{!-- You can omit the if helper if you have only one dynamic part --}}
  *  {{~#if (eq placeholder 'myLink')}}
  *    {{~#link-to 'my-route'}}
@@ -17,7 +15,7 @@ import layout from '../templates/get-text';
  *  {{~#if (eq placeholder 'staticLink')}}
  *    <a href="http://www.google.com">Google</a>
  *  {{~/if~}}
- * {{/get-text}}
+ * </GetText>
  * ```
  *
  * @namespace Component
@@ -25,10 +23,7 @@ import layout from '../templates/get-text';
  * @extends Ember.Component
  * @public
  */
-export default Component.extend({
-  tagName: '',
-  layout,
-
+export default class GetTextComponent extends Component {
   // -------------------------------------------------------------------------
   // Attributes
 
@@ -40,7 +35,7 @@ export default Component.extend({
    * @type {String}
    * @public
    */
-  message: '',
+  message;
 
   /**
    * Whether parsed strings should be unescaped with three curly brackets
@@ -50,9 +45,10 @@ export default Component.extend({
    *
    * @attribute unescapeText
    * @type {String}
+   * @default: false
    * @public
    */
-  unescapeText: false,
+  unescapeText;
 
   // -------------------------------------------------------------------------
   // Properties
@@ -66,26 +62,26 @@ export default Component.extend({
    * @type {Array}
    * @public
    */
-  messageParts: computed('message', function () {
-    let message = get(this, 'message');
+  get messageParts() {
+    let { message } = this.args;
 
     if (!message) {
       // eslint-disable-next-line no-console
       console.error(
-        'get-text.js: You need to provide a "message" attribute containing a gettext message!'
+        '<GetText>: You have to provide a @message containing a gettext message!'
       );
-      return;
+      return [];
     }
 
-    if (typeOf(message) !== 'string') {
+    if (typeof message !== 'string') {
       try {
         message = message.toString();
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(
-          'get-text.js: "message" must be either a string or an object implementing toString() method!'
+          '<GetText>: @message must be either a string or an object implementing toString() method!'
         );
-        return;
+        return [];
       }
     }
 
@@ -123,5 +119,5 @@ export default Component.extend({
     }
 
     return parts;
-  }),
-});
+  }
+}

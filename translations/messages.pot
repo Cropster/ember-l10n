@@ -18,17 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: tests/dummy/app/services/l10n.js:7:12
+#: tests/dummy/app/controllers/application.js:12:10
 #: tests/dummy/app/templates/test-page.hbs:19:0
-#: tests/unit/services/l10n-test.js:169:6
+#: tests/unit/services/l10n-test.js:152:6
 msgid "en"
 msgstr ""
 
-#: tests/dummy/app/services/l10n.js:8:12
+#: tests/dummy/app/controllers/application.js:13:10
 msgid "de"
 msgstr ""
 
-#: tests/dummy/app/services/l10n.js:9:12
+#: tests/dummy/app/controllers/application.js:14:10
 msgid "ko"
 msgstr ""
 
@@ -38,11 +38,11 @@ msgstr ""
 
 #: tests/dummy/app/templates/application.hbs:39:2
 #: tests/dummy/app/templates/application.hbs:50:2
-#: tests/unit/services/l10n-test.js:144:6
-#: tests/unit/services/l10n-test.js:202:6
-#: tests/unit/services/l10n-test.js:213:6
-#: tests/unit/services/l10n-test.js:223:6
-#: tests/unit/services/l10n-test.js:234:6
+#: tests/unit/services/l10n-test.js:127:6
+#: tests/unit/services/l10n-test.js:178:6
+#: tests/unit/services/l10n-test.js:189:6
+#: tests/unit/services/l10n-test.js:199:6
+#: tests/unit/services/l10n-test.js:210:6
 msgid "You have {{count}} unit in your cart."
 msgid_plural "You have {{count}} units in your cart."
 msgstr[0] ""
@@ -78,33 +78,33 @@ msgid ""
 "works"
 msgstr ""
 
-#: tests/unit/services/l10n-test.js:175:6
+#: tests/unit/services/l10n-test.js:158:6
 msgid "I'm a {{placeholder}}."
 msgstr ""
 
-#: tests/unit/services/l10n-test.js:184:6
+#: tests/unit/services/l10n-test.js:164:6
 msgid "Current status: {{status}}"
 msgstr ""
 
-#: tests/unit/services/l10n-test.js:186:18
+#: tests/unit/services/l10n-test.js:165:16
 msgid "STATUS_ACTIVE"
 msgstr ""
 
-#: tests/unit/services/l10n-test.js:247:6
-#: tests/unit/services/l10n-test.js:253:6
+#: tests/unit/services/l10n-test.js:223:6
+#: tests/unit/services/l10n-test.js:229:6
 msgctxt "menu"
 msgid "user"
 msgid_plural "users"
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/unit/services/l10n-test.js:259:6
+#: tests/unit/services/l10n-test.js:235:6
 msgctxt "menu"
 msgid "You have {{count}} subscription"
 msgid_plural "You have {{count}} subscriptions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/unit/services/l10n-test.js:314:23
+#: tests/unit/services/l10n-test.js:324:6
 msgid "testing"
 msgstr ""

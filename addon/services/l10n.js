@@ -1,5 +1,5 @@
 import { isNone, typeOf } from '@ember/utils';
-import { get, set, computed } from '@ember/object';
+import { get } from '@ember/object';
 import { Promise } from 'rsvp';
 import Ember from 'ember';
 import Service from '@ember/service';
@@ -9,6 +9,8 @@ import { A as array } from '@ember/array';
 import { assert } from '@ember/debug';
 import { getLocaleAssetMap } from 'ember-l10n/utils/get-locale-asset-map';
 import { fetchJsonFile } from 'ember-l10n/utils/fetch-json-file';
+import { getOwner } from '@ember/application';
+import { tracked } from '@glimmer/tracking';
 
 /**
  * This service translates through gettext.js.
@@ -45,7 +47,7 @@ import { fetchJsonFile } from 'ember-l10n/utils/fetch-json-file';
  * @extends Ember.Evented
  * @public
  */
-export default Service.extend({
+export default class L10nService extends Service {
   // -------------------------------------------------------------------------
   // Properties
 
@@ -60,22 +62,7 @@ export default Service.extend({
    * @default null
    * @public
    */
-  locale: null,
-
-  /**
-   * Use this property if you want to force
-   * a specific locale and skip automatic
-   * detection of user's system settings.
-   * This is useful for signed in users,
-   * but beware that unsupported locales
-   * will fallback to the default locale!
-   *
-   * @property forceLocale
-   * @type {String}
-   * @default null
-   * @public
-   */
-  forceLocale: null,
+  @tracked locale;
 
   /**
    * Fallback locale for unavailable locales or
@@ -86,7 +73,7 @@ export default Service.extend({
    * @default 'en'
    * @public
    */
-  defaultLocale: 'en',
+  defaultLocale;
 
   /**
    * Fallback plural form for unavaiable locales or
@@ -97,65 +84,47 @@ export default Service.extend({
    * @default 'nplurals=2; plural=(n != 1)'
    * @public
    */
-  defaultPluralForm: 'nplurals=2; plural=(n != 1);',
+  defaultPluralForm;
 
   /**
-   * Will invoke a language detection or loads
-   * language from `forceLanguage` on service
-   * instantiation. If disabling, make sure to
-   * set locale manually with setLocale().
+   * If set in config, this will ensure the detected or default locale is set on service initialization.
    *
    * @property autoInitialize
    * @type {String}
    * @default null
    * @public
    */
-  autoInitialize: true,
+  autoInitialize;
 
   /**
-   * Currently available translations hash.
+   * Array of available locales. This is loaded from the config.
    *
    * @property availableLocales
-   * @type {Object}
+   * @type {Array}
    * @public
    */
-  availableLocales: computed('locale', function () {
-    return {
-      en: this.t('en'),
-    };
-  }),
+  availableLocales;
 
   /**
-   * Wrapper for window object for mocking tests.
+   * Array of callbacks to call when the locale is changed.
    *
-   * @property _window
-   * @type {Object}
-   * @readOnly
+   * @property _localeChangeCallbacks
+   * @type {Array}
    * @private
    */
-  _window: computed(function () {
-    return window || {};
-  }),
+  _localeChangeCallbacks = [];
 
   /**
    * Hashmap storing callable plural function
    * for each target language parsed from the
    * `plural-form` header of JSON files.
    *
-   * @property _data
+   * @property _plurals
    * @type {Object}
    * @default {}
    * @private
    */
-  _plurals: computed(function () {
-    let pluralForm = get(this, 'defaultPluralForm');
-    let locale = get(this, 'defaultLocale');
-    let _plurals = {};
-
-    _plurals[locale] = this._pluralFactory(pluralForm);
-
-    return _plurals;
-  }),
+  _plurals = {};
 
   /**
    * Hashmap storing loaded translations by
@@ -167,9 +136,7 @@ export default Service.extend({
    * @default {}
    * @private
    */
-  _data: computed(function () {
-    return {};
-  }),
+  _data = {};
 
   /**
    * The map of locales to locale files to use.
@@ -178,38 +145,74 @@ export default Service.extend({
    * @type {Object}
    * @private
    */
-  _localeMap: computed(function () {
-    return getLocaleAssetMap();
-  }),
+  _localeMap = getLocaleAssetMap();
 
   // -------------------------------------------------------------------------
   // Methods
 
   /**
-   * Sets initial locale. If you want to to
-   * skip language detection, please provide
-   * `forceLocale` property with reopen().
-   *
-   * @method init
+   * @method constructor
    * @return {Void}
    * @public
    */
-  init() {
-    this._super(...arguments);
+  constructor() {
+    super(...arguments);
+
+    let config = getOwner(this).resolveRegistration('config:environment');
+    let l10nConfig = config['ember-l10n'];
+    this._loadConfig(l10nConfig);
 
     this._checkLocaleFiles();
+    this._setupDefaultPlurals();
 
     // Since FastBoot does not support XMLHttpRequest (which we use to usually load the locale .json files)
     // We embed the whole locale files in that scenario, and preload all the locales here
     // This way, no ajax requests need to be made in FastBoot
-    if (typeof FastBoot !== 'undefined') {
+    let fastboot = getOwner(this).lookup('service:fastboot');
+    if (fastboot?.isFastBoot) {
       this._preloadLocaleFilesForFastBoot();
     }
 
-    if (get(this, 'autoInitialize')) {
-      this.setLocale(this.detectLocale());
+    if (this.autoInitialize) {
+      this.setDetectedLocale();
     }
-  },
+  }
+
+  /**
+   * Load & setup the given config object.
+   * This usually comes from ENV['ember-l10n'].
+   *
+   * @method _loadConfig
+   * @return {Void}
+   * @private
+   */
+  _loadConfig(l10nConfig) {
+    assert(
+      `ember-l10n: You have to specify available locales in config/environment.js, like this:
+
+'ember-l10n': {
+  locales: ['en', 'de']
+}`,
+      !!l10nConfig?.locales
+    );
+
+    this.availableLocales = l10nConfig?.locales || ['en'];
+    this.autoInitialize = Boolean(l10nConfig?.autoInitialize);
+    this.defaultLocale = l10nConfig?.defaultLocale || 'en';
+    this.defaultPluralForm =
+      l10nConfig?.defaultPluralForm || 'nplurals=2; plural=(n != 1);';
+  }
+
+  /**
+   * Set the detected locale, or the default locale if the detected locale is not available.
+   *
+   * @method setDetectedLocale
+   * @return {RSVP.Promise}
+   * @public
+   */
+  setDetectedLocale() {
+    return this.setLocale(this.detectLocale());
+  }
 
   /**
    * Provides current locale. If not set,
@@ -221,11 +224,10 @@ export default Service.extend({
    * @public
    */
   getLocale() {
-    let defaultLocale = get(this, 'defaultLocale');
-    let locale = get(this, 'locale');
+    let { defaultLocale, locale } = this;
 
     return locale || defaultLocale;
-  },
+  }
 
   /**
    * Sets active locale if available. Returns a
@@ -244,13 +246,18 @@ export default Service.extend({
       }
 
       let successCallback = () => {
-        set(this, 'locale', locale);
+        this.locale = locale;
+
+        // Trigger callbacks
+        this._localeChangeCallbacks.forEach((callback) => {
+          callback(locale);
+        });
         resolve();
       };
 
       this._loadJSON(locale).then(successCallback, reject);
     });
-  },
+  }
 
   /**
    * Checks if locale is available.
@@ -262,14 +269,14 @@ export default Service.extend({
    * @public
    */
   hasLocale(locale, warnIfUnavailable = false) {
-    let availableLocales = get(this, 'availableLocales');
-    let hasLocale = !!availableLocales[locale];
+    let { availableLocales } = this;
+    let hasLocale = availableLocales.includes(locale);
     if (!hasLocale && warnIfUnavailable) {
       this._log(`Locale "${locale}" is not available!`, 'warn');
     }
 
     return hasLocale;
-  },
+  }
 
   /**
    * Gets user's current client language and
@@ -280,11 +287,10 @@ export default Service.extend({
    * @public
    */
   detectLocale() {
-    let defaultLocale = get(this, 'defaultLocale');
-    let forceLocale = get(this, 'forceLocale');
+    let { defaultLocale } = this;
 
     // auto detect locale if no force locale
-    let locale = forceLocale || this.guessBrowserLocale();
+    let locale = this.guessBrowserLocale();
 
     // provide default locale if not available
     if (!this.hasLocale(locale)) {
@@ -293,14 +299,8 @@ export default Service.extend({
     }
 
     // otherwise return detected locale
-    if (!forceLocale) {
-      this._log(`Automatically detected user language: "${locale}"`);
-    } else {
-      this._log(`Using forced locale: "${locale}"`);
-    }
-
     return locale;
-  },
+  }
 
   /**
    * Get a list of desireable locales for the browser.
@@ -311,8 +311,8 @@ export default Service.extend({
    * @private
    */
   _getBrowserLocales() {
-    let navigator = get(this, '_window.navigator');
-    let defaultLocale = get(this, 'defaultLocale') || 'en';
+    let { navigator } = this._getWindow();
+    let { defaultLocale } = this;
 
     if (!navigator) {
       return array([defaultLocale]);
@@ -320,12 +320,12 @@ export default Service.extend({
 
     let desiredLocales = navigator.languages || [navigator.browserLanguage];
     desiredLocales = array(desiredLocales.slice()).compact();
-    if (!get(desiredLocales, 'length')) {
+    if (desiredLocales.length === 0) {
       return array([defaultLocale]);
     }
 
     return desiredLocales;
-  },
+  }
 
   /**
    * Guess the best locale to use based on the browser locales & available locales.
@@ -335,15 +335,14 @@ export default Service.extend({
    * @public
    */
   guessBrowserLocale(allowSubLocales = false) {
-    let defaultLocale = get(this, 'defaultLocale') || 'en';
-    let availableLocales = Object.keys(get(this, 'availableLocales'));
+    let { availableLocales, defaultLocale } = this;
     let desiredLocales = this._getBrowserLocales();
 
     return guessLocale(availableLocales, desiredLocales, {
       defaultLocale,
       allowSubLocales,
     });
-  },
+  }
 
   /**
    * Translates a singular form message id.
@@ -364,7 +363,7 @@ export default Service.extend({
     let [message] = this._getMessages(key, msgctxt);
 
     return strfmt(message || key, hash);
-  },
+  }
 
   /**
    * Translates a plural form message id.
@@ -403,7 +402,7 @@ export default Service.extend({
     message = message || (plural ? pKey : sKey);
 
     return strfmt(message, assign({ count }, hash));
-  },
+  }
 
   /**
    * Translates a contextual singular form message id.
@@ -417,7 +416,7 @@ export default Service.extend({
    */
   pt(msgid, msgctxt, hash = {}) {
     return this.t(msgid, hash, msgctxt);
-  },
+  }
 
   /**
    * Translates a contextual plural form message id.
@@ -433,7 +432,7 @@ export default Service.extend({
    */
   pn(msgid, msgidPlural, count, msgctxt, hash = {}) {
     return this.n(msgid, msgidPlural, count, hash, msgctxt);
-  },
+  }
 
   /**
    * Translate a singular string without indexing it.
@@ -448,7 +447,7 @@ export default Service.extend({
    */
   tVar(msgid, hash = {}) {
     return this.t(msgid, hash);
-  },
+  }
 
   /**
    * Checks if a message id exists for current locale.
@@ -465,7 +464,45 @@ export default Service.extend({
     }
 
     return !!this._readKey(key, msgctxt);
-  },
+  }
+
+  /**
+   * Register a callback, which is called when the locale is changed.
+   *
+   * @method registerLocaleChangeCallback
+   * @param {Function} callback
+   * @return {Void}
+   * @public
+   */
+  registerLocaleChangeCallback(callback) {
+    this._localeChangeCallbacks.push(callback);
+  }
+
+  /**
+   * Unregister a locale change callback.
+   *
+   * @method unregisterLocaleChangeCallback
+   * @param {Function} callback
+   * @return {Void}
+   * @public
+   */
+  unregisterLocaleChangeCallback(callback) {
+    let pos = this._localeChangeCallbacks.indexOf(callback);
+    if (pos > -1) {
+      this._localeChangeCallbacks.splice(pos, 1);
+    }
+  }
+
+  /**
+   * Wrapper for window object for mocking tests.
+   *
+   * @method _getWindow
+   * @return {Object}
+   * @private
+   */
+  _getWindow() {
+    return window || {};
+  }
 
   /**
    * Reads JSON data for given message id containing an array like:
@@ -491,7 +528,7 @@ export default Service.extend({
     }
 
     return json.msgstr || [];
-  },
+  }
 
   /**
    * Tries to lookup JSON data for given key and context.
@@ -503,15 +540,20 @@ export default Service.extend({
    * @private
    */
   _readKey(key, ctxt = '') {
-    let locale = get(this, 'locale');
-    let _data = get(this, '_data');
+    let { locale, _data } = this;
+
+    assert(
+      `ember-l10n: It seems you are trying to read a translation before the l10n service is setup.`,
+      _data
+    );
+
     let json = _data[locale] || {};
 
     json = json.translations || {};
     json = json[ctxt] || json[''] || {};
 
     return json[key] || null;
-  },
+  }
 
   /**
    * Sanitizes message ids by removing unallowed characters like whitespace.
@@ -534,7 +576,7 @@ export default Service.extend({
     }
 
     return key.replace(/\s+/g, ' ');
-  },
+  }
 
   /**
    * Loads current locale translation file.
@@ -549,10 +591,10 @@ export default Service.extend({
    */
   _loadJSON(locale) {
     return new Promise((resolve, reject) => {
-      let _data = get(this, '_data');
+      let { _data } = this;
 
       let successCallback = (response) => {
-        if (get(this, 'isDestroyed')) {
+        if (this.isDestroyed) {
           return;
         }
 
@@ -561,7 +603,7 @@ export default Service.extend({
       };
 
       let failureCallback = (reason) => {
-        if (get(this, 'isDestroyed')) {
+        if (this.isDestroyed) {
           return;
         }
 
@@ -583,7 +625,7 @@ export default Service.extend({
       // otherwise load json file from assets
       this._loadLocaleFile(locale).then(successCallback, failureCallback);
     });
-  },
+  }
 
   /**
    * Saves locale's translation data in internal hash and extracts plural
@@ -605,9 +647,9 @@ export default Service.extend({
       headers: { 'plural-forms': pluralForm },
     } = json;
 
-    set(this, `_data.${locale}`, json);
-    set(this, `_plurals.${locale}`, this._pluralFactory(pluralForm, locale));
-  },
+    this._data[locale] = json;
+    this._plurals[locale] = this._pluralFactory(pluralForm, locale);
+  }
 
   /**
    * Normalize the message ids in the JSON response
@@ -641,7 +683,7 @@ export default Service.extend({
     });
 
     return assign({}, json, { translations: sanitizedTranslations });
-  },
+  }
 
   /**
    * Transforms and stores plural form it into a callable function.
@@ -653,7 +695,7 @@ export default Service.extend({
    * @private
    */
   _pluralFactory(pluralForm) {
-    let defaultPluralForm = get(this, 'defaultPluralForm');
+    let { defaultPluralForm } = this;
 
     if (
       !pluralForm ||
@@ -694,7 +736,19 @@ export default Service.extend({
       };
     `
     );
-  },
+  }
+
+  /**
+   * Setup the default plural form.
+   *
+   * @method _setupDefaultPlurals
+   * @private
+   */
+  _setupDefaultPlurals() {
+    let { defaultLocale, defaultPluralForm } = this;
+
+    this._plurals[defaultLocale] = this._pluralFactory(defaultPluralForm);
+  }
 
   /**
    * Check if all required locale files are available.
@@ -703,20 +757,19 @@ export default Service.extend({
    * @private
    */
   _checkLocaleFiles() {
-    let locales = get(this, 'availableLocales') || {};
-    let localeMap = get(this, '_localeMap');
+    let { availableLocales, _localeMap } = this;
 
-    Object.keys(locales).forEach((locale) => {
+    availableLocales.forEach((locale) => {
       assert(
         'Do not use the locale zh, as it is not a valid locale. Instead, use dedicated locales for traditional & simplified Chinese.',
         locale !== 'zh'
       );
       assert(
         `No locale file can be found for locale "${locale}".`,
-        localeMap[locale]
+        _localeMap[locale]
       );
     });
-  },
+  }
 
   /**
    * In FastBoot, the asset map does not contain the paths to the locale files,
@@ -727,13 +780,13 @@ export default Service.extend({
    * @private
    */
   _preloadLocaleFilesForFastBoot() {
-    let localeMap = get(this, '_localeMap');
+    let { _localeMap } = this;
 
-    Object.keys(localeMap).forEach((locale) => {
-      let content = JSON.parse(localeMap[locale]);
+    Object.keys(_localeMap).forEach((locale) => {
+      let content = JSON.parse(_localeMap[locale]);
       this._saveJSON(content, locale);
     });
-  },
+  }
 
   /**
    * Load a locale file.
@@ -744,10 +797,10 @@ export default Service.extend({
    * @public
    */
   _loadLocaleFile(locale) {
-    let localeMap = get(this, '_localeMap');
-    let fileName = get(localeMap, locale);
+    let { _localeMap } = this;
+    let fileName = get(_localeMap, locale);
     return this.ajaxRequest(fileName);
-  },
+  }
 
   /**
    * Actually make the Ajax request.
@@ -759,7 +812,7 @@ export default Service.extend({
    */
   ajaxRequest(fileName) {
     return fetchJsonFile(fileName);
-  },
+  }
 
   /**
    * Log a message.
@@ -782,8 +835,8 @@ export default Service.extend({
 
     // eslint-disable-next-line no-console
     console[type](`l10n.js: ${str}`);
-  },
-});
+  }
+}
 
 /**
  * Replaces placeholders like {{placeholder}} from string.
