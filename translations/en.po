@@ -19,6 +19,7 @@ msgstr ""
 
 #: tests/dummy/app/controllers/application.js:12:10
 #: tests/dummy/app/templates/test-page.hbs:19:0
+#: tests/dummy/app/templates/test-page.hbs:20:0
 #: tests/unit/services/l10n-test.js:152:6
 msgid "en"
 msgstr "en"
@@ -112,77 +113,3 @@ msgstr[1] "You have {{count}} subscriptions"
 #: tests/unit/services/l10n-test.js:324:6
 msgid "testing"
 msgstr "testing"
-
-#~ msgid ""
-#~ "Your orders have been converted to schedules,\n"
-#~ "please review them in scheduling across all your locations."
-#~ msgstr ""
-#~ "Your orders have been converted to schedules,\n"
-#~ "please review them in scheduling across all your locations."
-
-#~ msgid "NEW TEST"
-#~ msgstr "NEW TEST"
-
-#~ msgctxt "context"
-#~ msgid "NEW TEST"
-#~ msgstr "NEW TEST"
-
-#~ msgid "singular 1"
-#~ msgid_plural "plural 1"
-#~ msgstr[0] "singular 1"
-#~ msgstr[1] "plural 1"
-
-#~ msgctxt "context"
-#~ msgid "singular 1"
-#~ msgid_plural "plural 1"
-#~ msgstr[0] "singular 1"
-#~ msgstr[1] "plural 1"
-
-#~ msgid "This page only \"contains\" text for tests"
-#~ msgstr "This page only \"contains\" text for tests"
-
-#~ msgid "special chars work: \", ', ` and others!"
-#~ msgstr "special chars work: \", ', ` and others!"
-
-#~ msgid "sub test"
-#~ msgstr "sub test"
-
-#~ msgid "sub one"
-#~ msgstr "sub one"
-
-#~ msgid "cobbling plural"
-#~ msgid_plural "cobbling plural MULTI"
-#~ msgstr[0] "cobbling plural"
-#~ msgstr[1] "cobbling plural MULTI"
-
-#~ msgctxt "context"
-#~ msgid "test"
-#~ msgstr "test"
-
-#~ msgctxt ""
-#~ "multi-line\n"
-#~ "context"
-#~ msgid "message with"
-#~ msgstr "message with"
-
-#~ msgid ""
-#~ "multi line singular\n"
-#~ "is here"
-#~ msgid_plural ""
-#~ "multi line plural\n"
-#~ "is here"
-#~ msgstr[0] ""
-#~ "multi line singular\n"
-#~ "is here"
-#~ msgstr[1] ""
-#~ "multi line plural\n"
-#~ "is here"
-
-#~ msgctxt "context"
-#~ msgid "singular"
-#~ msgid_plural "plural"
-#~ msgstr[0] "singular"
-#~ msgstr[1] "plural"
-
-#~ msgid "asdasd"
-#~ msgstr "asdasd"
