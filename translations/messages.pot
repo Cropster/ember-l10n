@@ -20,6 +20,7 @@ msgstr ""
 
 #: tests/dummy/app/controllers/application.js:12:10
 #: tests/dummy/app/templates/test-page.hbs:19:0
+#: tests/dummy/app/templates/test-page.hbs:20:0
 #: tests/unit/services/l10n-test.js:152:6
 msgid "en"
 msgstr ""
