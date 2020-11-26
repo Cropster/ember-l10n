@@ -29,6 +29,11 @@ yarn-error.log
 /translations
 /node-tests
 /.idea
+/.github
+.prettierrc.json
+jsconfig.json
+.yarnrc
+.prettierirgnore
 
 # ember-try
 /.node_modules.ember-try/
