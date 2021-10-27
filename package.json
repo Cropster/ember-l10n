@@ -83,7 +83,7 @@
     "po"
   ],
   "dependencies": {
-    "@babel/parser": "^7.12.3",
+    "@babel/parser": "^7.15.8",
     "@glimmer/component": "^1.0.4",
     "@glimmer/syntax": "^0.80.3",
     "@glimmer/tracking": "^1.0.4",
