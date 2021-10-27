@@ -4,8 +4,8 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import L10nService from 'ember-l10n/services/l10n';
 import hbs from 'htmlbars-inline-precompile';
-import wait from 'ember-test-helpers/wait';
 import Pretender from 'pretender';
+import settled from '@ember/test-helpers/settled';
 
 class ExtendedL10nService extends L10nService {
   _loadConfig() {
@@ -97,7 +97,7 @@ module('Integration | Helper | t', function (hooks) {
       .hasText("I'm a PLACEHOLDER.", 'Placeholder translations are working.');
 
     await l10n.setLocale('de');
-    await wait();
+    await settled();
 
     assert
       .dom(this.element)
