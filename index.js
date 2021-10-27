@@ -25,9 +25,8 @@ module.exports = {
 
     let app = this._findHost();
 
-    let hasEmberCliFastboot = !!this.project.findAddonByName(
-      'ember-cli-fastboot'
-    );
+    let hasEmberCliFastboot =
+      !!this.project.findAddonByName('ember-cli-fastboot');
     this._hasEmberCliFastboot = hasEmberCliFastboot;
 
     let env = process.env.EMBER_ENV;

@@ -17,17 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: tests/dummy/app/controllers/application.js:12:10
+#: tests/dummy/app/controllers/application.js:14:10
 #: tests/dummy/app/templates/test-page.hbs:19:0
 #: tests/dummy/app/templates/test-page.hbs:20:0
 msgid "en"
 msgstr ""
 
-#: tests/dummy/app/controllers/application.js:13:10
+#: tests/dummy/app/controllers/application.js:15:10
 msgid "de"
 msgstr ""
 
-#: tests/dummy/app/controllers/application.js:14:10
+#: tests/dummy/app/controllers/application.js:16:10
 msgid "ko"
 msgstr ""
 

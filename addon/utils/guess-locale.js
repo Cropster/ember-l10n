@@ -37,6 +37,7 @@ export function guessLocale(
   if (!desiredLocales.find) {
     desiredLocales = array(desiredLocales);
   }
+
   if (!allowedLocales.find) {
     allowedLocales = array(allowedLocales);
   }

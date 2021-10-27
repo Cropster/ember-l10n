@@ -10,7 +10,7 @@ module.exports = {
       legacyDecorators: true,
     },
   },
-  plugins: ['ember'],
+  plugins: ['ember', 'ember-suave'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
@@ -20,14 +20,17 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    'ember-suave/lines-between-object-properties': 0,
+    'ember-suave/lines-between-class-members': 0,
+    'ember-suave/require-access-in-comments': 0,
+  },
   overrides: [
     // node files
     {
       files: [
         '.eslintrc.js',
         '.template-lintrc.js',
-        '.eslintrc.js',
         'ember-cli-build.js',
         'index.js',
         'testem.js',

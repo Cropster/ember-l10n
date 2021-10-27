@@ -13,6 +13,8 @@
 # misc
 /coverage/
 !.*
+.*/
+.eslintcache
 /node-tests/fixtures
 
 # ember-try
