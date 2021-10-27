@@ -1,24 +1,25 @@
 import { inject as service } from '@ember/service';
-import { reads } from '@ember/object/computed';
-import { computed } from '@ember/object';
+import { action } from '@ember/object';
 import Controller from '@ember/controller';
 
-export default Controller.extend({
-  l10n: service(),
+export default class ApplicationController extends Controller {
+  @service l10n;
 
-  selection: reads('l10n.locale'),
-  languages: computed(function () {
+  get selection() {
+    return this.l10n.locale;
+  }
+
+  get languages() {
     return {
       en: this.l10n.t('en'),
       de: this.l10n.t('de'),
       ko: this.l10n.t('ko'),
     };
-  }),
+  }
 
-  actions: {
-    select(locale) {
-      let { l10n } = this;
-      l10n.setLocale(locale);
-    },
-  },
-});
+  @action
+  select(locale) {
+    let { l10n } = this;
+    l10n.setLocale(locale);
+  }
+}

@@ -5,4 +5,6 @@ module.exports = {
   rules: {
     quotes: false,
   },
+
+  ignore: ['tests/**'],
 };

@@ -4,7 +4,7 @@ import { Promise } from 'rsvp';
 import Ember from 'ember';
 import Service from '@ember/service';
 import { assign } from '@ember/polyfills';
-import { guessLocale } from '../utils/guess-locale';
+import { guessLocale } from 'ember-l10n/utils/guess-locale';
 import { A as array } from '@ember/array';
 import { assert } from '@ember/debug';
 import { getLocaleAssetMap } from 'ember-l10n/utils/get-locale-asset-map';
