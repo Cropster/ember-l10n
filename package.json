@@ -31,6 +31,7 @@
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.4.2",
+    "@embroider/macros": "^0.47.1",
     "@embroider/test-setup": "^0.47.1",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
