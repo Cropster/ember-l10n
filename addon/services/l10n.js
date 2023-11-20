@@ -3,7 +3,6 @@ import { get } from '@ember/object';
 import { Promise } from 'rsvp';
 import Ember from 'ember';
 import Service from '@ember/service';
-import { assign } from '@ember/polyfills';
 import { guessLocale } from 'ember-l10n/utils/guess-locale';
 import { A as array } from '@ember/array';
 import { assert } from '@ember/debug';
@@ -401,7 +400,7 @@ export default class L10nService extends Service {
 
     message = message || (plural ? pKey : sKey);
 
-    return strfmt(message, assign({ count }, hash));
+    return strfmt(message, Object.assign({ count }, hash));
   }
 
   /**
@@ -676,13 +675,13 @@ export default class L10nService extends Service {
       Object.keys(items).forEach((messageId) => {
         let item = items[messageId];
         let sanitizedMessageId = messageId.replace(/\s+/g, ' ');
-        sanitizedTranslations[context][sanitizedMessageId] = assign({}, item, {
+        sanitizedTranslations[context][sanitizedMessageId] = Object.assign({}, item, {
           msgid: sanitizedMessageId,
         });
       });
     });
 
-    return assign({}, json, { translations: sanitizedTranslations });
+    return Object.assign({}, json, { translations: sanitizedTranslations });
   }
 
   /**
